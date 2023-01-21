@@ -12,7 +12,7 @@ SeaGap provides various functions to easily perform GNSS-A positioning, post-pro
 You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0) for the citation of this software (note that an article  for this software is preparing). 
 
 
-* [menu 1](/menu1/)
+* [Dataformat](/menu1/)
 * [menu 2](/menu2/)
 * [menu 3](/menu3/)
 
