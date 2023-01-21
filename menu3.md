@@ -6,6 +6,14 @@ title = "Menu 3"
 
 **Example**:
 
+```plaintext
+config.md <- prepath = "SeaGapDocs"
+
+serve()
+verify_links()
+optimize()
+```
+
 * page with tag [`syntax`](/tag/syntax/)
 * page with tag [`image`](/tag/image/)
 * page with tag [`code`](/tag/code/)

@@ -15,5 +15,7 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Dataformat](/dataformat/)
 * [Methodology: Overview](/methodoverview/)
 * [Methodology: Travel-time calculation](/methodtt/)
+* [Methodology: Kinematic array positioning](/methodkinematic/)
+* [Methodology: Static array positioning](/methodstatic/)
 * [menu 3](/menu3/)
 
