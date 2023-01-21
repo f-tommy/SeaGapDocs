@@ -4,6 +4,9 @@ on:
     branches:
       - main
       - master
+  pull_request:
+    branches:
+      - main # or master
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
