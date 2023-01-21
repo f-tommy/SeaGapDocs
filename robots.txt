@@ -1,4 +1,4 @@
-Sitemap: https://f-tommy.github.io/SeaGapDocs.jl/sitemap.xml
+Sitemap: https://f-tommy.github.io/SeaGapDocs/sitemap.xml
 
 User-agent: *
 Disallow:
