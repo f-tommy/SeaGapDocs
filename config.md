@@ -17,7 +17,7 @@ ignore = ["node_modules/"]
 generate_rss = true
 website_title = "SeaGapDocs"
 website_descr = "Documents for SeaGap"
-website_url   = "https://f-tommy.github.io/SeaGapDocs.jl/"
+website_url   = "https://f-tommy.github.io/SeaGapDocs/"
 +++
 
 <!--
