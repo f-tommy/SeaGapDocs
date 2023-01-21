@@ -1,5 +1,5 @@
 +++
-title = "Code blocks"
+title = "Dataformat"
 hascode = true
 date = Date(2019, 3, 22)
 rss = "A short description of the page which would serve as **blurb** in a `RSS` feed; you can use basic markdown here but the whole description string must be a single line (not a multiline string). Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don't expect maths or fancy styling to work; images should be ok though: ![](https://upload.wikimedia.org/wikipedia/en/3/32/Rick_and_Morty_opening_credits.jpeg)"
@@ -8,79 +8,78 @@ tags = ["syntax", "code"]
 +++
 
 
-# Working with code blocks
+# Overview
+
+Documentation for the input dataformat in [SeaGap](https://github.com/f-tommy/SeaGap.jl).
+
+In SeaGap, the following input data files are basically required:
 
 \toc
 
-## Live evaluation of code blocks
+The above file names are given as default values, and they can be optionally changed.
+These files are text data format with delimitation of space.
 
-If you would like to show code as well as what the code outputs, you only need to specify where the script corresponding to the code block will be saved.
 
-Indeed, what happens is that the code block gets saved as a script which then gets executed.
-This also allows for that block to not be re-executed every time you change something _else_ on the page.
+## tr-ant.inp
 
-Here's a simple example (change values in `a` to see the results being live updated):
+Three components of position of a transducer attached to a sea-surface platform relative to the GNSS antenna position are shown in this file.
+Using these values, the GNSS antenna positions (written in [obsdata.inp](#obsdata.inp)) are converted into the transducer positions with the right-handed system. Note that this definision is different from [GARPOS](https://github.com/s-watanabe-jhod/garpos).
 
-```julia:./exdot.jl
-using LinearAlgebra
-a = [1, 2, 3, 3, 4, 5, 2, 2]
-@show dot(a, a)
-println(dot(a, a))
+The file is an one-lined file with three columns, and each column is given as (1: X, 2: Y, 3: Z).
+For example:
+
+**$ cat tr-ant.inp**
+```
+0.188984299 -6.990937724 -15.300000000
 ```
 
-You can now show what this would look like:
+## pxp-ini.xyh
 
-\output{./exdot.jl}
+Positions of individual seafloor transponders at each site are given in the file. The positions must be given in meter. In order to provide these positions, you have to convert geographic coordinates into the projection coordinates. The projection center should be defined as a center of the transponder array for each site, and must be fixed among GNSS-A campaign cruises. You can convert the geographic coordinates into the projection coordinates by ll2xy function shown in Others via [GMT](https://github.com/GenericMappingTools/GMT.jl)'s mapprojection module
 
-**Notes**:
-* you don't have to specify the `.jl` (see below),
-* you do need to explicitly use print statements or `@show` for things to show, so just leaving a variable at the end like you would in the REPL will show nothing,
-* only Julia code blocks are supported at the moment, there may be a support for scripting languages like `R` or `python` in the future,
-* the way you specify the path is important; see [the docs](https://tlienart.github.io/franklindocs/code/index.html#more_on_paths) for more info. If you don't care about how things are structured in your `/assets/` folder, just use `./scriptname.jl`. If you want things to be grouped, use `./group/scriptname.jl`. For more involved uses, see the docs.
+The file has three rows, which indicate the transponder positions in meter (1: EW position, 2: NS position, 3: UD position).
+Each line shows one seafloor transponder position; thus, the total number of lines indicate the total number of transponders at each site.
+The line number of this file corresponds to the transponder number written in [obsdata.inp](#obsdata.inp).
 
-Lastly, it's important to realise that if you don't change the content of the code, then that code will only be executed _once_ even if you make multiple changes to the text around it.
+**$ cat pxp-ini.xyh**
+```
+ 997.5346  985.5925 -2738.9998
+-956.8931  941.9216 -2683.2858
+-977.3029 -968.6586 -2689.2996
+ 935.8767 -980.5919 -2710.8535
+``` 
 
-Here's another example,
+## ss\_prof.zv
 
-```julia:./code/ex2
-for i ∈ 1:5, j ∈ 1:5
-    print(" ", rpad("*"^i,5), lpad("*"^(6-i),5), j==5 ? "\n" : " "^4)
-end
+Underwater sound speed profile is given in this file. In order to precise calculation of travel-times, you should prepare a profile with 5-m or less interval. The rows of this file indicate (1: water depth [m], 2: sound speed [m/sec]), respectively.
+
+$ head ss\_prof.zv
+```
+ 0.00 1526.998
+ 5.00 1529.598
+10.00 1529.594
+15.00 1529.637
+20.00 1529.684
+25.00 1529.748
+30.00 1529.343
+35.00 1528.586
+40.00 1527.722
+45.00 1525.194
+```  
+
+Maximum depth of ss\_prof.zv must be deeper than maximum depth of the seafloor transponders wriiten in "pxp-ini.xyh". Thus, you should prepare a long profile deeper than the water depth by extrapolation.
+
+You can optionally draw figure of the sound speed profile by `plot_prof(;fno,fn)` function. `fn` is the file name of a sound speed profile (the default is `fn="ss_prof.zv"`). `fno` is the output file name (the default is `fno="ss_prof.pdf"`). If you change the filename extension, the output file format is automatically changed (e.g., ".png",".svg"). If you use this function with `show=true` keyword argument in REPL, you can display as GUI (but not saved as a figure file). 
+
+```julia
+SeaGap.plot_prof(fno="ss_prof.png",fn="ss_prof.zv",show=false) 
 ```
 
-which gives the (utterly useless):
-
-\output{./code/ex2}
-
-note the absence of `.jl`, it's inferred.
-
-You can also hide lines (that will be executed nonetheless):
-
-```julia:./code/ex3
-using Random
-Random.seed!(1) # hide
-@show randn(2)
-```
-
-\output{./code/ex3}
-
-
-## Including scripts
-
-Another approach is to include the content of a script that has already been executed.
-This can be an alternative to the description above if you'd like to only run the code once because it's particularly slow or because it's not Julia code.
-For this you can use the `\input` command specifying which language it should be tagged as:
-
-
-\input{julia}{/_assets/scripts/script1.jl} <!--_-->
-
-
-these scripts can be run in such a way that their output is also saved to file, see `scripts/generate_results.jl` for instance, and you can then also input the results:
-
-\output{/_assets/scripts/script1.jl} <!--_-->
-
-which is convenient if you're presenting code.
-
-**Note**: paths specification matters, see [the docs](https://tlienart.github.io/franklindocs/code/index.html#more_on_paths) for details.
-
-Using this approach with the `generate_results.jl` file also makes sure that all the code on your website works and that all results match the code which makes maintenance easier.
+~~~
+<div class="row">
+  <div class="container">
+    <img class="left" src="/assets/ss_prof.png">
+    <div style="clear: both"></div>      
+  </div>
+</div>
+~~~
