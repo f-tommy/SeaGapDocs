@@ -2,7 +2,7 @@
 Add here global page variables to use throughout your website.
 -->
 +++
-author = "Septimia Zenobia"
+author = "Fumiaki Tomita"
 mintoclevel = 2
 
 prepath = "SeaGapDocs"

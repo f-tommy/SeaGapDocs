@@ -3,7 +3,7 @@ title = "Tutorials"
 hascode = true
 rss = "A short description of the page which would serve as **blurb** in a `RSS` feed; you can use basic markdown here but the whole description string must be a single line (not a multiline string). Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don't expect maths or fancy styling to work; images should be ok though: ![](https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg)"
 rss_title = "Kinematic array positioning"
-rss_pubdate = Date(2019, 5, 1)
+rss_pubdate = Date(2023, 1, 22)
 
 tags = ["syntax", "code", "image"]
 +++
@@ -154,7 +154,7 @@ SeaGap.plot_time_array_each(fno="time_array_each.png")
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/time_array_each.png" width="450" height="450">
+    <img src="/assets/time_array_each.png" width="650" height="650">
     <div style="clear: both"></div>      
   </div>
 </div>
