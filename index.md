@@ -3,6 +3,15 @@
 
 # Welcome to SeaGap!
 
+~~~
+<div class="row">
+  <div class="container">
+    <img src="/assets/twitter_header_photo_2.png" width="200" height="200">
+    <div style="clear: both"></div>      
+  </div>
+</div>
+~~~
+
 SeaGap is a new **S**oftware of the **e**nhanced **a**nalysis for **G**NSS-**a**coustic **p**ositioning.
 
 SeaGap is available on Github: [https://github.com/f-tommy/SeaGap](https://github.com/f-tommy/SeaGap)!
@@ -26,5 +35,6 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Methodology: Individual transponder positioning](/methodsingle/)
 * [Methodology: Static arry positioning with gradients](/methodmcmcpvg/)
 * [Tutorials: Forward calculation](/tutorialforward/)
-* [menu 3](/menu3/)
+* [Tutorials: Kinematic array positioning](/tutorialkinematic/)
+* [Tutorials: Static array positioning](/tutorialstatic/)
 
