@@ -1,7 +1,13 @@
 @def title = "SeaGap Documents"
 @def tags = ["syntax", "code"]
 
-# SeaGap Documents
+# Welcome to SeaGap!
+
+SeaGap is a new **S**oftware of the **e**nhanced **a**nalysis for **G**NSS-**a**coustic **p**ositioning.
+
+SeaGap is available on Github: [https://github.com/f-tommy/SeaGap](https://github.com/f-tommy/SeaGap)!
+
+## Overview
 
 SeaGap is written in Julia for fast calculation. SeaGap is designed to perform "text-based processing" that SeaGap reads data from the input text file, performs calculation, and then writes the output text file instead of holding the calculation results as variables in Julia.
 
@@ -17,5 +23,8 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Methodology: Travel-time calculation](/methodtt/)
 * [Methodology: Kinematic array positioning](/methodkinematic/)
 * [Methodology: Static array positioning](/methodstatic/)
+* [Methodology: Individual transponder positioning](/methodsingle/)
+* [Methodology: Static arry positioning with gradients](/methodmcmcpvg/)
+* [Tutorials: Forward calculation](/tutorialforward/)
 * [menu 3](/menu3/)
 
