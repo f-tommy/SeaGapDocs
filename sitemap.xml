@@ -26,6 +26,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://f-tommy.github.io/SeaGapDocs/install/index.html</loc>
+    <lastmod>2023-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://f-tommy.github.io/SeaGapDocs/methodmcmcpvg/index.html</loc>
     <lastmod>2023-01-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -56,6 +62,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://f-tommy.github.io/SeaGapDocs/others/index.html</loc>
+    <lastmod>2023-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://f-tommy.github.io/SeaGapDocs/tutorialstatic/index.html</loc>
     <lastmod>2023-01-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -63,6 +75,12 @@
 </url>
 <url>
     <loc>https://f-tommy.github.io/SeaGapDocs/tutorialkinematic/index.html</loc>
+    <lastmod>2023-01-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://f-tommy.github.io/SeaGapDocs/tutorialts/index.html</loc>
     <lastmod>2023-01-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

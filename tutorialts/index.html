@@ -1,0 +1,90 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">install</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Tutorials</h1> <hr> <div class=franklin-content > <h1 id=line_fitting_for_time-series ><a href="#line_fitting_for_time-series" class=header-anchor >Line fitting for time-series</a></h1> <p>After positioning multiple campaign, you would perform time-series analysis for assessing crustal deformation. The general positioning results are shown in &quot;position.out&quot; by <code>pos_array_all&#40;&#41;</code> or <code>pos_array_mcmcpvg&#40;&#41;</code>. You can obtain time-series of the array displacements by merging the &quot;position.out&quot; for multiple campaigns.</p> <p>But, you should correct a stable plate motion to consider long-term crustal deformation &#40;e.g., inter-/post-seismic deformation&#41;. After the correction, it is generally performed to calculate a displacement rate.</p> <p>SeaGap provides functions to arrange &#40;including a function to elimiate a constant velocity&#41; the merged &quot;position.out&quot; and to calculate an array displcament rate.</p> <p>First, let&#39;s prepare the merged &quot;position.out&quot; as &quot;position&#95;merge.out&quot;.</p> <code>&#36; cat position_merge.out</code> <pre><code class="plaintext hljs">406823232 -0.096889228 0.139634124 -0.334569674 0.01040281 0.01023568 0.31545639
+427997740 -0.023633200 0.053856194 0.080438784 0.00262383 0.00164626 0.00407914
+446630293 -0.086322921 0.016209885 0.078556148 0.00487531 0.00100381 0.00372393
+478175535 0.047437107 -0.018050471 0.073543488 0.00103975 0.00104308 0.00287912
+500691126 0.045814082 -0.040725985 -0.028688630 0.00258226 0.00301437 0.00371223
+515402741 0.035828374 -0.088293375 0.064555567 0.00352865 0.00311975 0.00899014
+561563695 0.060865355 -0.045373625 0.101002939 0.01289510 0.01039353 0.02149323</code></pre> <p>Then, the merged position file should be arranged, and a constant velocity &#40;a stable plate motion&#41; should be eliminated. These can be performed by <code>convert_displacement&#40;vx,vy,vz;redu,sredu_hor,sredu_ver,fno,fn,t0&#41;</code>.</p> <ul> <li><p>vx, vy, vz: constant velocities which are eliminated from the time-series &#40;Unit: cm/yr&#41;</p> <li><p>redu: if <code>redu&#61;true</code>, the large estimation errors are identified as unusable &#40;estimation errors in EW and NS components &gt; <code>sredu_hor</code>; those in UD component &gt; <code>sredu_ver</code>&#41;; if <code>redu&#61;false</code>, all are identified as usable</p> <li><p>sredu&#95;hor: Estimation error limit to be usable for horizontal components &#40;<code>sredu_hor&#61;30.0</code> &#91;cm&#93; in default&#41;</p> <li><p>sredu&#95;ver: Estimation error limit to be usable for vertical component &#40;<code>sredu_ver&#61;30.0</code> &#91;cm&#93; in default&#41;</p> <li><p>fno: Arranged time-series file &#40;&quot;converted&#95;position.out&quot; in defalult&#41;</p> <li><p>fn: Input time-series file &#40;&quot;position&#95;merge.out&quot; in defalult&#41;</p> <li><p>t0: Reference time &#40;&quot;2000-01-01T12:00:00&quot; in default; refer Date &amp; Time processing &#91;e.g., <code>sec2year&#40;&#41;</code>&#93;&#41;</p> </ul> <pre><code class="julia hljs">SeaGap.convert_displacement(<span class=hljs-number >1.79</span>,-<span class=hljs-number >1.79</span>,<span class=hljs-number >0.0</span>,sredu_hor=<span class=hljs-number >30.0</span>,sredu_ver=<span class=hljs-number >30.0</span>,fno=<span class=hljs-string >&quot;converted_position.out&quot;</span>)</code></pre>
+<code>&#36; cat converted_position.out</code>
+<pre><code class="plaintext hljs"># Year DispX DispY DispZ SigmaX SigmaY SigmaZ UsableX UsableY UsableZ (detrend 1.79 -1.79 0.0)
+2012.89344 -9.689 13.963 -33.457 1.040 1.024 31.546 1 1 0
+2013.56438 -3.564 6.587 8.044 0.262 0.165 0.408 1 1 1
+2014.15342 -10.888 3.876 7.856 0.488 0.100 0.372 1 1 1
+2015.15342 0.698 2.240 7.354 0.104 0.104 0.288 1 1 1
+2015.86849 -0.744 1.253 -2.869 0.258 0.301 0.371 1 1 1
+2016.33333 -2.575 -2.672 6.456 0.353 0.312 0.899 1 1 1
+2017.79726 -2.691 4.240 10.100 1.290 1.039 2.149 1 1 1</code></pre>
+<p>As shown above, the cumulative time &#91;sec&#93; is converted into AD &#91;year&#93; &#40;Column 1&#41;;  units of the array displacements and thier estimation errors &#91;m&#93; are converted into &#91;cm&#93; &#40;Columns 2-7&#41;;  constant velocities &#40;vx,vy,vz&#41; are eliminated from the array displacements &#40;Columns 2-4&#41;;  Columns 8-10 indicate usable/unusable &#40;1/0&#41; for each component. It doen&#39;t matter to produce this file your own way.</p>
+<p>Using &quot;converted&#95;position.out&quot;, <code>plot_displacement&#40;ts,te,EW_range,NS_range,UD_range;autoscale,pscale,cal,weight,predict,fno1,fno2,fno3,fn,show&#41;</code> calculates an array displacement rate for each component and make a figure.</p>
+<ul>
+<li><p>ts: Start time of the figure &#40;Time at the left edge of the figure&#41; &#91;yr&#93;</p>
+
+<li><p>te: End time of the figure &#40;Time at the right edge of the figure&#41; &#91;yr&#93;</p>
+
+<li><p>EW&#95;range, NS&#95;range, UD&#95;range: If <code>autoscale&#61;false</code>, the range of Y-axis is set to be those ranges</p>
+
+<li><p>autoscale: if <code>autoscale&#61;true</code> &#40;default&#41;, the range of Y-axis is automatically determined depending on the usable array displacements</p>
+
+<li><p>pscale: if you set smaller value, the autoscale Y-axis range is wider &#40;<code>pscale&#61;0.5</code> in default&#41;</p>
+
+<li><p>cal: if <code>cal&#61;true</code>, a regression line is calculated for each component, is shown in the figure, and the regression results are written in <code>fno2</code> as a text file</p>
+
+<li><p>weight: if <code>weight&#61;true</code>, the regression line is calculated considering the weight; the weight is provided as an inverse square of the observation error &#40;<code>weight&#61;true</code> in default&#41;</p>
+
+<li><p>predict: if <code>predict&#61;true</code>, the predicted values from the regression line are written in &quot;<code>fno3</code>-EW.txt&quot;, &quot;<code>fno3</code>-NS.txt&quot;, and &quot;<code>fno3</code>-UD.txt&quot;</p>
+
+<li><p>fno1: Output figure name</p>
+
+<li><p>fno2: Name of an output text file showing array displacement rates</p>
+
+<li><p>fno3: Indicator name of output text files showing the predicted values from the regression lines</p>
+
+<li><p>fn: Input file name &#40;&quot;converted&#95;position.out&quot;&#41;</p>
+
+<li><p>show:  If <code>show&#61;false</code>, the figure is saved as <code>fno</code> &#40;<code>fno</code> is name of the output figure&#41;. If <code>show&#61;true</code> in REPL, a figure is temporally shown.</p>
+
+</ul>
+<pre><code class="julia hljs">SeaGap.plot_displacement(<span class=hljs-number >2012</span>,<span class=hljs-number >2018.5</span>,fno1=<span class=hljs-string >&quot;displacement.png&quot;</span>)</code></pre>
+
+<div class=row >
+  <div class=container >
+    <img src="/SeaGapDocs/assets/displacement.png" width=450  height=450 >
+    <div style="clear: both"></div>
+  </div>
+</div>
+
+<pre><code class="julia hljs">SeaGap.plot_displacement(<span class=hljs-number >2012</span>,<span class=hljs-number >2018.5</span>,(-<span class=hljs-number >25</span>,<span class=hljs-number >15</span>),(-<span class=hljs-number >10</span>,<span class=hljs-number >30</span>),(-<span class=hljs-number >40</span>,<span class=hljs-number >40</span>),fno1=<span class=hljs-string >&quot;displacement_wo.png&quot;</span>,autoscale=<span class=hljs-literal >false</span>,cal=<span class=hljs-literal >false</span>)</code></pre>
+
+<div class=row >
+  <div class=container >
+    <img src="/SeaGapDocs/assets/displacement_wo.png" width=450  height=450 >
+    <div style="clear: both"></div>
+  </div>
+</div>
+
+<p>The thick blue line shows a regression line for each component, and the shaded portion shows a 95&#37; confidence interval. Glay and black squares are the unusable and usable array displacements, respectively.</p>
+<p>The regression results are given as following:</p>
+<p><code>&#36; cat velocity.out</code> &#40;<code>fno2</code>&#41; </p>
+<pre><code class="plaintext hljs"># (Vx,Vy,Vz,Sx,Sy,Sz,RMSx,RMSy,RMSz,CorXY) in cm Linear model
+1.5742551020532471 -2.3877121258416882 -3.0700998568383113 1.3995537945799512 0.5303522727297605 1.8953362710629817 11.569073350333905 6.4632288773323445 9.787610128634833 -0.3291858072408599 7 7 6</code></pre>
+<p><code>&#36; cat predict-EW.txt</code> &#40;<code>fno3</code>&#41;</p>
+<pre><code class="plaintext hljs"># Year Disp. Pred. Residual Sigma
+ 2012.89344   -9.689  -4.025397254303815   -5.663602745696185   1.04
+ 2013.56438   -3.564  -2.969166536132252   -0.5948334638677482  0.262
+ 2014.15342  -10.888  -2.0418673108187     -8.8461326891813     0.488
+ 2015.15342    0.698  -0.4676122087654528   1.1656122087654528  0.104
+ 2015.86849   -0.744   0.6580903870597136  -1.4020903870597134  0.258
+ 2016.33333   -2.575   1.389867128697936   -3.9648671286979362  0.353
+ 2017.79726   -2.691   3.6944664002469327  -6.385466400246933   1.29</code></pre>
+<div class=page-foot >
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 23, 2023.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div>
+  </main> 
+  <script src="/SeaGapDocs/libs/vela/metisMenu.min.js"></script>
+  <script src="/SeaGapDocs/libs/vela/slideout.min.js"></script>
+  
+  
+    <script src="/SeaGapDocs/libs/highlight/highlight.min.js"></script>
+<script>hljs.highlightAll();hljs.configure({tabReplace: '    '});</script>
