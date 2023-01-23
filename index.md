@@ -37,4 +37,5 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Tutorials: Forward calculation](/tutorialforward/)
 * [Tutorials: Kinematic array positioning](/tutorialkinematic/)
 * [Tutorials: Static array positioning](/tutorialstatic/)
+* [Tutorials: MCMC static array positioning](/tutorialmcmcpvg/)
 
