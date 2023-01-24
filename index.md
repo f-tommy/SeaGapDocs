@@ -26,7 +26,9 @@ SeaGap provides various functions to easily perform GNSS-A positioning, post-pro
 
 You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0) for the citation of this software (note that an article  for this software is preparing). 
 
+## Contents
 
+* [Installation](/install/)
 * [Dataformat](/dataformat/)
 * [Methodology: Overview](/methodoverview/)
 * [Methodology: Travel-time calculation](/methodtt/)
@@ -39,4 +41,5 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Tutorials: Static array positioning](/tutorialstatic/)
 * [Tutorials: MCMC static array positioning](/tutorialmcmcpvg/)
 * [Tutorials: Line fitting for time-series](/tutorialts/)
+* [Others](/others/)
 

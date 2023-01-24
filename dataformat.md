@@ -27,7 +27,9 @@ Using these values, the GNSS antenna positions (written in "obsdata.inp") are co
 
 The file is an one-lined file with three columns, and each column is given as (1: X, 2: Y, 3: Z).
 
-`$ cat tr-ant.inp`
+@@important
+\$ cat tr-ant.inp
+@@
 ```plaintext
 0.188984299 -6.990937724 -15.300000000
 ```
@@ -40,7 +42,9 @@ The file has three rows, which indicate the transponder positions in meter (1: E
 Each line shows one seafloor transponder position; thus, the total number of lines indicate the total number of transponders at each site.
 The line number of this file corresponds to the transponder number written in "obsdata.inp".
 
-`$ cat pxp-ini.xyh`
+@@important
+\$ cat pxp-ini.xyh
+@@
 ```plaintext
  997.5346  985.5925 -2738.9998
 -956.8931  941.9216 -2683.2858
@@ -52,7 +56,9 @@ The line number of this file corresponds to the transponder number written in "o
 
 Underwater sound speed profile is given in this file. In order to precise calculation of travel-times, you should prepare a profile with 5-m or less interval. The rows of this file indicate (1: water depth [m], 2: sound speed [m/sec]), respectively.
 
-`$ head ss_prof.zv`
+@@important
+\$ head ss\_prof.zv
+@@
 ```plaintext
 0.00 1526.998
 5.00 1529.598
@@ -111,7 +117,9 @@ The attitude of the sea-surface platform is expressed in the right-handed system
 
 The flag is only used for kinematic GNSS-Acoustic positioning, and it indicates a kind of group number for multiple acoustic pings shotted during a short period.
 
-`$ head obsdata.inp`
+@@important
+\$ head obsdata.inp
+@@
 ```plaintext
 1 4.092873 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190025 110.958430 76.322974 28.357222 -44.93029 -2.03165 0.89020 1
 2 4.058711 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.155863 110.937832 76.317022 28.336117 -44.92675 -2.00787 0.88108 1
@@ -184,7 +192,9 @@ The flag of "obsdata.inp" is automatically given; the same group number is given
 
 "gps.jxyhhpr" is composed of (1: Cumulative time [sec], 2-4: GNSS antenna position (EW, NS, UD) [m], 5-7: Sea-surface platform attitudes (heading, pitch, roll) [deg]).
 
-`$ head gps.jxyhhpr`
+@@important
+\$ head gps.jxyhhpr
+@@
 ```plaintext
 500663320.00 -435.572296 2767.288008 27.875250 -4.5784 -1.4752 0.2540
 500663320.50 -435.212859 2764.964937 27.644200 -4.4348 -1.0296 -0.5176
@@ -208,7 +218,9 @@ The details of these functions are shown in the Others tab.
 
 If you have the following file:
 
-`$ head gps.tllhhpr`
+@@important
+\$ head gps.tllhhpr
+@@
 ```plaintext
 2015-11-13T05:08:40.0 142.077767915 36.182468927 27.875250 -4.5784 -1.4752 0.2540
 2015-11-13T05:08:40.5 142.077771912 36.182447992 27.644200 -4.4348 -1.0296 -0.5176
@@ -233,7 +245,9 @@ SeaGap.ll2xy_txt("gps.jllhhpr","gps.jxyhhpr",2,142.082610,36.157530)
 
 The delay indicates a mechanical delay of the transponder system. Thus, summation of the 1st and 2nd culumns corresponds to the time when the acoustic signal is recieved at the sea-surface transducer. The quality is for a kind of quality values such as a correlation cofficient for acoustic signal detection; but, this valueis  not used in the programs of SeaGap. If you do not have any quality value, you should fill the column by somewhat numerical value such as "0".  
 
-`$ head pxp-1.jttq`
+@@important
+\$ head pxp-1.jttq
+@@
 ```plaintext
 500664407 6.190025 4.092873 0.358
 500664437 6.160120 4.062968 0.296

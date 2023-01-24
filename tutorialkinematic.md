@@ -22,7 +22,9 @@ Outliers in "obsdata.inp" should be removed in advance; SeaGap includes a simple
 
 In "obsdata.inp", you have to write the shot group number.
 
-`$ head obsdata.inp`
+@@important
+\$ head obsdata.inp
+@@
 ```plaintext
 1 3.932951 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.030102 332.595337 256.316298 27.751791 -52.68875 -0.89626 1.21533 3
 3 4.357953 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.455105 332.635629 256.224942 28.223725 -52.71458 -1.45692 -0.33433 3
@@ -66,7 +68,9 @@ Then, after performing, you obtained a log file as `fno0` (`fno0="log.txt"` in d
 * 9: the shot group number
 Note that 6-8 columns show "Inf" if number of the used observational data is 3.
 
-`$ head array_each.out`
+@@important
+ \$ head array\_each.out
+@@
 ```plaintext
 5.00664917e8 3 0.1453633877852824 -0.09278934666794787 0.001861163617159608 Inf Inf Inf 3
 5.00664977e8 3 0.12614038874488606 -0.057422633767672655 0.0018715189289275115 Inf Inf Inf 4
@@ -89,7 +93,9 @@ Note that 6-8 columns show "Inf" if number of the used observational data is 3.
 * 6: number of the used data
 If the number of the used data is 3, the misfits are almost zero.
 
-`$ head -n 16 residual_each.out`
+@@important
+\$ head -n 16 residual\_each.out
+@@
 ```plaintext
 5.00664917e8 1 1.0842021724855044e-18 3 3 3
 5.00664917e8 3 -2.168404344971009e-19 3 3 3

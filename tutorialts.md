@@ -21,7 +21,9 @@ SeaGap provides functions to arrange (including a function to elimiate a constan
 
 First, let's prepare the merged "position.out" as "position\_merge.out".
 
-`$ cat position_merge.out`
+@@important
+ \$ cat position\_merge.out
+@@
 ```plaintext
 406823232 -0.096889228 0.139634124 -0.334569674 0.01040281 0.01023568 0.31545639
 427997740 -0.023633200 0.053856194 0.080438784 0.00262383 0.00164626 0.00407914
@@ -46,7 +48,9 @@ These can be performed by `convert_displacement(vx,vy,vz;redu,sredu_hor,sredu_ve
 SeaGap.convert_displacement(1.79,-1.79,0.0,sredu_hor=30.0,sredu_ver=30.0,fno="converted_position.out")
 ```
 
-`$ cat converted_position.out`
+@@important
+\$ cat converted\_position.out
+@@
 ```plaintext
 # Year DispX DispY DispZ SigmaX SigmaY SigmaZ UsableX UsableY UsableZ (detrend 1.79 -1.79 0.0)
 2012.89344 -9.689 13.963 -33.457 1.040 1.024 31.546 1 1 0
@@ -111,13 +115,17 @@ Glay and black squares are the unusable and usable array displacements, respecti
 
 The regression results are given as following:
 
-`$ cat velocity.out` (`fno2`) 
+@@important
+\$ cat velocity.out (`fno2`) 
+@@
 ```plaintext
 # (Vx,Vy,Vz,Sx,Sy,Sz,RMSx,RMSy,RMSz,CorXY) in cm Linear model
 1.5742551020532471 -2.3877121258416882 -3.0700998568383113 1.3995537945799512 0.5303522727297605 1.8953362710629817 11.569073350333905 6.4632288773323445 9.787610128634833 -0.3291858072408599 7 7 6
 ```
 
-`$ cat predict-EW.txt` (`fno3`)
+@@important
+\$ cat predict-EW.txt (`fno3`)
+@@
 ```plaintext
 # Year Disp. Pred. Residual Sigma
  2012.89344   -9.689  -4.025397254303815   -5.663602745696185   1.04

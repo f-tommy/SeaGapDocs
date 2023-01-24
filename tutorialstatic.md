@@ -40,7 +40,9 @@ Then, after performing, you obtained a log file as `fno0` (`fno0="log.txt"` in d
 `fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2).
 First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3: UD), and the followings are the coeffiecnts for the 3d B-spline bases.
 
-`$ head solve.out`
+@@important
+\$ head solve.out
+@@
 ```plaintext
   0.03016870329108975    0.0015837742430485642
  -0.017291984493650502   0.0015789217333432297
@@ -56,7 +58,9 @@ First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3:
 
 `fno2` shows general positioning results (1: Average observational time (cumulative seconds from the reference time), 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1``\sigma`` estimation errors in EW, NS, and UD).
 
-`$ cat position.out`
+@@important
+\$ cat position.out
+@@
 ```plaintext
 5.00690900363141e8  0.03016870329108975  -0.017291984493650502  0.040657598385999076  0.0015837742430485642  0.0015789217333432297  0.005785765032466023
 ```
@@ -68,7 +72,9 @@ First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3:
 * 4: Modeled NTD ($\sum_{j=1}^{J}c_j\Phi_j(t_n)$)
 * 5: Residuals between the columns 3 and 4
 
-`$ head residual.out`
+@@important
+\$ head residual.out
+@@
 ```plaintext
  5.00664920015051e8    1.0  0.0019194751443163372  0.0019078805382536155   1.159460606272168e-5
  5.0066492022755253e8  3.0  0.0018793925787709523  0.001907899038987111   -2.8506460216158776e-5
@@ -88,7 +94,9 @@ First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3:
 * 3: the observational time (cumulative seconds from the reference time)
 * 4: the estimated coefficents of the 3d B-spline bases
 
-`$ head bspline.out`
+@@important
+\$ head bspline.out
+@@
 ```plaintext
    1.0    1.0  5.006643812573444e8   0.0015211235935625976
    2.0    2.0  5.00664917e8          0.002019534277503533
@@ -107,7 +115,9 @@ First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3:
 * 2: AIC
 * 3: BIC
 
-`$ cat AICBIC.out`
+@@important
+\$ cat AICBIC.out
+@@
 ```plaintext
 100 -68846.58463077551 -68216.74756443244
 ```
@@ -166,7 +176,9 @@ SeaGap.pos_array_all_AICBIC(30,150,5,lat,XDUCER_DEPTH)
 
 As a result, you obtain `fno` (the output file: "AICBIC\_search.out" in default) showing (1: Total number of 3d B-spline bases, 2: AIC, 3: BIC, 4: RMS [sec]).
 
-`$ head AICBIC_search.out`
+@@important
+\$ head AICBIC\_search.out
+@@
 ```plaintext
 30 -67715.5649433315 -67513.77248518275 3.9674441413194116e-5
 35 -67904.76265703465 -67672.39558401487 3.851018840214079e-5
@@ -240,7 +252,9 @@ However, the lines 4-6 in `fno1` shows the solutions and the errors for the modi
 `fno5` in `pos_array_TR()` shows three components of the estimated offset values and their estimation errors (1-3: Offset in X, Y, Z, 4-6: Error in X, Y, Z).
 The default name of `fno5` is "tr-ant.out"
 
-`$ cat tr-ant.out`
+@@important
+\$ cat tr-ant.out
+@@
 ```plaintext
 # TR_offset: dx, dy, dz, sigmax, sigmay, sigmaz
 0.36263055102029373 17.72528757116563 -11.417248564560044 0.0021584714990507776 0.0020794994652210477 0.021231771169224003
@@ -264,7 +278,9 @@ The input and output files are same with `pos_array_all()` except `fno1` (solve.
 `fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2).
 First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3: UD), following two parameters are the deep gradients (EW and NS components), and the followings are the coeffiecnts for the 3d B-spline bases.
 
-`$ head solve.out`
+@@important
+\$ head solve.out
+@@
 ```plaintext
   0.06186500501267254    0.00992683409066011
  -0.10741363544193698    0.00997340191013794

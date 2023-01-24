@@ -37,7 +37,9 @@ This file can be produced by `make_initial(fn1,fn2,fn3,fno,error_scale)` functio
 SeaGap.make_initial(fn1="pxp-ini.xyh",fn2="ntd.out",fn3="solve.out",fno="initial.inp",error_scale=5.0)
 ```
 
-`$ head -n 20 initial.inp`
+@@important
+\$ head -n 20 initial.inp
+@@
 ```plaintext
 0.030187510738829797 -20 20 0.000321268998116478 EW_disp.
 -0.017200785437164808 -20 20 0.0003204201142000086 NS_disp.
@@ -68,11 +70,15 @@ For example, when you provide "0.65" for the columns 1-3 at the 6th line, you ca
 
 Before you run `pos_array_mcmcpvg()`, you have to set number of threads for the thread parallelization in your terminal as:
 
-`$ export JULIA_NUM_THREADS=4`
+@@important
+\$ export JULIA\_NUM\_THREADS=4
+@@
 
 or you have to run Julia as:
 
-`$ julia -t 4`
+@@important
+\$ julia -t 4
+@@
 
 This value is determined depending on your machine ability.
 
@@ -146,12 +152,13 @@ The scaling factor is determined as $log10()$ of the step width written in "init
 
 ## Output text files
 
----
-`fno0`: the log file, which shows the analytical conditions, and so on
+@@importantv
+fno0: the log file, which shows the analytical conditions, and so on
+@@
 
----
-
-`$ head log.txt`
+@@important
+\$ head log.txt
+@@
 ```plaintext
 2023-01-17T19:00:41.919
 pos_array_mcmcpvg.jl at /Users/test_PC/SeaGap_test/mcmc
@@ -165,13 +172,16 @@ Sampling_interval: 5
 Scale: true
 ```
 
---- 
-`fno1`: The sampled unknown parameters ("sample.out" in default)
+@@importantv
+fno1: The sampled unknown parameters ("sample.out" in default)
+@@
 
 In this file, the unknown parameter names written in "initial.inp" is written at the first line.
 Then, the sampled parameters for each MCMC iteration at each line.
 
-`$ head sample.out | awk '{print $1,$2,$3,$4,$5,$6}`
+@@important
+\$ head sample.out | awk \'{print \$1,\$2,\$3,\$4,\$5,\$6}\'
+@@
 ```plaintext
 EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS Gradient_depth
 0.08260468443394334 -0.08662247961124432 0.025670510288264305 -8.771624335364252e-5 0.00010961686642287733 1.2503597971928924
@@ -185,8 +195,9 @@ EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS Gradient_depth
 0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.575844791557426e-5 0.00011146701700201295 1.2539045990938986
 ```
 
----
- `fno2`: The PDFs and RMS ("mcmc.out" in default)
+@@importantv
+ fno2: The PDFs and RMS ("mcmc.out" in default)
+@@
 
 In this file, the PDF and RMS values for each MCMC iteration are recorded.
 - 1: Iteration number
@@ -198,7 +209,9 @@ In this file, the PDF and RMS values for each MCMC iteration are recorded.
 - 7: RMS for the observation equation 1
 - 8: RMS for the observation equation 2
 
-`$ head mcmc.out`
+@@important
+\$ head mcmc.out
+@@
 ```plaintext
 5 1 0 -172.07488459892824 -1409.6579839265735 -1581.7328685255018 3.338234991326818e-5 9.182030714056993e-5
 10 0 0 -155.61914177499887 -1401.3967311431156 -1557.0158729181144 3.339232619776381e-5 9.16151939518422e-5
@@ -212,21 +225,27 @@ In this file, the PDF and RMS values for each MCMC iteration are recorded.
 50 0 1 -75.34502498422776 -1376.6926493095564 -1452.0376742937842 3.3526530022277746e-5 9.097539166287877e-5
 ```
 
----
-`fno3`: The position file ("position.out" in default)
+@@importantv
+fno3: The position file ("position.out" in default)
+@@
 
 This is same format with the "position.out" of `pos_array_all()`.
 (1: the cumlative seconds of the observational time, 2-4: Mean array displacements for EW, NS, UD componets, 5-7: Standard deviations of 2-4)
 
-`$ cat position.out`
+@@important
+\$ cat position.out
+@@
 ```plaintext
 5.006911621555024e8 0.08911960760365124 -0.09216111977421959 0.03457162712162569 0.003936408533764213 0.0043953798040076006 0.005210189660303897
 ```
 
----
-`fno4`: Statistical values for each unknown parameter ("statistics.out" in default)
+@@importantv
+fno4: Statistical values for each unknown parameter ("statistics.out" in default)
+@@
 
-`$ head statistics.out`
+@@important
+\$ head statistics.out
+@@
 ```plaintext
 #Parameter mean std median min max
  "EW_disp."         0.08911960760365124     0.003936408533764213     0.0892521976843861       0.07400853233593642      0.10005015563126467
@@ -240,12 +259,15 @@ This is same format with the "position.out" of `pos_array_all()`.
  "L-NTD_3"          4.366073210014821e-6    1.5633246953860986e-6    4.618228804187182e-6     1.6644226647942257e-6    7.839589859898406e-6
 ```
 
----
-`fno5`: Acceptance ratio ("acceptance.out" in default)
+@@importantv
+fno5: Acceptance ratio ("acceptance.out" in default)
+@@
 
 The first and second lines show the acceptance ratios for the observation equations 1 and 2, respectively.
 
-`$ cat acceptance.out` 
+@@important
+\$ cat acceptance.out 
+@@
 ```plaintext
 Acceptance_ratio_MCMC-1: 0.2578666666666667
 Acceptance_ratio_MCMC-2: 0.29825833333333335
@@ -253,8 +275,9 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335
 
 Note that it is plausible to adjust the pertubation widths as the acceptance ratio is ~23 % when sampling multiple parameters ([Gelman et al., 1996](https://global.oup.com/academic/product/bayesian-statistics-5-9780198523567?cc=jp&lang=en&#))
 
----
-`fno6`: Data residuals including the NTD and gradient effects ("residual\_grad.out" in default)
+@@importantv
+fno6: Data residuals including the NTD and gradient effects ("residual\_grad.out" in default)
+@@
 
 The effects of the modeled NTD and gradients on the data residuals are shown.
 - 1: The cumulative seconds of the observational time
@@ -271,7 +294,9 @@ The effects of the modeled NTD and gradients on the data residuals are shown.
 - 12: The modeled travel-time in the observation equation 2 (10+11)
 - 13: The final travel-time residuals (6-9)
 
-`$ head residual_grad.out`
+@@important
+\$ head residual\_grad.out
+@@
 ```plaintext
  5.00664920015051e8    1.0    317.26245264634497       266.19938356095884      16.199673254258155  0.0019212227711233381  0.001892028778148772    5.711709219681263e-6    0.0018977404873684533  0.0018746452897521106   2.0683804412705322e-6   0.0018767136701933812   2.3482283754884864e-5                                                  
  5.0066492022755253e8  3.0    317.4207663638199        266.23937739269013      16.35391331567538   0.0018695167060979961  0.0018921278087429905  -6.9439073915697634e-6   0.0018851839013514207  0.001874643966433996    2.0591604132395985e-6   0.0018767031268472356  -1.566719525342459e-5
@@ -284,12 +309,16 @@ The effects of the modeled NTD and gradients on the data residuals are shown.
  5.006650401017465e8   4.0    419.0773398733799        300.33635900589996      15.778232162741766  0.0018708333451003824  0.0019268206172822213  -5.1539753890195993e-5   0.0018752808633920254  0.0018739014871903337  -2.931834171213654e-6    0.00187096965301912    -4.447518291642887e-6
  5.0066509998064e8     1.0    485.0554895986015        337.2990947633136       16.195343692732713  0.0019027879344541735  0.0019305064012347809   7.522151899566477e-6    0.0019380285531343474  0.0018735336021151463  -4.533172999986541e-6    0.0018690004291151599  -3.5240618680173845e-5
 ```
----
-`fno7`: ("bspline.out" in default)
+
+@@importantv
+fno7: ("bspline.out" in default)
+@@
 
 Format of this file is same  with that of `pos_array_all()`.
 
-`$ head bspline.out`
+@@important
+\$ head bspline.out
+@@
 ```plaintext
 1 1 5.0066421474273527e8 0.0010247469234456984
 2 2 5.00664917e8 0.002156372454933342
@@ -412,7 +441,9 @@ you obtain the below figure and the output text data
 </div>
 ~~~
 
-`$ head -n 6 correlation.out | awk '{print $1,$2,$3,$4,$5,$6}'`
+@@important
+\$ head -n 6 correlation.out | awk \'{print \$1,\$2,\$3,\$4,\$5,\$6}\'
+@@
 ```plaintext
 Name: EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS
 "EW_disp." 1.0 -0.634376617642439 -0.09873898084769465 -0.4559821875070524 -0.08852812940100827

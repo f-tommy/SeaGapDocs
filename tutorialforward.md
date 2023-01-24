@@ -14,7 +14,9 @@ Here, synthetic calculation of travel-times is performed to practice handling Se
 
 You first prepare an underwater sound profile ("ss\_prof.zv": See [Dataformat](/dataformat/)).
 
-`head ss_prof.zv`
+@@important
+\$ head ss\_prof.zv
+@@
 ```plaintext
 0.00 1526.998
 5.00 1529.598
