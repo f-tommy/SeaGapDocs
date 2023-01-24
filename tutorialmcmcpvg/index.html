@@ -1,5 +1,5 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/katex/katex.min.css"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">install</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Tutorials</h1> <hr> <div class=franklin-content > <h1 id=mcmc_static_array_positioning ><a href="#mcmc_static_array_positioning" class=header-anchor >MCMC static array positioning</a></h1> <div class=franklin-toc ><ol><li><a href="#make_initial_value_file">Make initial value file</a><li><a href="#run_mcmc_processing">Run MCMC processing</a><li><a href="#output_text_files">Output text files</a><li><a href="#visualization">Visualization</a><ol><li><a href="#posterior_pdf_and_rms_variation_through_the_mcmc_iteration">Posterior PDF and RMS variation through the MCMC iteration</a><li><a href="#parameter_variation_through_the_mcmc_iteration">Parameter variation through the MCMC iteration</a><li><a href="#correlation_among_the_unknown_parameters">Correlation among the unknown parameters</a><li><a href="#histogram_for_each_unknown_parameter">Histogram for each unknown parameter</a><li><a href="#histograms_and_heatmaps_for_multiple_parameters">Histograms and heatmaps for multiple parameters </a><li><a href="#spatial_variation_of_travel-time_residuals_shallow_gardient">Spatial variation of travel-time residuals &#40;shallow gardient&#41;</a><li><a href="#temporal_variation_of_the_travel-time_residuals">Temporal variation of the travel-time residuals</a></ol><li><a href="#run_mcmc_processing_with_additional_constraints">Run MCMC processing with additional constraints</a></ol></div> <h2 id=make_initial_value_file ><a href="#make_initial_value_file" class=header-anchor >Make initial value file</a></h2> <p>In order to perform the static array positioning considering a sound speed gradient through a MCMC technique &#40;<a href="https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0">Tomita &amp; Kido, 2022</a>&#41;, we have to prepare an initial value file &#40;named &quot;initial.inp&quot; in default&#41; which lists initial values of the unknown parameters for MCMC optimization.</p> <p>The dataformat of &quot;initial.inp&quot; is &#40;Columns 1: Initial value, 2: Lower limit, 3: Upper limit, 4: Step width, 5: Parameter name&#41;. The step width is used as perturbation when new parameter candidates are produced in the MCMC sampling. This should be appropriately given to effectively perform a MCMC sampling.</p> <p>The type of unknown parameters to be placed on each line of this file is fixed and cannot be changed.</p> <ul> <li><p>Lines 1-3: Array displacements for EW, NS, UD &#91;m&#93;</p> <li><p>Lines 4-5: Shallow gradients for EW, NS &#91;sec/km&#93;</p> <li><p>Line 6: Gradient depth &#91;km&#93;</p> <li><p>Lines 7-11: Long-term NTD modeled by 4th polynomial function &#40;degree: 0-4&#41;</p> <li><p>Lines 12-13: Scale factor optimizing observational errors</p> <li><p>Lines 14-: Coefficinets for the 3d B-spline bases &#40;Short-term NTD&#41;</p> </ul> <p>This file can be produced by <code>make_initial&#40;fn1,fn2,fn3,fno,error_scale&#41;</code> function. <code>fn1</code> is the initial seafloor transponder positions: &quot;pxp-ini.xyh&quot;. <code>fn2</code> and <code>fn3</code> are &quot;ntd.out&quot; and &quot;solve.out&quot;, respectively; they are obtained by <a href="/SeaGapDocs/tutorialstatic/">the basic static array positioning</a> <code>pos_array_all&#40;&#41;</code>. <code>error_scale</code> is used for providing the step width &#40;<code>error_scale&#61;5.0</code> in default&#41;. <code>make_initial&#40;&#41;</code> provides the step widths as &#40;<span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>σ</mi></mrow><annotation encoding="application/x-tex">1\sigma</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.6444em;"></span><span class=mord >1</span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> standard deviation / <code>error_scale</code>&#41; for the parameters at Lines 1-3, 7-11, and 14-.</p> <pre><code class="julia hljs">SeaGap.make_initial(fn1=<span class=hljs-string >&quot;pxp-ini.xyh&quot;</span>,fn2=<span class=hljs-string >&quot;ntd.out&quot;</span>,fn3=<span class=hljs-string >&quot;solve.out&quot;</span>,fno=<span class=hljs-string >&quot;initial.inp&quot;</span>,error_scale=<span class=hljs-number >5.0</span>)</code></pre>
-<code>&#36; head -n 20 initial.inp</code>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/katex/katex.min.css"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">Installation</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Tutorials</h1> <hr> <div class=franklin-content > <h1 id=mcmc_static_array_positioning ><a href="#mcmc_static_array_positioning" class=header-anchor >MCMC static array positioning</a></h1> <div class=franklin-toc ><ol><li><a href="#make_initial_value_file">Make initial value file</a><li><a href="#run_mcmc_processing">Run MCMC processing</a><li><a href="#output_text_files">Output text files</a><li><a href="#visualization">Visualization</a><ol><li><a href="#posterior_pdf_and_rms_variation_through_the_mcmc_iteration">Posterior PDF and RMS variation through the MCMC iteration</a><li><a href="#parameter_variation_through_the_mcmc_iteration">Parameter variation through the MCMC iteration</a><li><a href="#correlation_among_the_unknown_parameters">Correlation among the unknown parameters</a><li><a href="#histogram_for_each_unknown_parameter">Histogram for each unknown parameter</a><li><a href="#histograms_and_heatmaps_for_multiple_parameters">Histograms and heatmaps for multiple parameters </a><li><a href="#spatial_variation_of_travel-time_residuals_shallow_gardient">Spatial variation of travel-time residuals &#40;shallow gardient&#41;</a><li><a href="#temporal_variation_of_the_travel-time_residuals">Temporal variation of the travel-time residuals</a></ol><li><a href="#run_mcmc_processing_with_additional_constraints">Run MCMC processing with additional constraints</a></ol></div> <h2 id=make_initial_value_file ><a href="#make_initial_value_file" class=header-anchor >Make initial value file</a></h2> <p>In order to perform the static array positioning considering a sound speed gradient through a MCMC technique &#40;<a href="https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0">Tomita &amp; Kido, 2022</a>&#41;, we have to prepare an initial value file &#40;named &quot;initial.inp&quot; in default&#41; which lists initial values of the unknown parameters for MCMC optimization.</p> <p>The dataformat of &quot;initial.inp&quot; is &#40;Columns 1: Initial value, 2: Lower limit, 3: Upper limit, 4: Step width, 5: Parameter name&#41;. The step width is used as perturbation when new parameter candidates are produced in the MCMC sampling. This should be appropriately given to effectively perform a MCMC sampling.</p> <p>The type of unknown parameters to be placed on each line of this file is fixed and cannot be changed.</p> <ul> <li><p>Lines 1-3: Array displacements for EW, NS, UD &#91;m&#93;</p> <li><p>Lines 4-5: Shallow gradients for EW, NS &#91;sec/km&#93;</p> <li><p>Line 6: Gradient depth &#91;km&#93;</p> <li><p>Lines 7-11: Long-term NTD modeled by 4th polynomial function &#40;degree: 0-4&#41;</p> <li><p>Lines 12-13: Scale factor optimizing observational errors</p> <li><p>Lines 14-: Coefficinets for the 3d B-spline bases &#40;Short-term NTD&#41;</p> </ul> <p>This file can be produced by <code>make_initial&#40;fn1,fn2,fn3,fno,error_scale&#41;</code> function. <code>fn1</code> is the initial seafloor transponder positions: &quot;pxp-ini.xyh&quot;. <code>fn2</code> and <code>fn3</code> are &quot;ntd.out&quot; and &quot;solve.out&quot;, respectively; they are obtained by <a href="/SeaGapDocs/tutorialstatic/">the basic static array positioning</a> <code>pos_array_all&#40;&#41;</code>. <code>error_scale</code> is used for providing the step width &#40;<code>error_scale&#61;5.0</code> in default&#41;. <code>make_initial&#40;&#41;</code> provides the step widths as &#40;<span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>σ</mi></mrow><annotation encoding="application/x-tex">1\sigma</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.6444em;"></span><span class=mord >1</span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> standard deviation / <code>error_scale</code>&#41; for the parameters at Lines 1-3, 7-11, and 14-.</p> <pre><code class="julia hljs">SeaGap.make_initial(fn1=<span class=hljs-string >&quot;pxp-ini.xyh&quot;</span>,fn2=<span class=hljs-string >&quot;ntd.out&quot;</span>,fn3=<span class=hljs-string >&quot;solve.out&quot;</span>,fno=<span class=hljs-string >&quot;initial.inp&quot;</span>,error_scale=<span class=hljs-number >5.0</span>)</code></pre>
+<div class=important >&#36; head -n 20 initial.inp</div>
 <pre><code class="plaintext hljs">0.030187510738829797 -20 20 0.000321268998116478 EW_disp.
 -0.017200785437164808 -20 20 0.0003204201142000086 NS_disp.
 0.041056999118875934 -20 20 0.0011705986999643245 UD_disp.
@@ -23,9 +23,9 @@
 <p>If you provide same values for the columns 1-3 at a certain line, the corresponding parameter is handled as a constant parameter. For example, when you provide &quot;0.65&quot; for the columns 1-3 at the 6th line, you can estimate an array displacement with the gradient depth is fixed to 650 m.</p>
 <h2 id=run_mcmc_processing ><a href="#run_mcmc_processing" class=header-anchor >Run MCMC processing</a></h2>
 <p>Before you run <code>pos_array_mcmcpvg&#40;&#41;</code>, you have to set number of threads for the thread parallelization in your terminal as:</p>
-<code>&#36; export JULIA_NUM_THREADS&#61;4</code>
+<div class=important >&#36; export JULIA&#95;NUM&#95;THREADS&#61;4</div>
 <p>or you have to run Julia as:</p>
-<code>&#36; julia -t 4</code>
+<div class=important >&#36; julia -t 4</div>
 <p>This value is determined depending on your machine ability.</p>
 <p>Then, after setting the above thread number and preparing the above input files, you can perform <code>pos_array_mcmcpvg&#40;lat,XDUCER_DEPTH,NPB; nloop,nburn,NA,scalentd,delta_scale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7&#41;</code> function as following:</p>
 <pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; XDUCER_DEPTH=<span class=hljs-number >5.0</span>; NPB=<span class=hljs-number >77</span>
@@ -82,9 +82,8 @@ SeaGap.scale(-<span class=hljs-number >1.0</span>,-<span class=hljs-number >7.0<
  <span class=hljs-number >0.08266713144257666</span></code></pre>
 <p>In <code>pos_array_mcmcpvg&#40;&#41;</code> with <code>scale&#61;true</code>, the initial values at the lines 7-11 in &quot;initial.inp&quot; &#40;corresponding to the 4th polynomial functions&#41; are transformed into the scaled values,the scaled values are optimized. Then, the scaled values are retransformed before they are written in the output files.  The scaling factor is determined as <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mn>10</mn><mo stretchy=false >(</mo><mo stretchy=false >)</mo></mrow><annotation encoding="application/x-tex">log10()</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class=mord >10</span><span class=mopen >(</span><span class=mclose >)</span></span></span></span> of the step width written in &quot;initial.inp&quot;.</p>
 <h2 id=output_text_files ><a href="#output_text_files" class=header-anchor >Output text files</a></h2>
-<p><hr /> <code>fno0</code>: the log file, which shows the analytical conditions, and so on</p>
-<hr />
-<code>&#36; head log.txt</code>
+<div class=importantv >fno0: the log file, which shows the analytical conditions, and so on</div>
+<div class=important >&#36; head log.txt</div>
 <pre><code class="plaintext hljs">2023-01-17T19:00:41.919
 pos_array_mcmcpvg.jl at /Users/test_PC/SeaGap_test/mcmc
 Number of threads: 4
@@ -95,9 +94,9 @@ Number_of_MCMC_loop: 1200000
 Burn_in_period: 200000
 Sampling_interval: 5
 Scale: true</code></pre>
-<p><hr /> <code>fno1</code>: The sampled unknown parameters &#40;&quot;sample.out&quot; in default&#41;</p>
+<div class=importantv >fno1: The sampled unknown parameters &#40;&quot;sample.out&quot; in default&#41;</div>
 <p>In this file, the unknown parameter names written in &quot;initial.inp&quot; is written at the first line. Then, the sampled parameters for each MCMC iteration at each line.</p>
-<code>&#36; head sample.out | awk &#39;&#123;print &#36;1,&#36;2,&#36;3,&#36;4,&#36;5,&#36;6&#125;</code>
+<div class=important >&#36; head sample.out | awk \&#39;&#123;print &#36;1,&#36;2,&#36;3,&#36;4,&#36;5,&#36;6&#125;\&#39;</div>
 <pre><code class="plaintext hljs">EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS Gradient_depth
 0.08260468443394334 -0.08662247961124432 0.025670510288264305 -8.771624335364252e-5 0.00010961686642287733 1.2503597971928924
 0.08267622275159063 -0.08659985681012972 0.025576618792931577 -8.771624335364252e-5 0.00010961686642287733 1.2514668834253768
@@ -108,7 +107,7 @@ Scale: true</code></pre>
 0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.601882619337507e-5 0.00011100358125704938 1.2539045990938986
 0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.575844791557426e-5 0.00011146701700201295 1.2539045990938986
 0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.575844791557426e-5 0.00011146701700201295 1.2539045990938986</code></pre>
-<p><hr /> <code>fno2</code>: The PDFs and RMS &#40;&quot;mcmc.out&quot; in default&#41;</p>
+<div class=importantv >fno2: The PDFs and RMS &#40;&quot;mcmc.out&quot; in default&#41;</div>
 <p>In this file, the PDF and RMS values for each MCMC iteration are recorded.</p>
 <ul>
 <li><p>1: Iteration number</p>
@@ -128,7 +127,7 @@ Scale: true</code></pre>
 <li><p>8: RMS for the observation equation 2</p>
 
 </ul>
-<code>&#36; head mcmc.out</code>
+<div class=important >&#36; head mcmc.out</div>
 <pre><code class="plaintext hljs">5 1 0 -172.07488459892824 -1409.6579839265735 -1581.7328685255018 3.338234991326818e-5 9.182030714056993e-5
 10 0 0 -155.61914177499887 -1401.3967311431156 -1557.0158729181144 3.339232619776381e-5 9.16151939518422e-5
 15 1 0 -155.61914177499887 -1401.3967311431156 -1557.0158729181144 3.339232619776381e-5 9.16151939518422e-5
@@ -139,12 +138,12 @@ Scale: true</code></pre>
 40 0 0 -85.27475239673925 -1379.5576836995147 -1464.8324360962538 3.351642492052818e-5 9.102471441061438e-5
 45 1 0 -85.25849887560958 -1376.4199976400157 -1461.6784965156253 3.3515071947666e-5 9.096666320486617e-5
 50 0 1 -75.34502498422776 -1376.6926493095564 -1452.0376742937842 3.3526530022277746e-5 9.097539166287877e-5</code></pre>
-<p><hr /> <code>fno3</code>: The position file &#40;&quot;position.out&quot; in default&#41;</p>
+<div class=importantv >fno3: The position file &#40;&quot;position.out&quot; in default&#41;</div>
 <p>This is same format with the &quot;position.out&quot; of <code>pos_array_all&#40;&#41;</code>. &#40;1: the cumlative seconds of the observational time, 2-4: Mean array displacements for EW, NS, UD componets, 5-7: Standard deviations of 2-4&#41;</p>
-<code>&#36; cat position.out</code>
+<div class=important >&#36; cat position.out</div>
 <pre><code class="plaintext hljs">5.006911621555024e8 0.08911960760365124 -0.09216111977421959 0.03457162712162569 0.003936408533764213 0.0043953798040076006 0.005210189660303897</code></pre>
-<p><hr /> <code>fno4</code>: Statistical values for each unknown parameter &#40;&quot;statistics.out&quot; in default&#41;</p>
-<code>&#36; head statistics.out</code>
+<div class=importantv >fno4: Statistical values for each unknown parameter &#40;&quot;statistics.out&quot; in default&#41;</div>
+<div class=important >&#36; head statistics.out</div>
 <pre><code class="plaintext hljs">#Parameter mean std median min max
  &quot;EW_disp.&quot;         0.08911960760365124     0.003936408533764213     0.0892521976843861       0.07400853233593642      0.10005015563126467
  &quot;NS_disp.&quot;        -0.09216111977421959     0.0043953798040076006   -0.09213407404825562     -0.10569075622407245     -0.07838777092762594
@@ -155,13 +154,13 @@ Scale: true</code></pre>
  &quot;L-NTD_1&quot;          0.001876150125418078    8.450064033018187e-6     0.0018754533333023632    0.0018500354406289293    0.0019026360766405816
  &quot;L-NTD_2&quot;         -2.5573041517503042e-5   6.615899997973998e-6    -2.6145326032410628e-5   -3.98440505121662e-5     -1.3381927457000322e-5
  &quot;L-NTD_3&quot;          4.366073210014821e-6    1.5633246953860986e-6    4.618228804187182e-6     1.6644226647942257e-6    7.839589859898406e-6</code></pre>
-<p><hr /> <code>fno5</code>: Acceptance ratio &#40;&quot;acceptance.out&quot; in default&#41;</p>
+<div class=importantv >fno5: Acceptance ratio &#40;&quot;acceptance.out&quot; in default&#41;</div>
 <p>The first and second lines show the acceptance ratios for the observation equations 1 and 2, respectively.</p>
-<p><code>&#36; cat acceptance.out</code> </p>
+<div class=important >&#36; cat acceptance.out</div>
 <pre><code class="plaintext hljs">Acceptance_ratio_MCMC-1: 0.2578666666666667
 Acceptance_ratio_MCMC-2: 0.29825833333333335</code></pre>
 <p>Note that it is plausible to adjust the pertubation widths as the acceptance ratio is ~23 &#37; when sampling multiple parameters &#40;<a href="https://global.oup.com/academic/product/bayesian-statistics-5-9780198523567?cc&#61;jp&amp;lang&#61;en&amp;#">Gelman et al., 1996</a>&#41;</p>
-<p><hr /> <code>fno6</code>: Data residuals including the NTD and gradient effects &#40;&quot;residual&#95;grad.out&quot; in default&#41;</p>
+<div class=importantv >fno6: Data residuals including the NTD and gradient effects &#40;&quot;residual&#95;grad.out&quot; in default&#41;</div>
 <p>The effects of the modeled NTD and gradients on the data residuals are shown.</p>
 <ul>
 <li><p>1: The cumulative seconds of the observational time</p>
@@ -191,7 +190,7 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335</code></pre>
 <li><p>13: The final travel-time residuals &#40;6-9&#41;</p>
 
 </ul>
-<code>&#36; head residual_grad.out</code>
+<div class=important >&#36; head residual&#95;grad.out</div>
 <pre><code class="plaintext hljs">5.00664920015051e8    1.0    317.26245264634497       266.19938356095884      16.199673254258155  0.0019212227711233381  0.001892028778148772    5.711709219681263e-6    0.0018977404873684533  0.0018746452897521106   2.0683804412705322e-6   0.0018767136701933812   2.3482283754884864e-5                                                  
  5.0066492022755253e8  3.0    317.4207663638199        266.23937739269013      16.35391331567538   0.0018695167060979961  0.0018921278087429905  -6.9439073915697634e-6   0.0018851839013514207  0.001874643966433996    2.0591604132395985e-6   0.0018767031268472356  -1.566719525342459e-5
  5.0066492010527e8     4.0    317.33085587257335       266.2167718441425       16.266436850893314  0.001910238971072497   0.001892070840004891   -5.291482671798069e-5    0.0018391560132869102  0.0018746447279249909   2.064408633186119e-6    0.001876709136558177    7.108295778558672e-5
@@ -202,10 +201,9 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335</code></pre>
  5.006650402641685e8   3.0    419.2429851616972        300.4599899327145       15.785030565510766  0.0018769432135190322  0.0019268415958954247  -5.551085539969325e-6    0.0019212905103554554  0.0018739004866068342  -2.9324497679321385e-6   0.0018709680368389021  -4.43472968364232e-5
  5.006650401017465e8   4.0    419.0773398733799        300.33635900589996      15.778232162741766  0.0018708333451003824  0.0019268206172822213  -5.1539753890195993e-5   0.0018752808633920254  0.0018739014871903337  -2.931834171213654e-6    0.00187096965301912    -4.447518291642887e-6
  5.0066509998064e8     1.0    485.0554895986015        337.2990947633136       16.195343692732713  0.0019027879344541735  0.0019305064012347809   7.522151899566477e-6    0.0019380285531343474  0.0018735336021151463  -4.533172999986541e-6    0.0018690004291151599  -3.5240618680173845e-5</code></pre>
-<hr />
-<p><code>fno7</code>: &#40;&quot;bspline.out&quot; in default&#41;</p>
+<div class=importantv >fno7: &#40;&quot;bspline.out&quot; in default&#41;</div>
 <p>Format of this file is same  with that of <code>pos_array_all&#40;&#41;</code>.</p>
-<code>&#36; head bspline.out</code>
+<div class=important >&#36; head bspline.out</div>
 <pre><code class="plaintext hljs">1 1 5.0066421474273527e8 0.0010247469234456984
 2 2 5.00664917e8 0.002156372454933342
 3 3 5.0066561925726473e8 0.0016934114443747184
@@ -316,7 +314,7 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335</code></pre>
   </div>
 </div>
 
-<code>&#36; head -n 6 correlation.out | awk &#39;&#123;print &#36;1,&#36;2,&#36;3,&#36;4,&#36;5,&#36;6&#125;&#39;</code>
+<div class=important >&#36; head -n 6 correlation.out | awk \&#39;&#123;print &#36;1,&#36;2,&#36;3,&#36;4,&#36;5,&#36;6&#125;\&#39;</div>
 <pre><code class="plaintext hljs">Name: EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS
 &quot;EW_disp.&quot; 1.0 -0.634376617642439 -0.09873898084769465 -0.4559821875070524 -0.08852812940100827
 &quot;NS_disp.&quot; -0.634376617642439 1.0 0.07959031864890413 -0.055760129578559775 -0.36041442138448465
@@ -459,7 +457,7 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335</code></pre>
 SeaGap.pos_array_mcmcpvgc(lat,XDUCER_DEPTH,NPB,ss,gd0,sdg)</code></pre>
 <p>Formats of the input and output files of <code>pos_array_mcmcpvgc&#40;&#41;</code> are same with those of <code>pos_array_mcmcpvg&#40;&#41;</code>.</p>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 23, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 24, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
