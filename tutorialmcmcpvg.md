@@ -375,7 +375,7 @@ SeaGap.plot_mcmcparam(5,fno="mcmc_param.pdf")
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/mcmc_param.png" width="500" height="500">
+    <img src="/assets/mcmc_param.png" width="600" height="600">
     <div style="clear: both"></div>
   </div>
 </div>
@@ -578,7 +578,7 @@ SeaGap.plot_ntdgrad()
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/ntdgrad.png" width="400" height="400">
+    <img src="/assets/ntdgrad.png" width="600" height="600">
     <div style="clear: both"></div>
   </div>
 </div>

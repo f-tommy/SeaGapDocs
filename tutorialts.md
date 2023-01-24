@@ -90,7 +90,7 @@ SeaGap.plot_displacement(2012,2018.5,fno1="displacement.png")
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/displacement.png" width="450" height="450">
+    <img src="/assets/displacement.png" width="500" height="500">
     <div style="clear: both"></div>
   </div>
 </div>
@@ -104,7 +104,7 @@ SeaGap.plot_displacement(2012,2018.5,(-25,15),(-10,30),(-40,40),fno1="displaceme
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/displacement_wo.png" width="450" height="450">
+    <img src="/assets/displacement_wo.png" width="500" height="500">
     <div style="clear: both"></div>
   </div>
 </div>
