@@ -15,7 +15,7 @@
 2016.33333 -2.575 -2.672 6.456 0.353 0.312 0.899 1 1 1
 2017.79726 -2.691 4.240 10.100 1.290 1.039 2.149 1 1 1</code></pre>
 <p>As shown above, the cumulative time &#91;sec&#93; is converted into AD &#91;year&#93; &#40;Column 1&#41;;  units of the array displacements and thier estimation errors &#91;m&#93; are converted into &#91;cm&#93; &#40;Columns 2-7&#41;;  constant velocities &#40;vx,vy,vz&#41; are eliminated from the array displacements &#40;Columns 2-4&#41;;  Columns 8-10 indicate usable/unusable &#40;1/0&#41; for each component. It doen&#39;t matter to produce this file your own way.</p>
-<p>Using &quot;converted&#95;position.out&quot;, <code>plot_displacement&#40;ts,te,EW_range,NS_range,UD_range;autoscale,pscale,cal,weight,predict,fno1,fno2,fno3,fn,show&#41;</code> calculates an array displacement rate for each component and make a figure.</p>
+<p>Using &quot;converted&#95;position.out&quot;, <code>plot_displacement&#40;ts,te,EW_range,NS_range,UD_range;autoscale,pscale,sigma,cal,weight,predict,fno1,fno2,fno3,fn,show&#41;</code> calculates an array displacement rate for each component and make a figure.</p>
 <ul>
 <li><p>ts: Start time of the figure &#40;Time at the left edge of the figure&#41; &#91;yr&#93;</p>
 
@@ -26,6 +26,8 @@
 <li><p>autoscale: if <code>autoscale&#61;true</code> &#40;default&#41;, the range of Y-axis is automatically determined depending on the usable array displacements</p>
 
 <li><p>pscale: if you set smaller value, the autoscale Y-axis range is wider &#40;<code>pscale&#61;0.5</code> in default&#41;</p>
+
+<li><p>sigma: Errorbar scaling &#40;Since standard deviation of an array displacement tends to be small, the plotting errorbar is multiplied by <code>sigma</code>: <code>sigma&#61;10</code> in default&#41;</p>
 
 <li><p>cal: if <code>cal&#61;true</code>, a regression line is calculated for each component, is shown in the figure, and the regression results are written in <code>fno2</code> as a text file</p>
 
@@ -77,7 +79,7 @@
  2016.33333   -2.575   1.389867128697936   -3.9648671286979362  0.353
  2017.79726   -2.691   3.6944664002469327  -6.385466400246933   1.29</code></pre>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 24, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 26, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
