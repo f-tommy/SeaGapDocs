@@ -68,12 +68,13 @@ As shown above, the cumulative time [sec] is converted into AD [year] \(Column 1
  Columns 8-10 indicate usable/unusable (1/0) for each component.
 It doen't matter to produce this file your own way.
 
-Using "converted\_position.out", `plot_displacement(ts,te,EW_range,NS_range,UD_range;autoscale,pscale,cal,weight,predict,fno1,fno2,fno3,fn,show)` calculates an array displacement rate for each component and make a figure.
+Using "converted\_position.out", `plot_displacement(ts,te,EW_range,NS_range,UD_range;autoscale,pscale,sigma,cal,weight,predict,fno1,fno2,fno3,fn,show)` calculates an array displacement rate for each component and make a figure.
 * ts: Start time of the figure (Time at the left edge of the figure) [yr]
 * te: End time of the figure (Time at the right edge of the figure) [yr]
 * EW\_range, NS\_range, UD\_range: If `autoscale=false`, the range of Y-axis is set to be those ranges
 * autoscale: if `autoscale=true` (default), the range of Y-axis is automatically determined depending on the usable array displacements
 * pscale: if you set smaller value, the autoscale Y-axis range is wider (`pscale=0.5` in default)
+* sigma: Errorbar scaling (Since standard deviation of an array displacement tends to be small, the plotting errorbar is multiplied by `sigma`: `sigma=10` in default)
 * cal: if `cal=true`, a regression line is calculated for each component, is shown in the figure, and the regression results are written in `fno2` as a text file
 * weight: if `weight=true`, the regression line is calculated considering the weight; the weight is provided as an inverse square of the observation error (`weight=true` in default)
 * predict: if `predict=true`, the predicted values from the regression line are written in "`fno3`-EW.txt", "`fno3`-NS.txt", and "`fno3`-UD.txt"

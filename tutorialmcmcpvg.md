@@ -538,7 +538,7 @@ SeaGap.plot_histogram2d_each("UD_disp.","S-NTD_10",fno="histogram2d_UD_SNTD-10.p
 
 ### Spatial variation of travel-time residuals (shallow gardient)
 
-Considering from the observation equation (2), the projected travel-time residuals subtaracting the deep gradient and long-term NTD (``\frac{1}{M\left(\xi_{n,k}\right)} T_{n,k}^{\mathrm{obs}}-\frac{1}{M\left(\xi_{n,k}\right)} {T}^{\mathrm{cal}}\left(\mathbf{p}_k+\delta \mathbf{p}, \mathbf{u}\left(t_{n},{\bf b}_0\right), v_0\right)- \sum_{m=0}^{4} \gamma_{m}t^m_n-\frac{D}{2}\mathbf{g}_{\mathrm{s}}\mathbf{h}_{n,k}``) indicate the spatial variation due to the shallow gradients.
+Considering from the observation equation (2), the projected travel-time residuals subtracting the deep gradient and long-term NTD ($\frac{1}{M\left(\xi_{n,k}\right)} T_{n,k}^{\mathrm{obs}}-\frac{1}{M\left(\xi_{n,k}\right)} {T}^{\mathrm{cal}}\left(\mathbf{p}_k+\delta \mathbf{p}, \mathbf{u}\left(t_{n},{\bf b}_0\right), v_0\right)- \sum_{m=0}^{4} \gamma_{m}t^m_n-\frac{D}{2}\mathbf{g}_{\mathrm{s}}\mathbf{h}_{n,k}$) indicate the spatial variation due to the shallow gradients.
 `plot_gradmap(xrange,yrange;autoscale,fn1,fn2,fno,show)` draws a sea-surface platform track with color of the spatial variation due to the shallow gradients.
 * xrange: Range of EW component in meters when `autoscale=false`
 * yrange: Range of NS component in meters when `autoscale=false`

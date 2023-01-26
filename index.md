@@ -37,9 +37,57 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Methodology: Individual transponder positioning](/methodsingle/)
 * [Methodology: Static arry positioning with gradients](/methodmcmcpvg/)
 * [Tutorials: Forward calculation](/tutorialforward/)
+* [Tutorials: Outlier removal](/tutorialdenoise/)
 * [Tutorials: Kinematic array positioning](/tutorialkinematic/)
 * [Tutorials: Static array positioning](/tutorialstatic/)
 * [Tutorials: MCMC static array positioning](/tutorialmcmcpvg/)
 * [Tutorials: Line fitting for time-series](/tutorialts/)
 * [Others](/others/)
 
+## Function help
+
+If you'd like to know a detailed usage of each function, you can confirm it by "help" mode:
+
+```julia-repl
+julia> import SeaGap
+julia> ?
+help?> SeaGap.plot_map_array_each
+  plot_map_array_each(xrange,yrange; autoscale,fn,fno,plot_size,lmargin,tmargin,bmargin,rmargin,show,ms,gfs,col_num)
+
+  Make a figure plotting the estimated array displacements obtained by pos_array_each() in a horizontal map.
+
+    •  xrange and yrange: EW and NS ranges for plot [m]
+
+    •  autoscale: If autoscale=true (default), the plot range is automatically determined. If
+       autoscale=false, the plot range is fixed by xrange and yrange.
+
+    •  fn: Input file name (fn="array_each.out" in default)
+
+    •  fno: Output figure name (fno="map_array_each.pdf" in default)
+
+    •  plot_size: Figure size (plot_size=(600,500) in default)
+
+    •  lmargin: Plot margin for the left edge (lmargin=2.5 in default)
+
+    •  rmargin: Plot margin for the right edge (rmargin=1.0 in default)
+
+    •  tmargin: Plot margin for the top edge (tmargin=1.0 in default)
+
+    •  bmargin: Plot margin for the bottom edge (bmargin=1.0 in default)
+
+    •  show: if show=true, a figure is temporally shown; if false, the figure is save as fno (show=false
+       in default)
+
+    •  ms: Plotted marker size (ms=5 in default)
+
+    •  gfs: Fontsize for label (gudefontsize: gfs=12 in default)
+
+    •  col_num: If col_num=1 (default), the plot is colored by the observation time. If col_num=2, the
+       plot is colored by number of the used observational data. If col_num=0, the plot is colored by
+       blue.
+
+  Example
+  ≡≡≡≡≡≡≡≡≡
+
+  SeaGap.plot_map_array_each((-0.5,0.5),(-0.5,0.5),autoscale=false)
+```
