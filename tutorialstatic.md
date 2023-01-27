@@ -56,7 +56,7 @@ First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3:
   0.002136698956976763   1.3715555729368263e-5
 ```
 
-`fno2` shows general positioning results (1: Average observational time (cumulative seconds from the reference time), 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1``\sigma`` estimation errors in EW, NS, and UD).
+`fno2` shows general positioning results (1: Average observational time (cumulative seconds from the reference time), 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1$\sigma$ estimation errors in EW, NS, and UD).
 
 @@important
 \$ cat position.out
@@ -131,10 +131,10 @@ rizontal array displacements < `eps`)
 
 For example,
 ```julia  
-SeaGap.pos_array_each(lat,XDUCER_DEPTH,NPB,delta_pos=1.e-5)
+SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB,delta_pos=1.e-5)
 ```
 
-The teime-series of NTD (temporal sound speed fluctuation) is summarized in `fno3="residual.out"`, and it can be visualized by `plot_ntd(ntdrange,resrange; autoscale,fn,fno,show)`
+The time-series of NTD (temporal sound speed fluctuation) is summarized in `fno3="residual.out"`, and it can be visualized by `plot_ntd(ntdrange,resrange; autoscale,fn,fno,show)`
 
 * If `autoscale=true` (default), the plot range is automatically determined. If `autoscale=false`, the plot range of y-componet is fixed by `ntdrange` and `resrange`. The range of x-compoent (Time) is automatically determined in the both cases.
 * `fn` is the input file name: "residual.out" in default.
@@ -194,7 +194,7 @@ As a result, you obtain `fno` (the output file: "AICBIC\_search.out" in default)
 
 You can check the results by `plot_AICBIC(;type,fn,fno,show)`.
 You set `type` as "AIC" or "BIC".
-`fn` is the input file (""AICBIC\_search.out" in default") for plot.
+`fn` is the input file ("AICBIC\_search.out" in default) for plot.
 If `show=false`, the plot is saved as `fno` (`fno` is the figure name; "AICBIC\_search.pdf" in default).
 If `show=true`, the plot is temporally shown on REPL.
 
@@ -276,7 +276,7 @@ SeaGap.pos_array_pvg(lat,XDUCER_DEPTH,NPB)
 
 The input and output files are same with `pos_array_all()` except `fno1` (solve.out).
 `fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2).
-First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3: UD), following two parameters are the deep gradients (EW and NS components), and the followings are the coeffiecnts for the 3d B-spline bases.
+First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3: UD), following two parameters are the deep gradients (EW and NS components), and the followings are the coeffients for the 3d B-spline bases.
 
 @@important
 \$ head solve.out

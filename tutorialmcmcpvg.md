@@ -29,12 +29,12 @@ The type of unknown parameters to be placed on each line of this file is fixed a
 
 This file can be produced by `make_initial(fn1,fn2,fn3,fno,error_scale)` function.
 `fn1` is the initial seafloor transponder positions: "pxp-ini.xyh".
-`fn2` and `fn3` are "ntd.out" and "solve.out", respectively; they are obtained by [the basic static array positioning](/tutorialstatic/) `pos_array_all()`.
+`fn2` and `fn3` are "residual.out" and "solve.out", respectively; they are obtained by [the basic static array positioning](/tutorialstatic/) `pos_array_all()`.
 `error_scale` is used for providing the step width (`error_scale=5.0` in default).
 `make_initial()` provides the step widths as ($1\sigma$ standard deviation / `error_scale`) for the parameters at Lines 1-3, 7-11, and 14-.
  
 ```julia
-SeaGap.make_initial(fn1="pxp-ini.xyh",fn2="ntd.out",fn3="solve.out",fno="initial.inp",error_scale=5.0)
+SeaGap.make_initial(fn1="pxp-ini.xyh",fn2="residual.out",fn3="solve.out",fno="initial.inp",error_scale=5.0)
 ```
 
 @@important
@@ -495,7 +495,7 @@ SeaGap.plot_histogram(77,all=true,fno="histogram_allv.pdf",drawnls=true)
 
 ### Histograms and heatmaps for multiple parameters 
 
-Using `plot_histogram2d(fn,fno,show,nshufflei,nbins)`, you can draw a figure showing hisograms, heatmaps, and scatter maps for major six parameters (array displacements, shallow gradients, gradient depth).
+Using `plot_histogram2d(fn,fno,show,nshufflei,nbins)`, you can draw a figure showing histograms, heatmaps, and scatter maps for major six parameters (array displacements, shallow gradients, gradient depth).
 * fn: Input file ("sample.out" in default)
 * fno: Output figure name
 * show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
