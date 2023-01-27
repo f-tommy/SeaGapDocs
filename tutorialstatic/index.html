@@ -8,7 +8,7 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
   0.0017997817218493534  1.4677602480732858e-5
   0.002033034277571156   1.388740280606415e-5
   0.0020293506899085128  1.3761626259275398e-5
-  0.002136698956976763   1.3715555729368263e-5</code></pre> <p><code>fno2</code> shows general positioning results &#40;1: Average observational time &#40;cumulative seconds from the reference time&#41;, 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1<code>\sigma</code> estimation errors in EW, NS, and UD&#41;.</p> <div class=important >&#36; cat position.out</div> <pre><code class="plaintext hljs">5.00690900363141e8  0.03016870329108975  -0.017291984493650502  0.040657598385999076  0.0015837742430485642  0.0015789217333432297  0.005785765032466023</code></pre>
+  0.002136698956976763   1.3715555729368263e-5</code></pre> <p><code>fno2</code> shows general positioning results &#40;1: Average observational time &#40;cumulative seconds from the reference time&#41;, 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1<span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> estimation errors in EW, NS, and UD&#41;.</p> <div class=important >&#36; cat position.out</div> <pre><code class="plaintext hljs">5.00690900363141e8  0.03016870329108975  -0.017291984493650502  0.040657598385999076  0.0015837742430485642  0.0015789217333432297  0.005785765032466023</code></pre>
 <p><code>fno3</code> shows the modeled results for NTD:</p>
 <ul>
 <li><p>1: the observational time &#40;cumulative seconds from the reference time&#41;</p>
@@ -79,8 +79,8 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 
 </ul>
 <p>For example,</p>
-<pre><code class="julia hljs">SeaGap.pos_array_each(lat,XDUCER_DEPTH,NPB,delta_pos=<span class=hljs-number >1.e-5</span>)</code></pre>
-<p>The teime-series of NTD &#40;temporal sound speed fluctuation&#41; is summarized in <code>fno3&#61;&quot;residual.out&quot;</code>, and it can be visualized by <code>plot_ntd&#40;ntdrange,resrange; autoscale,fn,fno,show&#41;</code></p>
+<pre><code class="julia hljs">SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB,delta_pos=<span class=hljs-number >1.e-5</span>)</code></pre>
+<p>The time-series of NTD &#40;temporal sound speed fluctuation&#41; is summarized in <code>fno3&#61;&quot;residual.out&quot;</code>, and it can be visualized by <code>plot_ntd&#40;ntdrange,resrange; autoscale,fn,fno,show&#41;</code></p>
 <ul>
 <li><p>If <code>autoscale&#61;true</code> &#40;default&#41;, the plot range is automatically determined. If <code>autoscale&#61;false</code>, the plot range of y-componet is fixed by <code>ntdrange</code> and <code>resrange</code>. The range of x-compoent &#40;Time&#41; is automatically determined in the both cases.</p>
 
@@ -125,7 +125,7 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 65 -68639.48522726737 -68223.67046502147 3.4195522163512604e-5
 70 -68692.94624232204 -68246.5568652051 3.3872582673738174e-5
 75 -68706.10175307392 -68229.13776108596 3.3755510195622056e-5</code></pre>
-<p>You can check the results by <code>plot_AICBIC&#40;;type,fn,fno,show&#41;</code>. You set <code>type</code> as &quot;AIC&quot; or &quot;BIC&quot;. <code>fn</code> is the input file &#40;&quot;&quot;AICBIC&#95;search.out&quot; in default&quot;&#41; for plot. If <code>show&#61;false</code>, the plot is saved as <code>fno</code> &#40;<code>fno</code> is the figure name; &quot;AICBIC&#95;search.pdf&quot; in default&#41;. If <code>show&#61;true</code>, the plot is temporally shown on REPL.</p>
+<p>You can check the results by <code>plot_AICBIC&#40;;type,fn,fno,show&#41;</code>. You set <code>type</code> as &quot;AIC&quot; or &quot;BIC&quot;. <code>fn</code> is the input file &#40;&quot;AICBIC&#95;search.out&quot; in default&#41; for plot. If <code>show&#61;false</code>, the plot is saved as <code>fno</code> &#40;<code>fno</code> is the figure name; &quot;AICBIC&#95;search.pdf&quot; in default&#41;. If <code>show&#61;true</code>, the plot is temporally shown on REPL.</p>
 <pre><code class="julia hljs">SeaGap.plot_AICBIC(type=<span class=hljs-string >&quot;BIC&quot;</span>,show=<span class=hljs-literal >true</span>)</code></pre>
 
 <div class=row >
@@ -163,7 +163,7 @@ SeaGap.pos_array_TR(lat,XDUCER_DEPTH,NPB)</code></pre>
 <p><code>pos_array_pvg&#40;&#41;</code> is a function to estimate the array position, NTD, and the deep gradient following the observation equation &#40;0&#41; shown in Methodolgy.</p>
 <pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; XDUCER_DEPTH=<span class=hljs-number >5.0</span>; NPB=<span class=hljs-number >77</span>
 SeaGap.pos_array_pvg(lat,XDUCER_DEPTH,NPB)</code></pre>
-<p>The input and output files are same with <code>pos_array_all&#40;&#41;</code> except <code>fno1</code> &#40;solve.out&#41;. <code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41;. First three paramters are the array displacement in meter &#40;Line 1: EW, 2: NS, 3: UD&#41;, following two parameters are the deep gradients &#40;EW and NS components&#41;, and the followings are the coeffiecnts for the 3d B-spline bases.</p>
+<p>The input and output files are same with <code>pos_array_all&#40;&#41;</code> except <code>fno1</code> &#40;solve.out&#41;. <code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41;. First three paramters are the array displacement in meter &#40;Line 1: EW, 2: NS, 3: UD&#41;, following two parameters are the deep gradients &#40;EW and NS components&#41;, and the followings are the coeffients for the 3d B-spline bases.</p>
 <div class=important >&#36; head solve.out</div>
 <pre><code class="plaintext hljs">0.06186500501267254    0.00992683409066011
  -0.10741363544193698    0.00997340191013794
@@ -176,7 +176,7 @@ SeaGap.pos_array_pvg(lat,XDUCER_DEPTH,NPB)</code></pre>
   0.0018087390392073942  1.4870952333418019e-5
   0.002046647728789619   1.3874065160409779e-5</code></pre>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 26, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 27, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
