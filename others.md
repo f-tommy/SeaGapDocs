@@ -10,7 +10,7 @@ tags = ["syntax", "code"]
 
 # Others
 
-Documentation for the other usable functions equipped in [SeaGap](https://github.com/f-tommy/SeaGap.jl).
+Documentation for the other usable functions equipped in [SeaGap](https://github.com/f-tommy/SeaGap).
 
 \toc
 
