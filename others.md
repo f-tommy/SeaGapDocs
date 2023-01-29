@@ -14,6 +14,46 @@ Documentation for the other usable functions equipped in [SeaGap](https://github
 
 \toc
 
+## Site information file
+
+SeaGap often requires site location; thus, it is convenient to instantly obtain site information.
+`read_info(site,filename)` is a simple function to obtain the basic site information from a file `filename`.
+
+If you prepare a following file named "site\_info.txt" with the site information (1: Site name, 2: Longitude [deg], 3: Latitude [deg], 4: Water depth [m], 5: Total number of transponders):
+@@important
+\$ cat site\_info.txt
+@@
+```plaintext
+G01 144.953750000 38.697035000 5490.2 4
+G02 144.047013333 40.737111667 4672.5 4
+G03 143.967245000 40.126088333 4218.4 4
+G04 143.897145000 39.566171667 4586.5 6
+G05 143.316761667 39.325555000 2084.8 4
+G06 143.849871667 39.302598333 4770.4 4
+G07 143.940026667 38.942755000 5550.4 3
+G08 143.647465000 38.721148333 3473.1 4
+G09 143.791663333 38.480898333 5646.5 4
+G10 143.482881667 38.301606667 3270.8 6
+G11 143.801736667 38.266500000 5548.5 4
+G12 143.531633333 38.020813333 4370.4 3
+G13 143.198573333 37.932891667 2480.5 4
+G14 142.774661667 37.891595000 1312.0 4
+G15 143.520901667 37.677226667 5263.9 6
+G16 143.048235000 37.333650000 4406.7 4
+G17 142.715440000 36.899033333 4232.4 4
+G18 141.982523333 36.615520000 2490.6 4
+G19 142.670803333 36.496250000 5724.8 6
+G20 142.082610000 36.157530000 2742.7 4
+```
+
+you can obtain the values at a certain site `site` as following:
+```julia-repl
+julia> lon, lat, wd, numk = SeaGap.read_info("G20","site_info.txt")
+(142.08261, 36.15753, 2742.7, 4)
+julia> lat
+36.15753
+```
+
 ## Date & Time processing
 
 ### date -> cal
