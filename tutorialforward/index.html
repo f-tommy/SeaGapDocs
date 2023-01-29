@@ -47,7 +47,7 @@ Tv0, Vd, Vr, cc, rms = SeaGap.ttcorrection(px,py,pz,xducer_height,z,v,nz_st,numz
  <span class=hljs-number >1900.0</span>  <span class=hljs-number >0.0</span>  -<span class=hljs-number >0.855999</span>  <span class=hljs-number >2.02966</span>
  <span class=hljs-number >2000.0</span>  <span class=hljs-number >0.0</span>  -<span class=hljs-number >1.55564</span>   <span class=hljs-number >2.03915</span></code></pre> <p>You can test the above calculation by <code>forward_test&#40;lat,XDUCER_DEPTH,pos,fn&#61;&quot;ss_prof.zv&quot;&#41;</code> with <code>pos</code> is a position vector of a seafloor trannsponder <code>pos &#61; &#91;px,py,pz&#93;</code>.</p> <pre><code class="julia hljs">xdv, ydv, zdv, tcv = SeaGap.foward_test(lat,XDUCER_DEPTH,[px,py,pz],fn=<span class=hljs-string >&quot;ss_prof.zv&quot;</span>)</code></pre>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 27, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 29, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
