@@ -31,15 +31,20 @@ If SeaGap is correctly installed, you can use SeaGap by:
 julia> using SeaGap
 ```
 
-If not, the related packages are not correctly installed.
-If so, you can forcely activate SeaGap by:
+Some troubles in installing [GMT.jl](https://github.com/GenericMappingTools/GMT.jl) have been reported because of some problems in GMT itself.
+If so, you should conduct the following command before the installation.
+
+```julia-repl
+julia> ENV["FORCE_INSTALL_GMT"] = true
+```
+
+If you cannot solve the issue on GMT, a restricted version of SeaGap, named [SeaGapR](https://github.com/f-tommy/SeaGapR) is available. SeaGapR can conduct most of functions in SeaGap except `ll2xy.jl`.
 
 ```julia-repl
 julia> ]
-(@v1.8) pkg> activate ~/.julia/packages/SeaGap
-(SeaGap) pkg> 
+(@v1.8) pkg> add https://github.com/f-tommy/SeaGapR
         [backspace]
-julia> using SeaGap
+julia> using SeaGapR
 ```
 
 If you cannot still use SeaGap, you should install the related packages of the third parties:
@@ -47,7 +52,7 @@ If you cannot still use SeaGap, you should install the related packages of the t
 julia> ]
 (@v1.8) pkg> add GMT Distributions Optim PDFmerger Dierckx Plots
         [backspace]
-julia> include("~/.julia/packages/SeaGap/src/SeaGap.jl")
+julia> include("~/.julia/packages/SeaGapR/(directry name depending on your PC)/src/SeaGapR.jl")
 ```
 
 This procedure provide a situation that SeaGap is imported.
