@@ -126,6 +126,31 @@ For example:
 SeaGap.pos_array_each(lat,XDUCER_DEPTH,delta_pos=1.e-5)
 ``` 
 
+If you'd like to calculate an average position during a campaign  from the positioning results "array\_each.out", you can use `position_each(;fn,weight,fno)`.
+`fn` is the input file name (`fn="array_each.out"` in default), and `fno` is the outpt file name `fno="position_each.out"`.
+If `weight=true`, weighted mean position is calculated using the shot groups with number of shot data for each group >= 4 (`weight=false` in default); thus, you cannot set `weight=true` for a GNSS-A site with only three transponders.
+
+For example:
+```julia
+SeaGap.position_each(fn="array_each.out",weight=false)
+```
+
+"position\_each.out"
+* 1: the mean time [sec]
+* 2: EW mean array displacement [m] 
+* 3: NS mean array displacement [m] 
+* 4: UD mean array displacement [m] **Not available**
+* 5: Std of EW array displacement [m] 
+* 6: Std of NS array displacement [m] 
+* 7: Std of UD array displacement [m] **Not available**
+
+@@important
+\$ cat position\_each.out
+@@
+```plaintext
+5.0069107383470106e8 0.02644574460337811 -0.013331971659009048 NA 0.04655593528850213 0.06459085716593371 NA
+```
+
 ## Visualization 
 
 If you'd like to plot the array positions in a horizontal map, you can use `plot_map_array_each(xrange,yrange; autoscale,fn,fno,show,col_num)` function.
@@ -160,10 +185,86 @@ SeaGap.plot_time_array_each(fno="time_array_each.png")
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/time_array_each.png" width="650" height="650">
+    <img src="/assets/time_array_each.png" width="450" height="450">
     <div style="clear: both"></div>      
   </div>
 </div>
 ~~~
 
+## Outlier elimination
+
+If you'ld like to eliminate outlier from the positioning results "array\_each.out", SeaGap provides `denoise_each(;method,n,sigma1,sigma2,type,save,prompt,fn,fn0,fno)` as similar with `denoise()` in [Outlier removal](/tutorialdenoise/). `denoise_each()` peform two types of filters; one is a spatial filter, and the other is a temporal filter.
+
+In the spatial filter, we first calculate a mean/median position of the horizontal array positions, and then calculate standard deviation.
+The horiontal array positions beyond the range of `sigma1`\*(Std) are eliminated as outliers.
+
+In the temporal filter, we first perform a running mean/median filter to time-series of the horizontal array positions; then, calcualte standard deviation of the residuals after removing the filtered array positions.
+The residuals after removing the filtered array positions beyond the range of `sigma2`\*(Std) are eliminated as outliers.
+
+If you'd like to perform both filters, you set `type="both"`.
+You can set `type=spatial` or `type=temporal` if you'd like to perform only one of the filters.
+`method` selects "mean" or "median".
+
+Other arguments are used as following:
+* `fn`: Input file name
+* `fno1`: Output figure name (`fno1="denoise_each.pdf"` in default)
+* `fno2`: Output file which lists the eliminated shot numbers
+* `n`: Window size for the running filter
+* `save`: if `save=true`, the input data file `fn` is renamed and rewritten in `fn0` (`save=true` in default)
+* `prompt`: if `prompt=true`, confirmation message is shown; if false, the input file is forcely rewritten (`prompt=true` in default)  
+
+You can adjust a figure shown by this function can be adjusted by the other additional arguments.
+
+If you perform `denoise_each` as following:
+```julia
+SeaGap.denoise_each(n=7,sigma1=4.0,sigma2=5.0,method="median")
+```
+
+the following figure is shown.
+
+~~~
+<div class="row">
+  <div class="container">
+    <img src="/assets/denoise_each.png" width="350" height="350">
+    <div style="clear: both"></div>
+  </div>
+</div>
+~~~
+
+Then, the following message is shown if `prompt=true`:
+```plaintxt
+  Do you accept the denoise processin?
+```
+
+If you accept the elimination, you enter "yes"; then, the outliers (red symbols) are eliminated from "array\_each.out" and the outlier list `fno2` is saved:
+
+@@important
+\$ cat eliminated\_list.out
+@@
+```plaintext
+20
+21
+104
+105
+106
+77
+82
+83
+84
+85
+86
+87
+88
+89
+102
+10
+71
+80
+81
+103
+```
+
+These correspond to the 9th colmun of "array\_each.out".
+
+If you enter "no", "array\_each.out" is not updated.
 

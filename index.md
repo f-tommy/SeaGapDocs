@@ -16,6 +16,8 @@ SeaGap is a new **S**oftware of the **e**nhanced **a**nalysis for **G**NSS-**a**
 
 SeaGap is available on Github: [https://github.com/f-tommy/SeaGap](https://github.com/f-tommy/SeaGap)!
 
+But, note that SeaGap is now pre-opened; thus, some programs or data-format may be suddenly changed.
+
 ## Overview
 
 SeaGap is written in Julia for fast calculation. SeaGap is designed to perform "text-based processing" that SeaGap reads data from the input text file, performs calculation, and then writes the output text file instead of holding the calculation results as variables in Julia.
