@@ -32,10 +32,10 @@ To perform `pos_array_all()`, you have to provide the site latitude and the roug
 Moreover, you also have to provide number of the 3d B-spline bases at the third argument.
 Here, we provided 100 bases for instance.
 
-The input files are `fn1`, `fn2`, `fn3`, and `fn4`; they correspond to "tr-ant.inp". "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp" in default.
+The input files are `fn1`, `fn2`, `fn3`, and `fn4`; they correspond to "tr-ant.inp". "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp" by default.
 If you use the default file names, you need not to denote as arguments.
 
-Then, after performing, you obtained a log file as `fno0` (`fno0="log.txt"` in default), a solution file `fno1` (`fno1="solve.out"`), a position file `fno2` (`fno2="position.out"`), a NTD file `fno3` (`fno3="residual.out"`), a B-spline function file `fno4` (`fno4="bspline.out"`), and a AIC/BIC file `fno5` (`fno5="AICBIC.out"`).
+Then, after performing, you obtained a log file as `fno0` (`fno0="log.txt"` by default), a solution file `fno1` (`fno1="solve.out"`), a position file `fno2` (`fno2="position.out"`), a NTD file `fno3` (`fno3="residual.out"`), a B-spline function file `fno4` (`fno4="bspline.out"`), and a AIC/BIC file `fno5` (`fno5="AICBIC.out"`).
 
 `fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2).
 First three paramters are the array displacement in meter (Line 1: EW, 2: NS, 3: UD), and the followings are the coeffiecnts for the 3d B-spline bases.
@@ -137,8 +137,8 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB,delta_pos=1.e-5)
 The time-series of NTD (temporal sound speed fluctuation) is summarized in `fno3="residual.out"`, and it can be visualized by `plot_ntd(ntdrange,resrange; autoscale,fn,fno,show)`
 
 * If `autoscale=true` (default), the plot range is automatically determined. If `autoscale=false`, the plot range of y-componet is fixed by `ntdrange` and `resrange`. The range of x-compoent (Time) is automatically determined in the both cases.
-* `fn` is the input file name: "residual.out" in default.
-* If `show=false`, the figure is saved as `fno` (`fno` is name of the output figure: "ntd.pdf" in default). If `show=true` in REPL, a figure is temporally shown.
+* `fn` is the input file name: "residual.out" by default.
+* If `show=false`, the figure is saved as `fno` (`fno` is name of the output figure: "ntd.pdf" by default). If `show=true` in REPL, a figure is temporally shown.
 
 ```julia
 SeaGap.plot_ntd(fno="ntd.pdf")
@@ -174,7 +174,7 @@ For example,
 SeaGap.pos_array_all_AICBIC(30,150,5,lat,XDUCER_DEPTH)
 ```
 
-As a result, you obtain `fno` (the output file: "AICBIC\_search.out" in default) showing (1: Total number of 3d B-spline bases, 2: AIC, 3: BIC, 4: RMS [sec]).
+As a result, you obtain `fno` (the output file: "AICBIC\_search.out" by default) showing (1: Total number of 3d B-spline bases, 2: AIC, 3: BIC, 4: RMS [sec]).
 
 @@important
 \$ head AICBIC\_search.out
@@ -194,8 +194,8 @@ As a result, you obtain `fno` (the output file: "AICBIC\_search.out" in default)
 
 You can check the results by `plot_AICBIC(;type,fn,fno,show)`.
 You set `type` as "AIC" or "BIC".
-`fn` is the input file ("AICBIC\_search.out" in default) for plot.
-If `show=false`, the plot is saved as `fno` (`fno` is the figure name; "AICBIC\_search.pdf" in default).
+`fn` is the input file ("AICBIC\_search.out" by default) for plot.
+If `show=false`, the plot is saved as `fno` (`fno` is the figure name; "AICBIC\_search.pdf" by default).
 If `show=true`, the plot is temporally shown on REPL.
 
 ```julia
@@ -218,7 +218,7 @@ If you'd like to check in detail, you can additionally perform `pos_array_all_AI
 SeaGap.pos_array_all_AICBIC(61,99,1,lat,XDUCER_DEPTH)
 ```
 
-The AIC and BIC values are additionally written in `fno` (the output file: "AICBIC\_search.out" in default).
+The AIC and BIC values are additionally written in `fno` (the output file: "AICBIC\_search.out" by default).
 If you'd like to save the results in a new file, you add `delete=true`.
 
 ```julia
@@ -246,7 +246,7 @@ SeaGap.pos_array_TR(lat,XDUCER_DEPTH,NPB)
 ```
 
 The arguments and the input/output files of `pos_array_TR()` are same with those of `pos_array_all()` except `fno1`, `fno5`, and `delta_offset`.
-`fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2) as same with `pos_array_all()`, and its file name is "solve.out" in default.
+`fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2) as same with `pos_array_all()`, and its file name is "solve.out" by default.
 However, the lines 4-6 in `fno1` shows the solutions and the errors for the modification values of the offset from the initial file (`fn1="tr-ant.inp"`).
 
 `fno5` in `pos_array_TR()` shows three components of the estimated offset values and their estimation errors (1-3: Offset in X, Y, Z, 4-6: Error in X, Y, Z).

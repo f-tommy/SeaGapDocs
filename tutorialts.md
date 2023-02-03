@@ -38,11 +38,11 @@ Then, the merged position file should be arranged, and a constant velocity (a st
 These can be performed by `convert_displacement(vx,vy,vz;redu,sredu_hor,sredu_ver,fno,fn,t0)`.
 * vx, vy, vz: constant velocities which are eliminated from the time-series (Unit: cm/yr)
 * redu: if `redu=true`, the large estimation errors are identified as unusable (estimation errors in EW and NS components > `sredu_hor`; those in UD component > `sredu_ver`); if `redu=false`, all are identified as usable
-* sredu\_hor: Estimation error limit to be usable for horizontal components (`sredu_hor=30.0` [cm] in default)
-* sredu\_ver: Estimation error limit to be usable for vertical component (`sredu_ver=30.0` [cm] in default)
-* fno: Arranged time-series file ("converted\_position.out" in defalult)
-* fn: Input time-series file ("position\_merge.out" in defalult)
-* t0: Reference time ("2000-01-01T12:00:00" in default; refer Date & Time processing [e.g., `sec2year()`])
+* sredu\_hor: Estimation error limit to be usable for horizontal components (`sredu_hor=30.0` [cm] by default)
+* sredu\_ver: Estimation error limit to be usable for vertical component (`sredu_ver=30.0` [cm] by default)
+* fno: Arranged time-series file ("converted\_position.out" by defalult)
+* fn: Input time-series file ("position\_merge.out" by defalult)
+* t0: Reference time ("2000-01-01T12:00:00" by default; refer Date & Time processing [e.g., `sec2year()`])
 
 ```julia
 SeaGap.convert_displacement(1.79,-1.79,0.0,sredu_hor=30.0,sredu_ver=30.0,fno="converted_position.out")
@@ -73,10 +73,10 @@ Using "converted\_position.out", `plot_displacement(ts,te,EW_range,NS_range,UD_r
 * te: End time of the figure (Time at the right edge of the figure) [yr]
 * EW\_range, NS\_range, UD\_range: If `autoscale=false`, the range of Y-axis is set to be those ranges
 * autoscale: if `autoscale=true` (default), the range of Y-axis is automatically determined depending on the usable array displacements
-* pscale: if you set smaller value, the autoscale Y-axis range is wider (`pscale=0.5` in default)
-* sigma: Errorbar scaling (Since standard deviation of an array displacement tends to be small, the plotting errorbar is multiplied by `sigma`: `sigma=10` in default)
+* pscale: if you set smaller value, the autoscale Y-axis range is wider (`pscale=0.5` by default)
+* sigma: Errorbar scaling (Since standard deviation of an array displacement tends to be small, the plotting errorbar is multiplied by `sigma`: `sigma=10` by default)
 * cal: if `cal=true`, a regression line is calculated for each component, is shown in the figure, and the regression results are written in `fno2` as a text file
-* weight: if `weight=true`, the regression line is calculated considering the weight; the weight is provided as an inverse square of the observation error (`weight=true` in default)
+* weight: if `weight=true`, the regression line is calculated considering the weight; the weight is provided as an inverse square of the observation error (`weight=true` by default)
 * predict: if `predict=true`, the predicted values from the regression line are written in "`fno3`-EW.txt", "`fno3`-NS.txt", and "`fno3`-UD.txt"
 * fno1: Output figure name
 * fno2: Name of an output text file showing array displacement rates

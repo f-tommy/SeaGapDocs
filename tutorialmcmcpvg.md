@@ -14,7 +14,7 @@ tags = ["syntax", "code", "image"]
 
 ## Make initial value file
 
-In order to perform the static array positioning considering a sound speed gradient through a MCMC technique ([Tomita & Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0)), we have to prepare an initial value file (named "initial.inp" in default) which lists initial values of the unknown parameters for MCMC optimization.
+In order to perform the static array positioning considering a sound speed gradient through a MCMC technique ([Tomita & Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0)), we have to prepare an initial value file (named "initial.inp" by default) which lists initial values of the unknown parameters for MCMC optimization.
 
 The dataformat of "initial.inp" is (Columns 1: Initial value, 2: Lower limit, 3: Upper limit, 4: Step width, 5: Parameter name).
 The step width is used as perturbation when new parameter candidates are produced in the MCMC sampling. This should be appropriately given to effectively perform a MCMC sampling.
@@ -30,7 +30,7 @@ The type of unknown parameters to be placed on each line of this file is fixed a
 This file can be produced by `make_initial(fn1,fn2,fn3,fno,error_scale)` function.
 `fn1` is the initial seafloor transponder positions: "pxp-ini.xyh".
 `fn2` and `fn3` are "residual.out" and "solve.out", respectively; they are obtained by [the basic static array positioning](/tutorialstatic/) `pos_array_all()`.
-`error_scale` is used for providing the step width (`error_scale=5.0` in default).
+`error_scale` is used for providing the step width (`error_scale=5.0` by default).
 `make_initial()` provides the step widths as ($1\sigma$ standard deviation / `error_scale`) for the parameters at Lines 1-3, 7-11, and 14-.
  
 ```julia
@@ -93,13 +93,13 @@ Meanings of the arguments of `pos_array_mcmcpvg()` are following:
 * `lat`: Latitude of the site
 * `XDUCER_DEPTH`: Depth of the sea-surface transducer from the sea-surface [m]
 * `NPB`: Number of the 3d B-spline bases (this should be optimized in the conventional static array positioning `pos_array_all_AICBIC()`)
-* `nloop`: Total number of the MCMC iterations (1200000 in default)
-* `nburn`: Burn-in period of the MCMC iterations (samples less than `nburn` is excluded from the final results; 200000 in default)
-* `NA`: Number of the sampling interval (5 in default; if you set (`nloop=1200000`, `nburn=200000`, and `NA=5`), you can obtain (1200000-200000)/5 samples)
-* `scalentd`: "true" or "false", which turn on/off the scaling procedure for the parameters for the long-term NTD polynomial functions (true in default)
-* `delta_scale`: the step width for the scaled long-term NTD parameters if `scalentd=true` (0.001 in default)
+* `nloop`: Total number of the MCMC iterations (1200000 by default)
+* `nburn`: Burn-in period of the MCMC iterations (samples less than `nburn` is excluded from the final results; 200000 by default)
+* `NA`: Number of the sampling interval (5 by default; if you set (`nloop=1200000`, `nburn=200000`, and `NA=5`), you can obtain (1200000-200000)/5 samples)
+* `scalentd`: "true" or "false", which turn on/off the scaling procedure for the parameters for the long-term NTD polynomial functions (true by default)
+* `delta_scale`: the step width for the scaled long-term NTD parameters if `scalentd=true` (0.001 by default)
 * `fn1-5`: the input file names ("tr-ant.inp", "pxp-ini.xyh", "ss\_prof.zv", "obsdata.inp", and "initial.inp")
-* `fno0`: the log file ("log.txt" in default)
+* `fno0`: the log file ("log.txt" by default)
 * `fno1-7`: the output file names ("sample.out", "mcmc.out", "position.out", "statistics.out", "acceptance.out", "residual\_grad.out", and "bspline.out")
 
 Note that `pos_array_mcmcpvg()` has a function to perform a variable transformation for the 4th polynomial functions.
@@ -173,7 +173,7 @@ Scale: true
 ```
 
 @@importantv
-fno1: The sampled unknown parameters ("sample.out" in default)
+fno1: The sampled unknown parameters ("sample.out" by default)
 @@
 
 In this file, the unknown parameter names written in "initial.inp" is written at the first line.
@@ -196,7 +196,7 @@ EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS Gradient_depth
 ```
 
 @@importantv
- fno2: The PDFs and RMS ("mcmc.out" in default)
+ fno2: The PDFs and RMS ("mcmc.out" by default)
 @@
 
 In this file, the PDF and RMS values for each MCMC iteration are recorded.
@@ -226,7 +226,7 @@ In this file, the PDF and RMS values for each MCMC iteration are recorded.
 ```
 
 @@importantv
-fno3: The position file ("position.out" in default)
+fno3: The position file ("position.out" by default)
 @@
 
 This is same format with the "position.out" of `pos_array_all()`.
@@ -240,7 +240,7 @@ This is same format with the "position.out" of `pos_array_all()`.
 ```
 
 @@importantv
-fno4: Statistical values for each unknown parameter ("statistics.out" in default)
+fno4: Statistical values for each unknown parameter ("statistics.out" by default)
 @@
 
 @@important
@@ -260,7 +260,7 @@ fno4: Statistical values for each unknown parameter ("statistics.out" in default
 ```
 
 @@importantv
-fno5: Acceptance ratio ("acceptance.out" in default)
+fno5: Acceptance ratio ("acceptance.out" by default)
 @@
 
 The first and second lines show the acceptance ratios for the observation equations 1 and 2, respectively.
@@ -276,7 +276,7 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335
 Note that it is plausible to adjust the pertubation widths as the acceptance ratio is ~23 % when sampling multiple parameters ([Gelman et al., 1996](https://global.oup.com/academic/product/bayesian-statistics-5-9780198523567?cc=jp&lang=en&#))
 
 @@importantv
-fno6: Data residuals including the NTD and gradient effects ("residual\_grad.out" in default)
+fno6: Data residuals including the NTD and gradient effects ("residual\_grad.out" by default)
 @@
 
 The effects of the modeled NTD and gradients on the data residuals are shown.
@@ -311,7 +311,7 @@ The effects of the modeled NTD and gradients on the data residuals are shown.
 ```
 
 @@importantv
-fno7: ("bspline.out" in default)
+fno7: ("bspline.out" by default)
 @@
 
 Format of this file is same  with that of `pos_array_all()`.
@@ -339,10 +339,10 @@ SeaGap prepares various functions to visualize results of the MCMC processing.
 ### Posterior PDF and RMS variation through the MCMC iteration
 
 When you'd like to check how the posterior PDF and the travel-time RMS change through the MCMC iteration, you can draw by `plot_mcmcres(;fn,fno,show,nshuffle)`. 
-* fn: the input file name (`fn="mcmc.out"` in default)
-* fno: Output figure name (`fno="mcmc_res.pdf"` in default)
-* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
-* nshuffle: number of plots (if all samples are plotted, the figure is crowded; thus, `nshuffle` of samples are randomly picked; if `nshuffle=0`, all samples are plotted; `nshuffle=50000` in default)
+* fn: the input file name (`fn="mcmc.out"` by default)
+* fno: Output figure name (`fno="mcmc_res.pdf"` by default)
+* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` by default)
+* nshuffle: number of plots (if all samples are plotted, the figure is crowded; thus, `nshuffle` of samples are randomly picked; if `nshuffle=0`, all samples are plotted; `nshuffle=50000` by default)
 You can adjust the fontsizes or figuresize by the other arguments.
 
 ```julia
@@ -361,11 +361,11 @@ SeaGap.plot_mcmcres(fno="mcmc_res.pdf")
 ### Parameter variation through the MCMC iteration
 
 When you'd like to check how the unknown parameters change through the MCMC iteration, you can draw by `plot_mcmcparam(NA;fn,fno,show,nshuffle)`.
-* NA: Sampling interval of the MCMC prcessing (`NA=5` in default), which must be same with `NA` in `pos_array_mcmcpvg`
-* fn: the input file name (`fn="sample.out"` in default)
-* fno: Output figure name (`fno="mcmc_param.pdf"` in default)
-* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
-* nshuffle: number of plots for each parameter (if all samples are plotted, the figure is crowded; thus, `nshuffle` of samples are randomly picked; if `nshuffle=0`, all samples are plotted; `nshuffle=10000` in default)
+* NA: Sampling interval of the MCMC prcessing (`NA=5` by default), which must be same with `NA` in `pos_array_mcmcpvg`
+* fn: the input file name (`fn="sample.out"` by default)
+* fno: Output figure name (`fno="mcmc_param.pdf"` by default)
+* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` by default)
+* nshuffle: number of plots for each parameter (if all samples are plotted, the figure is crowded; thus, `nshuffle` of samples are randomly picked; if `nshuffle=0`, all samples are plotted; `nshuffle=10000` by default)
 You can adjust the fontsizes or figuresize by the other arguments.
 
 ```julia
@@ -401,15 +401,15 @@ SeaGap.plot_mcmcparam_each("S-NTD_10",5,fno="mcmc_param_S-NTD_10.png")
 ### Correlation among the unknown parameters
 
 When you'd like to simply check the trade-off relationship among the unknown parameters, you can draw a correlation map by `plot_cormap(fn,fno0,fno,show,txt,all,as,pfs,plot_size)`.
-* fn: the input file name (`fn="sample.out"` in default)
+* fn: the input file name (`fn="sample.out"` by default)
 * fno0: Output text data file name (if `txt=true`, correlation coefficients are save in this file; `fno0="correlation.out"`)
-* fno: Output figure name (`fno="cormap.pdf"` in default)
-* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
-* txt: Text data file output (`txt=false` in default)
+* fno: Output figure name (`fno="cormap.pdf"` by default)
+* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` by default)
+* txt: Text data file output (`txt=false` by default)
 * all: if `all=true`, correlation coefficients are calculated for all parameters; if `all=false`, correlation coefficients are calculated for major paramters (array displacements, shallow gradients, gradient depth)
-* as: Fontsize of parameter names (`as=10` in default)
-* pfs: Fontsize of annotated correlation values (`pfs=8` in default)
-* plot\_size: Figure size (`plot_size=()` in default)
+* as: Fontsize of parameter names (`as=10` by default)
+* pfs: Fontsize of annotated correlation values (`pfs=8` by default)
+* plot\_size: Figure size (`plot_size=()` by default)
 
 ```julia
 SeaGap.plot_cormap(fno="cormap.png")
@@ -460,12 +460,12 @@ You can see the strong correlation between the horizontal array displacements an
 
 From the MCMC samples ("sample.out"), you can draw a histogram for each unknown parameter by `plot_histogram(NPB,fn0,fn,fno,all,drawnls,nbins)`.
 * NPB: Number of 3d B-spline bases
-* fn0: Inversion results by `pos_array_all()` ("solve.out" in default), which is used when you'd like to plot the `pos_array_all()` results on the histogram
-* fn: Input file ("sample.out" in default)
-* fno: Output figure name (note that this file must be a PDF file: "histogram.pdf" in default)
-* all: if `all=true`, histograms for all parameters are drawn; if `all=false`, histograms for major six parameters (array displacements, shallow gradients, gradient depth) (`all=false` in default)
-* drawnls: if `drawnls=true`, a normal distribution estimated by `pos_array_all()` is drawn in a histogram (`drawnls=false` in default); the normal distributions are shown for the array displacements and 3d B-spline NTDs
-* nbins: Number of histogram's intervals (`nbins=50` in default)
+* fn0: Inversion results by `pos_array_all()` ("solve.out" by default), which is used when you'd like to plot the `pos_array_all()` results on the histogram
+* fn: Input file ("sample.out" by default)
+* fno: Output figure name (note that this file must be a PDF file: "histogram.pdf" by default)
+* all: if `all=true`, histograms for all parameters are drawn; if `all=false`, histograms for major six parameters (array displacements, shallow gradients, gradient depth) (`all=false` by default)
+* drawnls: if `drawnls=true`, a normal distribution estimated by `pos_array_all()` is drawn in a histogram (`drawnls=false` by default); the normal distributions are shown for the array displacements and 3d B-spline NTDs
+* nbins: Number of histogram's intervals (`nbins=50` by default)
 
 ```julia
 SeaGap.plot_histogram(77,all=true,fno="histogram_all.pdf")
@@ -496,11 +496,11 @@ SeaGap.plot_histogram(77,all=true,fno="histogram_allv.pdf",drawnls=true)
 ### Histograms and heatmaps for multiple parameters 
 
 Using `plot_histogram2d(fn,fno,show,nshufflei,nbins)`, you can draw a figure showing histograms, heatmaps, and scatter maps for major six parameters (array displacements, shallow gradients, gradient depth).
-* fn: Input file ("sample.out" in default)
+* fn: Input file ("sample.out" by default)
 * fno: Output figure name
-* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
-* nshuffle: number of plots for each parameter (if all samples are plotted, the figure is crowded; thus, `nshuffle` of samples are randomly picked; if `nshuffle=0`, all samples are plotted; `nshuffle=10000` in default)
-* nbins: Number of histogram's intervals (`nbins=50` in default)
+* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` by default)
+* nshuffle: number of plots for each parameter (if all samples are plotted, the figure is crowded; thus, `nshuffle` of samples are randomly picked; if `nshuffle=0`, all samples are plotted; `nshuffle=10000` by default)
+* nbins: Number of histogram's intervals (`nbins=50` by default)
 You can adjust fontsizes, margins of panels, and figure size by the other arguments. 
 
 ```julia
@@ -545,8 +545,8 @@ Considering from the observation equation (2), the projected travel-time residua
 * autoscale: If `autoscale=true`, the plot range is automatically defined
 * fn1: File name of the seafloor transponder positions ("pxp-ini.xyh")  
 * fn2: Travel-time residual file name ("residual\_grad.out")
-* fno: Output figure name ("gradmap.pdf" in default)
-* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
+* fno: Output figure name ("gradmap.pdf" by default)
+* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` by default)
 
 ```julia
 SeaGap.plot_gradmap((-2500,2500),(-2500,2500),autoscale=false,fno="gradmap.png")
@@ -568,8 +568,8 @@ Time-series of the travel-time residuals are plotted by `plot_ntdgrad(ntdrange,r
 * resrange: Range of the lowest panels in msec when `autoscale=false`
 * autoscale: If `autoscale=true`, the plot range is automatically defined
 * fn: Travel-time residual file name ("residual\_grad.out")
-* fno: Output figure name ("ntdgrad.pdf" in default)
-* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` in default)
+* fno: Output figure name ("ntdgrad.pdf" by default)
+* show: if `show=true`, a figure is shown on REPL and is not saved as a file (`show=false` by default)
 
 ```julia
 SeaGap.plot_ntdgrad()

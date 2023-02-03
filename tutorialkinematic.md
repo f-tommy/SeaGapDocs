@@ -39,7 +39,7 @@ In "obsdata.inp", you have to write the shot group number.
 ```
 
 The last column shows the shot group number.
-`pos_array_each()` estimates a horizontal array position using the data with each shot number if number of the observational data lines are more than `NR` (`NR=3` in default, but you cannot assign `NR`<2 because number of unknown paramters is 3).
+`pos_array_each()` estimates a horizontal array position using the data with each shot number if number of the observational data lines are more than `NR` (`NR=3` by default, but you cannot assign `NR`<2 because number of unknown paramters is 3).
 The detailed format of "obsdata.inp" are shown in [Dataformat](/dataformat/).
 
 
@@ -52,9 +52,9 @@ lat=36.15753; XDUCER_DEPTH=5.0
 SeaGap.pos_array_each(lat,XDUCER_DEPTH)
 ```
 
-The input files are `fn1`, `fn2`, `fn3`, and `fn4`; they correspond to "tr-ant.inp". "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp" in default.
+The input files are `fn1`, `fn2`, `fn3`, and `fn4`; they correspond to "tr-ant.inp". "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp" by default.
 
-Then, after performing, you obtained a log file as `fno0` (`fno0="log.txt"` in default), a position file `fno1` (`fno1="array_each.out"` in default), and a data misfit file `fno2` (`fno2="residual_each.out"`).
+Then, after performing, you obtained a log file as `fno0` (`fno0="log.txt"` by default), a position file `fno1` (`fno1="array_each.out"` by default), and a data misfit file `fno2` (`fno2="residual_each.out"`).
 
 "array\_each.out"
 * 1: the transmitting time [sec]
@@ -127,8 +127,8 @@ SeaGap.pos_array_each(lat,XDUCER_DEPTH,delta_pos=1.e-5)
 ``` 
 
 If you'd like to calculate an average position during a campaign  from the positioning results "array\_each.out", you can use `position_each(;fn,weight,fno)`.
-`fn` is the input file name (`fn="array_each.out"` in default), and `fno` is the outpt file name `fno="position_each.out"`.
-If `weight=true`, weighted mean position is calculated using the shot groups with number of shot data for each group >= 4 (`weight=false` in default); thus, you cannot set `weight=true` for a GNSS-A site with only three transponders.
+`fn` is the input file name (`fn="array_each.out"` by default), and `fno` is the outpt file name `fno="position_each.out"`.
+If `weight=true`, weighted mean position is calculated using the shot groups with number of shot data for each group >= 4 (`weight=false` by default); thus, you cannot set `weight=true` for a GNSS-A site with only three transponders.
 
 For example:
 ```julia
@@ -155,7 +155,7 @@ SeaGap.position_each(fn="array_each.out",weight=false)
 
 If you'd like to plot the array positions in a horizontal map, you can use `plot_map_array_each(xrange,yrange; autoscale,fn,fno,show,col_num)` function.
 * If `autoscale=true` (default), the plot range is automatically determined. If `autoscale=false`, the plot range is fixed by `xrange` and `yrange`.
-* `fn` is the input file name: "array\_each.out" in default.
+* `fn` is the input file name: "array\_each.out" by default.
 * If `show=false`, the figure is saved as `fno` (`fno` is name of the output figure). If `show=true` in REPL, a figure is temporally shown.
 * If `col_num=1` (default), the plot is colored by the observation time. If `col_num=2`, the plot is colored by number of the used observational data. If `col_num=0`, the plot is colored by blue. 
 
@@ -174,7 +174,7 @@ SeaGap.plot_map_array_each((-0.5,0.5),(-0.5,0.5),autoscale=false,fno="map_array_
 
 If you'd like to plot the array positions in time-series, you can use `plot_time_array_each(EW_range,NS_range.ntdrange.autoscale,fn,fno,show)` function.
 * If `autoscale=true` (default), the plot range is automatically determined. If `autoscale=false`, the plot range of y-componet is fixed by `EW_range`, `NS_range`, and `ntdrange`. The range of x-compoent (Time) is automatically determined in the both cases.
-* `fn` is the input file name: "array\_each.out" in default.
+* `fn` is the input file name: "array\_each.out" by default.
 * If `show=false`, the figure is saved as `fno` (`fno` is name of the output figure). If `show=true` in REPL, a figure is temporally shown.
 
 
@@ -207,11 +207,11 @@ You can set `type=spatial` or `type=temporal` if you'd like to perform only one 
 
 Other arguments are used as following:
 * `fn`: Input file name
-* `fno1`: Output figure name (`fno1="denoise_each.pdf"` in default)
+* `fno1`: Output figure name (`fno1="denoise_each.pdf"` by default)
 * `fno2`: Output file which lists the eliminated shot numbers
 * `n`: Window size for the running filter
-* `save`: if `save=true`, the input data file `fn` is renamed and rewritten in `fn0` (`save=true` in default)
-* `prompt`: if `prompt=true`, confirmation message is shown; if false, the input file is forcely rewritten (`prompt=true` in default)  
+* `save`: if `save=true`, the input data file `fn` is renamed and rewritten in `fn0` (`save=true` by default)
+* `prompt`: if `prompt=true`, confirmation message is shown; if false, the input file is forcely rewritten (`prompt=true` by default)  
 
 You can adjust a figure shown by this function can be adjusted by the other additional arguments.
 

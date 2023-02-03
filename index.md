@@ -63,26 +63,25 @@ help?> SeaGap.plot_map_array_each
     •  autoscale: If autoscale=true (default), the plot range is automatically determined. If
        autoscale=false, the plot range is fixed by xrange and yrange.
 
-    •  fn: Input file name (fn="array_each.out" in default)
+    •  fn: Input file name (fn="array_each.out" by default)
 
-    •  fno: Output figure name (fno="map_array_each.pdf" in default)
+    •  fno: Output figure name (fno="map_array_each.pdf" by default)
 
-    •  plot_size: Figure size (plot_size=(600,500) in default)
+    •  plot_size: Figure size (plot_size=(600,500) by default)
 
-    •  lmargin: Plot margin for the left edge (lmargin=2.5 in default)
+    •  lmargin: Plot margin for the left edge (lmargin=2.5 by default)
 
-    •  rmargin: Plot margin for the right edge (rmargin=1.0 in default)
+    •  rmargin: Plot margin for the right edge (rmargin=1.0 by default)
 
-    •  tmargin: Plot margin for the top edge (tmargin=1.0 in default)
+    •  tmargin: Plot margin for the top edge (tmargin=1.0 by default)
 
-    •  bmargin: Plot margin for the bottom edge (bmargin=1.0 in default)
+    •  bmargin: Plot margin for the bottom edge (bmargin=1.0 by default)
 
-    •  show: if show=true, a figure is temporally shown; if false, the figure is save as fno (show=false
-       in default)
+    •  show: if show=true, a figure is temporally shown; if false, the figure is save as fno (show=false by default)
 
-    •  ms: Plotted marker size (ms=5 in default)
+    •  ms: Plotted marker size (ms=5 by default)
 
-    •  gfs: Fontsize for label (gudefontsize: gfs=12 in default)
+    •  gfs: Fontsize for label (gudefontsize: gfs=12 by default)
 
     •  col_num: If col_num=1 (default), the plot is colored by the observation time. If col_num=2, the
        plot is colored by number of the used observational data. If col_num=0, the plot is colored by
