@@ -4,7 +4,7 @@
 478175535 0.047437107 -0.018050471 0.073543488 0.00103975 0.00104308 0.00287912
 500691126 0.045814082 -0.040725985 -0.028688630 0.00258226 0.00301437 0.00371223
 515402741 0.035828374 -0.088293375 0.064555567 0.00352865 0.00311975 0.00899014
-561563695 0.060865355 -0.045373625 0.101002939 0.01289510 0.01039353 0.02149323</code></pre> <p>Then, the merged position file should be arranged, and a constant velocity &#40;a stable plate motion&#41; should be eliminated. These can be performed by <code>convert_displacement&#40;vx,vy,vz;redu,sredu_hor,sredu_ver,fno,fn,t0&#41;</code>.</p> <ul> <li><p>vx, vy, vz: constant velocities which are eliminated from the time-series &#40;Unit: cm/yr&#41;</p> <li><p>redu: if <code>redu&#61;true</code>, the large estimation errors are identified as unusable &#40;estimation errors in EW and NS components &gt; <code>sredu_hor</code>; those in UD component &gt; <code>sredu_ver</code>&#41;; if <code>redu&#61;false</code>, all are identified as usable</p> <li><p>sredu&#95;hor: Estimation error limit to be usable for horizontal components &#40;<code>sredu_hor&#61;30.0</code> &#91;cm&#93; in default&#41;</p> <li><p>sredu&#95;ver: Estimation error limit to be usable for vertical component &#40;<code>sredu_ver&#61;30.0</code> &#91;cm&#93; in default&#41;</p> <li><p>fno: Arranged time-series file &#40;&quot;converted&#95;position.out&quot; in defalult&#41;</p> <li><p>fn: Input time-series file &#40;&quot;position&#95;merge.out&quot; in defalult&#41;</p> <li><p>t0: Reference time &#40;&quot;2000-01-01T12:00:00&quot; in default; refer Date &amp; Time processing &#91;e.g., <code>sec2year&#40;&#41;</code>&#93;&#41;</p> </ul> <pre><code class="julia hljs">SeaGap.convert_displacement(<span class=hljs-number >1.79</span>,-<span class=hljs-number >1.79</span>,<span class=hljs-number >0.0</span>,sredu_hor=<span class=hljs-number >30.0</span>,sredu_ver=<span class=hljs-number >30.0</span>,fno=<span class=hljs-string >&quot;converted_position.out&quot;</span>)</code></pre>
+561563695 0.060865355 -0.045373625 0.101002939 0.01289510 0.01039353 0.02149323</code></pre> <p>Then, the merged position file should be arranged, and a constant velocity &#40;a stable plate motion&#41; should be eliminated. These can be performed by <code>convert_displacement&#40;vx,vy,vz;redu,sredu_hor,sredu_ver,fno,fn,t0&#41;</code>.</p> <ul> <li><p>vx, vy, vz: constant velocities which are eliminated from the time-series &#40;Unit: cm/yr&#41;</p> <li><p>redu: if <code>redu&#61;true</code>, the large estimation errors are identified as unusable &#40;estimation errors in EW and NS components &gt; <code>sredu_hor</code>; those in UD component &gt; <code>sredu_ver</code>&#41;; if <code>redu&#61;false</code>, all are identified as usable</p> <li><p>sredu&#95;hor: Estimation error limit to be usable for horizontal components &#40;<code>sredu_hor&#61;30.0</code> &#91;cm&#93; by default&#41;</p> <li><p>sredu&#95;ver: Estimation error limit to be usable for vertical component &#40;<code>sredu_ver&#61;30.0</code> &#91;cm&#93; by default&#41;</p> <li><p>fno: Arranged time-series file &#40;&quot;converted&#95;position.out&quot; by defalult&#41;</p> <li><p>fn: Input time-series file &#40;&quot;position&#95;merge.out&quot; by defalult&#41;</p> <li><p>t0: Reference time &#40;&quot;2000-01-01T12:00:00&quot; by default; refer Date &amp; Time processing &#91;e.g., <code>sec2year&#40;&#41;</code>&#93;&#41;</p> </ul> <pre><code class="julia hljs">SeaGap.convert_displacement(<span class=hljs-number >1.79</span>,-<span class=hljs-number >1.79</span>,<span class=hljs-number >0.0</span>,sredu_hor=<span class=hljs-number >30.0</span>,sredu_ver=<span class=hljs-number >30.0</span>,fno=<span class=hljs-string >&quot;converted_position.out&quot;</span>)</code></pre>
 <div class=important >&#36; cat converted&#95;position.out</div>
 <pre><code class="plaintext hljs"># Year DispX DispY DispZ SigmaX SigmaY SigmaZ UsableX UsableY UsableZ (detrend 1.79 -1.79 0.0)
 2012.89344 -9.689 13.963 -33.457 1.040 1.024 31.546 1 1 0
@@ -25,13 +25,13 @@
 
 <li><p>autoscale: if <code>autoscale&#61;true</code> &#40;default&#41;, the range of Y-axis is automatically determined depending on the usable array displacements</p>
 
-<li><p>pscale: if you set smaller value, the autoscale Y-axis range is wider &#40;<code>pscale&#61;0.5</code> in default&#41;</p>
+<li><p>pscale: if you set smaller value, the autoscale Y-axis range is wider &#40;<code>pscale&#61;0.5</code> by default&#41;</p>
 
-<li><p>sigma: Errorbar scaling &#40;Since standard deviation of an array displacement tends to be small, the plotting errorbar is multiplied by <code>sigma</code>: <code>sigma&#61;10</code> in default&#41;</p>
+<li><p>sigma: Errorbar scaling &#40;Since standard deviation of an array displacement tends to be small, the plotting errorbar is multiplied by <code>sigma</code>: <code>sigma&#61;10</code> by default&#41;</p>
 
 <li><p>cal: if <code>cal&#61;true</code>, a regression line is calculated for each component, is shown in the figure, and the regression results are written in <code>fno2</code> as a text file</p>
 
-<li><p>weight: if <code>weight&#61;true</code>, the regression line is calculated considering the weight; the weight is provided as an inverse square of the observation error &#40;<code>weight&#61;true</code> in default&#41;</p>
+<li><p>weight: if <code>weight&#61;true</code>, the regression line is calculated considering the weight; the weight is provided as an inverse square of the observation error &#40;<code>weight&#61;true</code> by default&#41;</p>
 
 <li><p>predict: if <code>predict&#61;true</code>, the predicted values from the regression line are written in &quot;<code>fno3</code>-EW.txt&quot;, &quot;<code>fno3</code>-NS.txt&quot;, and &quot;<code>fno3</code>-UD.txt&quot;</p>
 
@@ -79,7 +79,7 @@
  2016.33333   -2.575   1.389867128697936   -3.9648671286979362  0.353
  2017.79726   -2.691   3.6944664002469327  -6.385466400246933   1.29</code></pre>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: January 31, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: February 03, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
