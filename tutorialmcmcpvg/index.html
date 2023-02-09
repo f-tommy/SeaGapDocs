@@ -27,7 +27,7 @@
 <p>or you have to run Julia as:</p>
 <div class=important >&#36; julia -t 4</div>
 <p>This value is determined depending on your machine ability.</p>
-<p>Then, after setting the above thread number and preparing the above input files, you can perform <code>pos_array_mcmcpvg&#40;lat,XDUCER_DEPTH,NPB; nloop,nburn,NA,scalentd,delta_scale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7&#41;</code> function as following:</p>
+<p>Then, after setting the above thread number and preparing the above input files, you can perform <code>pos_array_mcmcpvg&#40;lat,XDUCER_DEPTH,NPB; NSB, nloop,nburn,NA,scalentd,delta_scale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7&#41;</code> function as following:</p>
 <pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; XDUCER_DEPTH=<span class=hljs-number >5.0</span>; NPB=<span class=hljs-number >77</span>
 SeaGap.pos_array_mcmcpvg(lat,XDUCER_DEPTH,NPB)</code></pre>
 <p>Meanings of the arguments of <code>pos_array_mcmcpvg&#40;&#41;</code> are following:</p>
@@ -37,6 +37,8 @@ SeaGap.pos_array_mcmcpvg(lat,XDUCER_DEPTH,NPB)</code></pre>
 <li><p><code>XDUCER_DEPTH</code>: Depth of the sea-surface transducer from the sea-surface &#91;m&#93;</p>
 
 <li><p><code>NPB</code>: Number of the 3d B-spline bases &#40;this should be optimized in the conventional static array positioning <code>pos_array_all_AICBIC&#40;&#41;</code>&#41;</p>
+
+<li><p><code>NSB</code>: Number of the perturbated B-spilne bases for each iteration &#40;<code>NSB&#61;100</code> by default&#41;</p>
 
 <li><p><code>nloop</code>: Total number of the MCMC iterations &#40;1200000 by default&#41;</p>
 
@@ -81,6 +83,7 @@ SeaGap.scale(-<span class=hljs-number >1.0</span>,-<span class=hljs-number >7.0<
 <span class=hljs-number >1</span>-element <span class=hljs-built_in >Vector</span>{<span class=hljs-built_in >Float64</span>}:
  <span class=hljs-number >0.08266713144257666</span></code></pre>
 <p>In <code>pos_array_mcmcpvg&#40;&#41;</code> with <code>scale&#61;true</code>, the initial values at the lines 7-11 in &quot;initial.inp&quot; &#40;corresponding to the 4th polynomial functions&#41; are transformed into the scaled values,the scaled values are optimized. Then, the scaled values are retransformed before they are written in the output files.  The scaling factor is determined as <span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mn>10</mn><mo stretchy=false >(</mo><mo stretchy=false >)</mo></mrow><annotation encoding="application/x-tex">log10()</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class=mord >10</span><span class=mopen >(</span><span class=mclose >)</span></span></span></span> of the step width written in &quot;initial.inp&quot;.</p>
+<p>At each MCMC iteration, not all parameters on the 3d B-spline bases are changed to increase the acceptance ratio. Number of the changed parameters on the 3d B-spline bases is controlled by <code>NSB</code>.</p>
 <h2 id=output_text_files ><a href="#output_text_files" class=header-anchor >Output text files</a></h2>
 <div class=importantv >fno0: the log file, which shows the analytical conditions, and so on</div>
 <div class=important >&#36; head log.txt</div>
@@ -457,7 +460,7 @@ Acceptance_ratio_MCMC-2: 0.29825833333333335</code></pre>
 SeaGap.pos_array_mcmcpvgc(lat,XDUCER_DEPTH,NPB,ss,gd0,sdg)</code></pre>
 <p>Formats of the input and output files of <code>pos_array_mcmcpvgc&#40;&#41;</code> are same with those of <code>pos_array_mcmcpvg&#40;&#41;</code>.</p>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: February 03, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: February 09, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
