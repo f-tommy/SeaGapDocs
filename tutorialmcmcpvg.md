@@ -103,6 +103,7 @@ Meanings of the arguments of `pos_array_mcmcpvg()` are following:
 * `fno0`: the log file ("log.txt" by default)
 * `fno1-7`: the output file names ("sample.out", "mcmc.out", "position.out", "statistics.out", "acceptance.out", "residual\_grad.out", and "bspline.out")
 
+### Scaling for long-term NTD modeling
 Note that `pos_array_mcmcpvg()` has a function to perform a variable transformation for the 4th polynomial functions.
 Since these parameters tends to have very small values, it is better to do the variable transformation.
 The log-scaling or exponential-scaling are often performed for a variable transformation, but they cannot express negative values.
@@ -151,8 +152,32 @@ In `pos_array_mcmcpvg()` with `scale=true`, the initial values at the lines 7-11
 Then, the scaled values are retransformed before they are written in the output files. 
 The scaling factor is determined as $log10()$ of the step width written in "initial.inp".
 
+### Partial update for coefficients of 3d B-spline functions
 At each MCMC iteration, not all parameters on the 3d B-spline bases are changed to increase the acceptance ratio.
 Number of the changed parameters on the 3d B-spline bases is controlled by `NSB`.
+
+### Average update for coefficients of 3d B-spline functions
+If observational data has enough sensitivity to solve a vertical array displacement, it has a trade-off relationship with the average of NTDs.
+In such a case, the acceptance ratio degrades, and the MCMC sampling fail to express the true posteior PDF on the vertical array displacement.
+
+A simple way to solve this problem is a uniform update on coefficients for 3d B-spline functions $c_j$ in Equation (5) of [Methodology](/methodmcmcpvg/).
+This updation is performed when `aventd=true`.
+
+When `aventd=false`, a coefficient for the $j$th 3d B-spline basis is updated as:
+
+$$ c'_j=c_j + u\sigma_{c_j} $$
+
+where $u$ is a random value defrived from a uniform distribution [-0.5,0.5], and $\sigma_{c_j}$ is a step width for this parameter given in "initial.inp".
+By contrast, when `aventd=true`, a coefficient for the $j$th 3d B-spline basis is updated as:
+
+$$ c'_j=c_j + u_{\rm com}\sigma_{\rm com} + u\sigma_{c_j}/\Delta_{c} $$
+
+$u_{\rm com}$ a random value defrived from a uniform distribution [-0.5,0.5], but it is a common value among the coefficients at each updation.
+$\sigma_{\rm com}$ is a step width for whole 3d B-spline functions.
+Thus, $u_{\rm com}\sigma_{\rm com}$ give a perturbation to the average level of the 3d B-spline functions.
+While, $u\sigma_{c_j}$ give a pertubation to the individual coefficient for the  3d B-spline basis, and $\Delta_{c}$ is a scaling factor to encourage acceptance by providing $\Delta_{c}>1$.
+
+$\sigma_{com}$ and $\Delta_{c}$ can be given as `daave` and `daind`, respectively. 
 
 ## Output text files
 
@@ -184,7 +209,7 @@ In this file, the unknown parameter names written in "initial.inp" is written at
 Then, the sampled parameters for each MCMC iteration at each line.
 
 @@important
-\$ head sample.out | awk \'{print \$1,\$2,\$3,\$4,\$5,\$6}\'
+\$ head sample.out | awk '{print \$1,\$2,\$3,\$4,\$5,\$6}'
 @@
 ```plaintext
 EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS Gradient_depth
