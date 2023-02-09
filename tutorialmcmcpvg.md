@@ -82,7 +82,7 @@ or you have to run Julia as:
 
 This value is determined depending on your machine ability.
 
-Then, after setting the above thread number and preparing the above input files, you can perform `pos_array_mcmcpvg(lat,XDUCER_DEPTH,NPB; nloop,nburn,NA,scalentd,delta_scale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7)` function as following:
+Then, after setting the above thread number and preparing the above input files, you can perform `pos_array_mcmcpvg(lat,XDUCER_DEPTH,NPB; NSB, nloop,nburn,NA,scalentd,delta_scale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7)` function as following:
 
 ```julia
 lat=36.15753; XDUCER_DEPTH=5.0; NPB=77
@@ -93,6 +93,7 @@ Meanings of the arguments of `pos_array_mcmcpvg()` are following:
 * `lat`: Latitude of the site
 * `XDUCER_DEPTH`: Depth of the sea-surface transducer from the sea-surface [m]
 * `NPB`: Number of the 3d B-spline bases (this should be optimized in the conventional static array positioning `pos_array_all_AICBIC()`)
+* `NSB`: Number of the perturbated B-spilne bases for each iteration (`NSB=100` by default)
 * `nloop`: Total number of the MCMC iterations (1200000 by default)
 * `nburn`: Burn-in period of the MCMC iterations (samples less than `nburn` is excluded from the final results; 200000 by default)
 * `NA`: Number of the sampling interval (5 by default; if you set (`nloop=1200000`, `nburn=200000`, and `NA=5`), you can obtain (1200000-200000)/5 samples)
@@ -149,6 +150,9 @@ SeaGap.scale_est([1.e-7],[-6.0])
 In `pos_array_mcmcpvg()` with `scale=true`, the initial values at the lines 7-11 in "initial.inp" (corresponding to the 4th polynomial functions) are transformed into the scaled values,the scaled values are optimized.
 Then, the scaled values are retransformed before they are written in the output files. 
 The scaling factor is determined as $log10()$ of the step width written in "initial.inp".
+
+At each MCMC iteration, not all parameters on the 3d B-spline bases are changed to increase the acceptance ratio.
+Number of the changed parameters on the 3d B-spline bases is controlled by `NSB`.
 
 ## Output text files
 
