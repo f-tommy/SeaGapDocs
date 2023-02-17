@@ -1,14 +1,14 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/katex/katex.min.css"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">Installation</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Tutorials</h1> <hr> <div class=franklin-content > <h1 id=static_array_positioning ><a href="#static_array_positioning" class=header-anchor >Static array positioning</a></h1> <div class=franklin-toc ><ol><li><a href="#basic_static_array_positioning">Basic static array positioning</a><li><a href="#optimization_of_the_total_number_of_3d_b-spline_bases">Optimization of the total number of 3d B-spline bases</a><li><a href="#optimization_of_the_transducer-antenna_offset">Optimization of the transducer-antenna offset</a><li><a href="#static_array_positioning_directly_estimating_deep_gradients">Static array positioning directly estimating deep gradients</a></ol></div> <p>In SeaGap, the static positioning function &#40;<code>pos_array_all</code>&#41; based on <a href="https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0">Tomita &amp; Kido &#40;2022&#41;</a> is provided. A static array position and coefficients for the 3d B-spline functions can be estimated by Gauss-Newton method. Moreover, to optimize the number of the 3d B-spline bases, SeaGap has a function to calculate AIC and BIC values for various number of the 3d B-spline bases &#40;<code>pos_array_all_AICBIC</code>&#41;. As a derived function from <code>pos_array_all</code>, a function <code>pos_array_TR</code> additionally estimates an offset between a transducer and a GNSS antenna.</p> <h2 id=basic_static_array_positioning ><a href="#basic_static_array_positioning" class=header-anchor >Basic static array positioning</a></h2> <p>To perform <code>pos_array_all</code>, you have to prepare four input files denoted in <a href="/SeaGapDocs/dataformat/">Dataformat</a>: &quot;tr-ant.inp&quot;. &quot;pxp-ini.xyh&quot;, &quot;ss&#95;prof.zv&quot;, and &quot;obsdata.inp&quot;. Outliers in &quot;obsdata.inp&quot; should be removed in advance; SeaGap includes a simple <a href="/SeaGapDocs/tutorialdenoise/">outlier removal</a> function.</p> <p>The basic static array positioning <code>pos_array_all&#40;&#41;</code> can be performed as following:</p> <pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; XDUCER_DEPTH=<span class=hljs-number >5.0</span>; NPB=<span class=hljs-number >100</span>
-SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_array_all&#40;&#41;</code>, you have to provide the site latitude and the rough depth of transducer from the sea-surface at the first and second arguments, respectively, as indicated in the previous pages &#40;<a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> and <a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a>&#41;. Moreover, you also have to provide number of the 3d B-spline bases at the third argument. Here, we provided 100 bases for instance.</p> <p>The input files are <code>fn1</code>, <code>fn2</code>, <code>fn3</code>, and <code>fn4</code>; they correspond to &quot;tr-ant.inp&quot;. &quot;pxp-ini.xyh&quot;, &quot;ss&#95;prof.zv&quot;, and &quot;obsdata.inp&quot; by default. If you use the default file names, you need not to denote as arguments.</p> <p>Then, after performing, you obtained a log file as <code>fno0</code> &#40;<code>fno0&#61;&quot;log.txt&quot;</code> by default&#41;, a solution file <code>fno1</code> &#40;<code>fno1&#61;&quot;solve.out&quot;</code>&#41;, a position file <code>fno2</code> &#40;<code>fno2&#61;&quot;position.out&quot;</code>&#41;, a NTD file <code>fno3</code> &#40;<code>fno3&#61;&quot;residual.out&quot;</code>&#41;, a B-spline function file <code>fno4</code> &#40;<code>fno4&#61;&quot;bspline.out&quot;</code>&#41;, and a AIC/BIC file <code>fno5</code> &#40;<code>fno5&#61;&quot;AICBIC.out&quot;</code>&#41;.</p> <p><code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41;. First three paramters are the array displacement in meter &#40;Line 1: EW, 2: NS, 3: UD&#41;, and the followings are the coeffiecnts for the 3d B-spline bases.</p> <div class=important >&#36; head solve.out</div> <pre><code class="plaintext hljs">0.03016870329108975    0.0015837742430485642
- -0.017291984493650502   0.0015789217333432297
-  0.040657598385999076   0.005785765032466023
-  0.0015211235935625976  0.00019127667561664918
-  0.002019534277503533   3.5611045018091246e-5
-  0.0018423938269547732  1.86381804747842e-5
-  0.0017997817218493534  1.4677602480732858e-5
-  0.002033034277571156   1.388740280606415e-5
-  0.0020293506899085128  1.3761626259275398e-5
-  0.002136698956976763   1.3715555729368263e-5</code></pre> <p><code>fno2</code> shows general positioning results &#40;1: Average observational time &#40;cumulative seconds from the reference time&#41;, 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1<span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> estimation errors in EW, NS, and UD&#41;.</p> <div class=important >&#36; cat position.out</div> <pre><code class="plaintext hljs">5.00690900363141e8  0.03016870329108975  -0.017291984493650502  0.040657598385999076  0.0015837742430485642  0.0015789217333432297  0.005785765032466023</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/katex/katex.min.css"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">Installation</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Tutorials</h1> <hr> <div class=franklin-content > <h1 id=static_array_positioning ><a href="#static_array_positioning" class=header-anchor >Static array positioning</a></h1> <div class=franklin-toc ><ol><li><a href="#basic_static_array_positioning">Basic static array positioning</a><li><a href="#optimization_of_the_total_number_of_3d_b-spline_bases">Optimization of the total number of 3d B-spline bases</a><li><a href="#optimization_of_the_transducer-antenna_offset">Optimization of the transducer-antenna offset</a><li><a href="#static_array_positioning_directly_estimating_deep_gradients">Static array positioning directly estimating deep gradients</a></ol></div> <p>In SeaGap, the static positioning function &#40;<code>static_array</code>&#41; based on <a href="https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0">Tomita &amp; Kido &#40;2022&#41;</a> is provided. A static array position and coefficients for the 3d B-spline functions can be estimated by Gauss-Newton method. Moreover, to optimize the number of the 3d B-spline bases, SeaGap has a function to calculate AIC and BIC values for various number of the 3d B-spline bases &#40;<code>static_array_AICBIC</code>&#41;. As a derived function from <code>static_array</code>, a function <code>static_array_TR</code> additionally estimates an offset between a transducer and a GNSS antenna.</p> <h2 id=basic_static_array_positioning ><a href="#basic_static_array_positioning" class=header-anchor >Basic static array positioning</a></h2> <p>To perform <code>static_array</code>, you have to prepare four input files denoted in <a href="/SeaGapDocs/dataformat/">Dataformat</a>: &quot;tr-ant.inp&quot;. &quot;pxp-ini.inp&quot;, &quot;ss&#95;prof.inp&quot;, and &quot;obsdata.inp&quot;. Outliers in &quot;obsdata.inp&quot; should be removed in advance; SeaGap includes a simple <a href="/SeaGapDocs/tutorialdenoise/">outlier removal</a> function.</p> <p>The basic static array positioning <code>static_array&#40;&#41;</code> can be performed as following:</p> <pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; TR_DEPTH=<span class=hljs-number >4.0</span>; NPB=<span class=hljs-number >100</span>
+SeaGap.static_array(lat,TR_DEPTH,NPB)</code></pre> <p>To perform <code>static_array&#40;&#41;</code>, you have to provide the site latitude and the rough depth of transducer from the sea-surface at the first and second arguments, respectively, as indicated in the previous pages &#40;<a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> and <a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a>&#41;. Moreover, you also have to provide number of the 3d B-spline bases at the third argument. Here, we provided 100 bases for instance.</p> <p>The input files are <code>fn1</code>, <code>fn2</code>, <code>fn3</code>, and <code>fn4</code>; they correspond to &quot;tr-ant.inp&quot;. &quot;pxp-ini.inp&quot;, &quot;ss&#95;prof.inp&quot;, and &quot;obsdata.inp&quot; by default. If you use the default file names, you need not to denote as arguments.</p> <p>Then, after performing, you obtained a log file as <code>fno0</code> &#40;<code>fno0&#61;&quot;log.txt&quot;</code> by default&#41;, a solution file <code>fno1</code> &#40;<code>fno1&#61;&quot;solve.out&quot;</code>&#41;, a position file <code>fno2</code> &#40;<code>fno2&#61;&quot;position.out&quot;</code>&#41;, a NTD file <code>fno3</code> &#40;<code>fno3&#61;&quot;residual.out&quot;</code>&#41;, a B-spline function file <code>fno4</code> &#40;<code>fno4&#61;&quot;bspline.out&quot;</code>&#41;, and a AIC/BIC file <code>fno5</code> &#40;<code>fno5&#61;&quot;AICBIC.out&quot;</code>&#41;.</p> <p><code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41;. First three paramters are the array displacement in meter &#40;Line 1: EW, 2: NS, 3: UD&#41;, and the followings are the coeffiecnts for the 3d B-spline bases.</p> <div class=important >&#36; head solve.out</div> <pre><code class="plaintext hljs">0.025569840487938453   0.0016129310076125585
+ -0.015875407745997182   0.001613186827589505
+ -0.03376358011884562    0.0059052501621037635
+  0.0028292312669924583  0.0006405078846468068
+  0.0015882479862308909  0.00014936310584887032
+  0.002053655747197      3.207183443888804e-5
+  0.0018425944267670055  1.803903131510534e-5
+  0.001847072424717548   1.465345165678352e-5
+  0.002055841628452572   1.4064308009718126e-5
+  0.0020628606036604915  1.395626180639233e-5</code></pre> <p><code>fno2</code> shows general positioning results &#40;1: Average observational time &#40;cumulative seconds from the reference time&#41;, 2-4: the estimated array displacements in EW, NS, and UD, 5-7: 1<span class=katex ><span class=katex-mathml ><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class=katex-html  aria-hidden=true ><span class=base ><span class=strut  style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span> estimation errors in EW, NS, and UD&#41;.</p> <div class=important >&#36; cat position.out</div> <pre><code class="plaintext hljs">5.00690645363141e8  0.025569840487938453  -0.015875407745997182  -0.03376358011884562  0.0016129310076125585  0.001613186827589505  0.0059052501621037635</code></pre>
 <p><code>fno3</code> shows the modeled results for NTD:</p>
 <ul>
 <li><p>1: the observational time &#40;cumulative seconds from the reference time&#41;</p>
@@ -23,16 +23,16 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 
 </ul>
 <div class=important >&#36; head residual.out</div>
-<pre><code class="plaintext hljs">5.00664920015051e8    1.0  0.0019194751443163372  0.0019078805382536155   1.159460606272168e-5
- 5.0066492022755253e8  3.0  0.0018793925787709523  0.001907899038987111   -2.8506460216158776e-5
- 5.0066492010527e8     4.0  0.001968642829947369   0.001907866003982035    6.077682596533412e-5
- 5.0066498000643504e8  1.0  0.0019341358646090842  0.0019214257952172098   1.2710069391874386e-5
- 5.00664980241396e8    3.0  0.0018818573227057482  0.0019214202683859388  -3.9562945680190554e-5
- 5.00664980102315e8    4.0  0.0019559217251406812  0.0019214007623962256   3.452096274445568e-5
- 5.00665039994504e8    1.0  0.0019046964317517385  0.0019276958929134143  -2.2999461161675797e-5
- 5.006650402641685e8   3.0  0.0018852779189122472  0.0019276653273191252  -4.2387408406878045e-5
- 5.006650401017465e8   4.0  0.001928001663903776   0.001927660645156722    3.410187470540959e-7
- 5.0066509998064e8     1.0  0.0018988272659300988  0.0019278273265752757  -2.9000060645176977e-5</code></pre>
+<pre><code class="plaintext hljs">5.00664410095011e8    4.0  0.0018449755930877668  0.0018705469372877442  -2.5571344199977388e-5
+ 5.00664440093926e8    4.0  0.0018824868863634263  0.001852118115376272    3.0368770987154346e-5
+ 5.00664920015051e8    1.0  0.0019435072397675811  0.0019334436223810048   1.0063617386576367e-5
+ 5.0066492022755253e8  3.0  0.0019030245459480146  0.0019336373718999381  -3.0612825951923566e-5
+ 5.0066492010527e8     4.0  0.001992831510936241   0.001933613539532501    5.921797140373986e-5
+ 5.0066498000643504e8  1.0  0.001958258457199361   0.0019472420380419      1.1016419157460888e-5
+ 5.00664980241396e8    3.0  0.0019055709885397217  0.0019474118171821846  -4.1840828642462826e-5
+ 5.00664980102315e8    4.0  0.001980233643143951   0.0019473994136280399   3.283422951591108e-5
+ 5.00665039994504e8    1.0  0.0019288464605689234  0.001953450397784169   -2.4603937215245727e-5
+ 5.006650402641685e8   3.0  0.0019090429001348119  0.001953594042111864   -4.4551141977051956e-5</code></pre>
 <p><code>fno4</code> shows the modeled results of B-spline function:</p>
 <ul>
 <li><p>1: number of the 3d B-spline bases</p>
@@ -45,16 +45,16 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 
 </ul>
 <div class=important >&#36; head bspline.out</div>
-<pre><code class="plaintext hljs">1.0    1.0  5.006643812573444e8   0.0015211235935625976
-   2.0    2.0  5.00664917e8          0.002019534277503533
-   3.0    3.0  5.006654527426556e8   0.0018423938269547732
-   4.0    4.0  5.0066598848531115e8  0.0017997817218493534
-   5.0    5.0  5.006665242279668e8   0.002033034277571156
-   6.0    6.0  5.0066705997062236e8  0.0020293506899085128
-   7.0    7.0  5.0066759571327794e8  0.002136698956976763
-   8.0    8.0  5.006681314559335e8   0.002118630274338342
-   9.0    9.0  5.006686671985891e8   0.0019997342050746816
-  10.0   10.0  5.006692029412447e8   0.0017556395427348488</code></pre>
+<pre><code class="plaintext hljs">1.0    1.0  5.0066386599961245e8  0.0028292312669924583
+   2.0    2.0  5.00664407e8          0.0015882479862308909
+   3.0    3.0  5.0066494800038755e8  0.002053655747197
+   4.0    4.0  5.006654890007751e8   0.0018425944267670055
+   5.0    5.0  5.0066603000116265e8  0.001847072424717548
+   6.0    6.0  5.006665710015502e8   0.002055841628452572
+   7.0    7.0  5.0066711200193775e8  0.0020628606036604915
+   8.0    8.0  5.006676530023253e8   0.0021528459136856935
+   9.0    9.0  5.0066819400271285e8  0.0021431008849452315
+  10.0   10.0  5.006687350031004e8   0.0019811296227287053</code></pre>
 <p><code>fno5</code> shows AIC and BIC values:</p>
 <ul>
 <li><p>1: total number of  the 3d B-spline bases</p>
@@ -65,7 +65,7 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 
 </ul>
 <div class=important >&#36; cat AICBIC.out</div>
-<pre><code class="plaintext hljs">100 -68846.58463077551 -68216.74756443244</code></pre>
+<pre><code class="plaintext hljs">100 -68800.74652164285 -68170.78632318709</code></pre>
 <p>You can change analysis conditions by the keyword arguments:</p>
 <ul>
 <li><p><code>eps</code>: Convergence criteria &#91;m&#93;, the default is 1.e-4 &#40;each inversion is conve</p>
@@ -79,7 +79,7 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 
 </ul>
 <p>For example,</p>
-<pre><code class="julia hljs">SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB,delta_pos=<span class=hljs-number >1.e-5</span>)</code></pre>
+<pre><code class="julia hljs">SeaGap.static_array(lat,TR_DEPTH,NPB,delta_pos=<span class=hljs-number >1.e-5</span>)</code></pre>
 <p>The time-series of NTD &#40;temporal sound speed fluctuation&#41; is summarized in <code>fno3&#61;&quot;residual.out&quot;</code>, and it can be visualized by <code>plot_ntd&#40;ntdrange,resrange; autoscale,fn,fno,show&#41;</code></p>
 <ul>
 <li><p>If <code>autoscale&#61;true</code> &#40;default&#41;, the plot range is automatically determined. If <code>autoscale&#61;false</code>, the plot range of y-componet is fixed by <code>ntdrange</code> and <code>resrange</code>. The range of x-compoent &#40;Time&#41; is automatically determined in the both cases.</p>
@@ -110,21 +110,21 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 <p>The final travel-time residuals for each seafloor transponder are shown, which correspond to the colored plots subtracting the black curve in the top panel.</p>
 <h2 id=optimization_of_the_total_number_of_3d_b-spline_bases ><a href="#optimization_of_the_total_number_of_3d_b-spline_bases" class=header-anchor >Optimization of the total number of 3d B-spline bases</a></h2>
 <p>In SeaGap, the bases of the 3d B-spline function are deployed with temporally constant intervals, and the number of them can be optionally provided.  The number of the bases of the 3d B-spline function directly affects temporal smoothness of the modeled NTD fluctuation so that it should be optimized depending on the observational data.</p>
-<p><code>pos_array_all_AICBIC&#40;r1,r2,r3,lat,XDUCER_DEPTH; fno,delete&#41;</code> is a function to calculate AIC and BIC for various number of 3d B-spline bases. <code>r1</code>, <code>r2</code>, and <code>r3</code> are all integers expressing the search range: minimum, maximum, and interval number, respectively.</p>
+<p><code>static_array_AICBIC&#40;r1,r2,r3,lat,TR_DEPTH; fno,delete&#41;</code> is a function to calculate AIC and BIC for various number of 3d B-spline bases. <code>r1</code>, <code>r2</code>, and <code>r3</code> are all integers expressing the search range: minimum, maximum, and interval number, respectively.</p>
 <p>For example,</p>
-<pre><code class="julia hljs">SeaGap.pos_array_all_AICBIC(<span class=hljs-number >30</span>,<span class=hljs-number >150</span>,<span class=hljs-number >5</span>,lat,XDUCER_DEPTH)</code></pre>
+<pre><code class="julia hljs">SeaGap.static_array_AICBIC(<span class=hljs-number >30</span>,<span class=hljs-number >150</span>,<span class=hljs-number >5</span>,lat,TR_DEPTH)</code></pre>
 <p>As a result, you obtain <code>fno</code> &#40;the output file: &quot;AICBIC&#95;search.out&quot; by default&#41; showing &#40;1: Total number of 3d B-spline bases, 2: AIC, 3: BIC, 4: RMS &#91;sec&#93;&#41;.</p>
 <div class=important >&#36; head AICBIC&#95;search.out</div>
-<pre><code class="plaintext hljs">30 -67715.5649433315 -67513.77248518275 3.9674441413194116e-5
-35 -67904.76265703465 -67672.39558401487 3.851018840214079e-5
-40 -68120.29855213231 -67857.35686424152 3.723318255152355e-5
-45 -68146.26476568381 -67852.74846292198 3.7033490223809215e-5
-50 -68254.47102905806 -67930.38011142521 3.63846965922283e-5
-55 -68428.9047453055 -68074.23921280164 3.5395031292152615e-5
-60 -68545.8026433101 -68160.56249593521 3.4729778303512695e-5
-65 -68639.48522726737 -68223.67046502147 3.4195522163512604e-5
-70 -68692.94624232204 -68246.5568652051 3.3872582673738174e-5
-75 -68706.10175307392 -68229.13776108596 3.3755510195622056e-5</code></pre>
+<pre><code class="plaintext hljs">30 -67594.35388945481 -67392.5219812117 4.089131458631897e-5
+35 -67878.3261641564 -67645.91366375524 3.913491415663497e-5
+40 -68061.21208324382 -67798.21899068462 3.8023670469485674e-5
+45 -68075.53192749251 -67781.95824277526 3.788581914518492e-5
+50 -68115.25130917276 -67791.09703229746 3.7605549809629455e-5
+55 -68212.0453944058 -67857.31052537245 3.701053875721755e-5
+60 -68351.01091684843 -67965.69545565704 3.619625865943626e-5
+65 -68448.25769269654 -68032.3616393471 3.562113772432889e-5
+70 -68540.5609666159 -68094.08432110841 3.508104482907046e-5
+75 -68664.8326454064 -68187.77540774086 3.4384587648691415e-5</code></pre>
 <p>You can check the results by <code>plot_AICBIC&#40;;type,fn,fno,show&#41;</code>. You set <code>type</code> as &quot;AIC&quot; or &quot;BIC&quot;. <code>fn</code> is the input file &#40;&quot;AICBIC&#95;search.out&quot; by default&#41; for plot. If <code>show&#61;false</code>, the plot is saved as <code>fno</code> &#40;<code>fno</code> is the figure name; &quot;AICBIC&#95;search.pdf&quot; by default&#41;. If <code>show&#61;true</code>, the plot is temporally shown on REPL.</p>
 <pre><code class="julia hljs">SeaGap.plot_AICBIC(type=<span class=hljs-string >&quot;BIC&quot;</span>,show=<span class=hljs-literal >true</span>)</code></pre>
 
@@ -136,8 +136,8 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 </div>
 
 <p>The number of 3d B-spline bases with the minimum criterion is shown by a red vertical line. </p>
-<p>If you&#39;d like to check in detail, you can additionally perform <code>pos_array_all_AICBIC&#40;&#41;</code>:</p>
-<pre><code class="julia hljs">SeaGap.pos_array_all_AICBIC(<span class=hljs-number >61</span>,<span class=hljs-number >99</span>,<span class=hljs-number >1</span>,lat,XDUCER_DEPTH)</code></pre>
+<p>If you&#39;d like to check in detail, you can additionally perform <code>static_array_AICBIC&#40;&#41;</code>:</p>
+<pre><code class="julia hljs">SeaGap.static_array_AICBIC(<span class=hljs-number >61</span>,<span class=hljs-number >99</span>,<span class=hljs-number >1</span>,lat,TR_DEPTH)</code></pre>
 <p>The AIC and BIC values are additionally written in <code>fno</code> &#40;the output file: &quot;AICBIC&#95;search.out&quot; by default&#41;. If you&#39;d like to save the results in a new file, you add <code>delete&#61;true</code>.</p>
 <pre><code class="julia hljs">SeaGap.plot_AICBIC(type=<span class=hljs-string >&quot;BIC&quot;</span>,fno=<span class=hljs-string >&quot;BIC_search.png&quot;</span>)</code></pre>
 
@@ -150,33 +150,33 @@ SeaGap.pos_array_all(lat,XDUCER_DEPTH,NPB)</code></pre> <p>To perform <code>pos_
 
 <h2 id=optimization_of_the_transducer-antenna_offset ><a href="#optimization_of_the_transducer-antenna_offset" class=header-anchor >Optimization of the transducer-antenna offset</a></h2>
 <p><code>pos_array_TR&#40;&#41;</code> performs the static array positioning with optimization of an offset between a transducer and a GNSS antenna. The initial values of the offset are shown in <code>fn1&#61;&quot;tr-ant.inp&quot;</code>.</p>
-<pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; XDUCER_DEPTH=<span class=hljs-number >5.0</span>; NPB=<span class=hljs-number >77</span>
-SeaGap.pos_array_TR(lat,XDUCER_DEPTH,NPB)</code></pre>
-<p>The arguments and the input/output files of <code>pos_array_TR&#40;&#41;</code> are same with those of <code>pos_array_all&#40;&#41;</code> except <code>fno1</code>, <code>fno5</code>, and <code>delta_offset</code>. <code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41; as same with <code>pos_array_all&#40;&#41;</code>, and its file name is &quot;solve.out&quot; by default. However, the lines 4-6 in <code>fno1</code> shows the solutions and the errors for the modification values of the offset from the initial file &#40;<code>fn1&#61;&quot;tr-ant.inp&quot;</code>&#41;.</p>
-<p><code>fno5</code> in <code>pos_array_TR&#40;&#41;</code> shows three components of the estimated offset values and their estimation errors &#40;1-3: Offset in X, Y, Z, 4-6: Error in X, Y, Z&#41;. The default name of <code>fno5</code> is &quot;tr-ant.out&quot;</p>
+<pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; TR_DEPTH=<span class=hljs-number >4.0</span>; NPB=<span class=hljs-number >73</span>
+SeaGap.static_array_TR(lat,TR_DEPTH,NPB)</code></pre>
+<p>The arguments and the input/output files of <code>static_array_TR&#40;&#41;</code> are same with those of <code>static_array&#40;&#41;</code> except <code>fno1</code>, <code>fno5</code>, and <code>delta_offset</code>. <code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41; as same with <code>static_array&#40;&#41;</code>, and its file name is &quot;solve.out&quot; by default. However, the lines 4-6 in <code>fno1</code> shows the solutions and the errors for the modification values of the offset from the initial file &#40;<code>fn1&#61;&quot;tr-ant.inp&quot;</code>&#41;.</p>
+<p><code>fno5</code> in <code>static_array_TR&#40;&#41;</code> shows three components of the estimated offset values and their estimation errors &#40;1-3: Offset in X, Y, Z, 4-6: Error in X, Y, Z&#41;. The default name of <code>fno5</code> is &quot;tr-ant.out&quot;</p>
 <div class=important >&#36; cat tr-ant.out</div>
 <pre><code class="plaintext hljs"># TR_offset: dx, dy, dz, sigmax, sigmay, sigmaz
-0.36263055102029373 17.72528757116563 -11.417248564560044 0.0021584714990507776 0.0020794994652210477 0.021231771169224003</code></pre>
+0.3616906760091636 17.724424295279814 -11.384094674905342 0.002220912736952465 0.002122249262876749 0.021302808617137618</code></pre>
 <p>Note that the estimated offset &#40;especially in Z component&#41; and the error are strongly influenced by <code>delta_offset</code> which is a infinitesimal value to calculate the Jacobian matrix.</p>
 <p>You can make a figure on NTD fluctuation using <code>plot_ntd&#40;&#41;</code>.</p>
 <h2 id=static_array_positioning_directly_estimating_deep_gradients ><a href="#static_array_positioning_directly_estimating_deep_gradients" class=header-anchor >Static array positioning directly estimating deep gradients</a></h2>
-<p><code>pos_array_pvg&#40;&#41;</code> is a function to estimate the array position, NTD, and the deep gradient following the observation equation &#40;0&#41; shown in Methodolgy.</p>
-<pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; XDUCER_DEPTH=<span class=hljs-number >5.0</span>; NPB=<span class=hljs-number >77</span>
-SeaGap.pos_array_pvg(lat,XDUCER_DEPTH,NPB)</code></pre>
-<p>The input and output files are same with <code>pos_array_all&#40;&#41;</code> except <code>fno1</code> &#40;solve.out&#41;. <code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41;. First three paramters are the array displacement in meter &#40;Line 1: EW, 2: NS, 3: UD&#41;, following two parameters are the deep gradients &#40;EW and NS components&#41;, and the followings are the coeffients for the 3d B-spline bases.</p>
+<p><code>static_array_grad&#40;&#41;</code> is a function to estimate the array position, NTD, and the deep gradient following the observation equation &#40;0&#41; shown in Methodolgy.</p>
+<pre><code class="julia hljs">lat=<span class=hljs-number >36.15753</span>; TR_DEPTH=<span class=hljs-number >4.0</span>; NPB=<span class=hljs-number >73</span>
+SeaGap.static_array_grad(lat,TR_DEPTH,NPB)</code></pre>
+<p>The input and output files are same with <code>static_array&#40;&#41;</code> except <code>fno1</code> &#40;solve.out&#41;. <code>fno1</code> shows the estimated values for the all unknown paramters &#40;Column 1&#41; and their estimated errors &#40;Column 2&#41;. First three paramters are the array displacement in meter &#40;Line 1: EW, 2: NS, 3: UD&#41;, following two parameters are the deep gradients &#40;EW and NS components&#41;, and the followings are the coeffients for the 3d B-spline bases.</p>
 <div class=important >&#36; head solve.out</div>
-<pre><code class="plaintext hljs">0.06186500501267254    0.00992683409066011
- -0.10741363544193698    0.00997340191013794
-  0.04151063120851943    0.0057541462062501965
- -0.00176174309735594    1.018494235927363e-5
-  0.004735467821527803   1.024917937077662e-5
-  0.0015035283932803714  0.00018873162119166135
-  0.002027055280703528   3.5164026406347694e-5
-  0.001840663027096163   1.8448401165606075e-5
-  0.0018087390392073942  1.4870952333418019e-5
-  0.002046647728789619   1.3874065160409779e-5</code></pre>
+<pre><code class="plaintext hljs">0.05716808379464143    0.010323692682974235
+ -0.10432416432151723    0.010352417750937109
+ -0.03272003155151303    0.005966092916374746
+ -0.0016961884755161219  1.0593038103221104e-5
+  0.004606692802815337   1.0642462250064952e-5
+  0.0012708174287718059  0.0002929382132355768
+  0.0019717264647313845  6.168088736357858e-5
+  0.001966238662798193   2.1284718377917524e-5
+  0.0017876760778575132  1.4449223995398357e-5
+  0.0021019089315658748  1.3042243131003611e-5</code></pre>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: February 09, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: February 17, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
