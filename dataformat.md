@@ -34,16 +34,20 @@ The file is an one-lined file with three columns, and each column is given as (1
 0.188984299 -6.990937724 -15.300000000
 ```
 
-## pxp-ini.xyh
+## pxp-ini.inp
 
-Positions of individual seafloor transponders at each site are given in the file. The positions must be given in meter. In order to provide these positions, you have to convert geographic coordinates into the projection coordinates. The projection center should be defined as a center of the transponder array for each site, and must be fixed among GNSS-A campaign cruises. You can convert the geographic coordinates into the projection coordinates by ll2xy function shown in Others via [GMT](https://github.com/GenericMappingTools/GMT.jl) mapprojection module
+Positions of individual seafloor transponders at each site are given in the file.
+The positions must be given in meter.
+In order to provide these positions, you have to convert geographic coordinates into the projection coordinates.
+The projection center should be defined as a center of the transponder array for each site, and must be fixed among GNSS-A campaign cruises.
+You can convert the geographic coordinates into the projection coordinates by `ll2xy` function shown in [Others](/others/) via [GMT](https://github.com/GenericMappingTools/GMT.jl) mapprojection module
 
 The file has three rows, which indicate the transponder positions in meter (1: EW position, 2: NS position, 3: UD position).
 Each line shows one seafloor transponder position; thus, the total number of lines indicate the total number of transponders at each site.
 The line number of this file corresponds to the transponder number written in "obsdata.inp".
 
 @@important
-\$ cat pxp-ini.xyh
+\$ cat pxp-ini.inp
 @@
 ```plaintext
  997.5346  985.5925 -2738.9998
@@ -52,12 +56,12 @@ The line number of this file corresponds to the transponder number written in "o
  935.8767 -980.5919 -2710.8535
 ```
 
-## ss\_prof.zv
+## ss\_prof.inp
 
 Underwater sound speed profile is given in this file. In order to precise calculation of travel-times, you should prepare a profile with 5-m or less interval. The rows of this file indicate (1: water depth [m], 2: sound speed [m/sec]), respectively.
 
 @@important
-\$ head ss\_prof.zv
+\$ head ss\_prof.inp
 @@
 ```plaintext
 0.00 1526.998
@@ -72,15 +76,15 @@ Underwater sound speed profile is given in this file. In order to precise calcul
 45.00 1525.194
 ```
 
-Maximum depth of ss\_prof.zv must be deeper than maximum depth of the seafloor transponders wriiten in "pxp-ini.xyh". Thus, you should prepare a long profile deeper than the water depth by extrapolation.
+Maximum depth of ss\_prof.inp must be deeper than maximum depth of the seafloor transponders wriiten in "pxp-ini.inp". Thus, you should prepare a long profile deeper than the water depth by extrapolation.
 
 You can optionally draw figure of the sound speed profile by `plot_prof(;fno,fn)` function.
-* `fn`: the file name of a sound speed profile (the default is `fn="ss_prof.zv"`)
+* `fn`: the file name of a sound speed profile (the default is `fn="ss_prof.inp"`)
 * `fno`: the output file name (the default is `fno="ss_prof.pdf"`). If you change the filename extension, the output file format is automatically changed (e.g., ".png",".svg")
 * `show`: If you use this function with `show=true` keyword argument in REPL, you can display as GUI (but not saved as a figure file). 
 
 ```julia
-SeaGap.plot_prof(fno="ss_prof.png",fn="ss_prof.zv",show=false) 
+SeaGap.plot_prof(fno="ss_prof.png",fn="ss_prof.inp",show=false) 
 ```
 
 ~~~
@@ -108,7 +112,7 @@ The rows of "obsdata.inp" indicate as following:
 * 14-16: Sea-surface platform attitude (heading, pitch, roll) when recieving [deg]
 * 17: Flag).
 
-The seafloor transponder number is linked to the line number of "pxp-ini.xyh".
+The seafloor transponder number is linked to the line number of "pxp-ini.inp".
 The two-ways travel-time is "pure" travel-time" without any mechanical delays of a transponder. 
 The transmitted and recieved times are cumulative seconds from the reference time. The reference time can be optionally defined by User.
 The sea-surface platform positions indicate positions of the GNSS anttena attached to the sea-surface platform.
@@ -134,12 +138,12 @@ The flag is only used for kinematic GNSS-Acoustic positioning, and it indicates 
 ```
 
 You can easily make figure showing a track of the sea-surface platform by `plot_track(xrange,yrange;autoscale,fn1,fn2,fno)`
-* `fn1` and `fn2`: corresponding to the file names of "pxp-ini.xyh" and "obsdata.inp" , respectively
+* `fn1` and `fn2`: corresponding to the file names of "pxp-ini.inp" and "obsdata.inp" , respectively
 * `fno` is the output figure name.
 * `autoscale`: If you set `autoscale=true`, the plot range is automatically defined depending on the data. If you set `autoscale=false`, the plota range is defined as `xrange` and `yrange` as following
 
 ```julia
-SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.xyh",fn2="obsdata.inp",fno="track.pdf")
+SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.inp",fn2="obsdata.inp",fno="track.pdf")
 ```
 ~~~
 <div class="row">
@@ -175,7 +179,7 @@ SeaGap prepares an interpolation module `interpolate_gps()` to obtain these from
 Moreover, `obsdata_format(numk; fno,fn1,fn21,fn22)` provides "obsdata.inp" using following files:
 
 1. `gps.jxyhhpr`: Time-series of GNSS antenna positions and attitudes for a sea-surface platform
-1. `pxp-_k_.jttq`: Travel-time data for _k_ th seafloor transponder
+1. `pxp-k.jttq`: Travel-time data for _k_ th seafloor transponder
 
 * `numk`: the total number of seafloor transponders at the corresponding site.
 * `fno`: the output file name (the default is `fno="obsdata.inp"`)
@@ -214,7 +218,7 @@ If you'd like to obtain the cumulative seconds from date-and-time, you can use `
 
 Moreover, if you'd like to obtain the projected XY positions from geographic coordinates, you can use `ll2xy()`, `ll2xy_vec()` or `ll2xy_txt()` functions to perform the transformation.
 
-The details of these functions are shown in the Others tab.
+The details of these functions are shown in the [Others](/others/) tab.
 
 If you have the following file:
 

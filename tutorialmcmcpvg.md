@@ -27,48 +27,55 @@ The type of unknown parameters to be placed on each line of this file is fixed a
 * Lines 12-13: Scale factor optimizing observational errors
 * Lines 14-: Coefficinets for the 3d B-spline bases (Short-term NTD)
 
-This file can be produced by `make_initial(fn1,fn2,fn3,fno,error_scale)` function.
+This file can be produced by `make_initial(fn1,fn2,fn3,fno,error_scale,tscale)` function.
 `fn1` is the initial seafloor transponder positions: "pxp-ini.xyh".
 `fn2` and `fn3` are "residual.out" and "solve.out", respectively; they are obtained by [the basic static array positioning](/tutorialstatic/) `pos_array_all()`.
+
 `error_scale` is used for providing the step width (`error_scale=5.0` by default).
-`make_initial()` provides the step widths as ($1\sigma$ standard deviation / `error_scale`) for the parameters at Lines 1-3, 7-11, and 14-.
+Then, `make_initial()` provides the step widths as ($1\sigma$ standard deviation / `error_scale`) for the parameters at Lines 1-3, 7-11, and 14-.
+
+`tscale` is used to normalize time when obataining L-NTD parameters as $\sum_{m=0}^{4} \gamma_{m}t^m_n/(60*60*{\rm tscale})$ in [Methodology](/methodmcmcpvg/).
+Since `t` indicates the observational time in second, $60*60$ converts the time into the unit of hour.
+In order to promote the acceptance ratio of the MCMC sampling, `tscale` should be set to the whole observational period [hour].
+
  
 ```julia
-SeaGap.make_initial(fn1="pxp-ini.xyh",fn2="residual.out",fn3="solve.out",fno="initial.inp",error_scale=5.0)
+SeaGap.make_initial(fn1="pxp-ini.xyh",fn2="residual.out",fn3="solve.out",fno="initial.inp",error_scale=5.0,tscale=10.0)
 ```
 
 @@important
 \$ head -n 20 initial.inp
 @@
 ```plaintext
-0.030187510738829797 -20 20 0.000321268998116478 EW_disp.
--0.017200785437164808 -20 20 0.0003204201142000086 NS_disp.
-0.041056999118875934 -20 20 0.0011705986999643245 UD_disp.
-0 -20 20 1.e-6 S-Gradient_EW
-0 -20 20 1.e-6 S-Gradient_NS
-0.65 0 2.7056096662950706 0.003 Gradient_depth
-0.001926966300227448 -20 20 1.5834887346403067e-6 L-NTD_1
--6.645212668710516e-5 -20 20 1.5317937174687443e-6 L-NTD_2
-1.376759486440472e-5 -20 20 4.321599672129574e-7 L-NTD_3
--1.0818152019511877e-6 -20 20 4.49314117280274e-8 L-NTD_4
-5.3511728156856244e-8 -20 20 1.5413419988334485e-9 L-NTD_5
-0 -20 20 0.005 Scale_1
-0 -20 20 0.005 Scale_2
-0.0010647476480386791 -20 20 3.503253752448373e-5 S-NTD_1
-0.002151559316822114 -20 20 6.37847806976361e-6 S-NTD_2
-0.0017068866360801726 -20 20 3.3017370591590338e-6 S-NTD_3
-0.0019755794522729655 -20 20 2.647153534948832e-6 S-NTD_4
-0.0020457446445436914 -20 20 2.5638873591818526e-6 S-NTD_5
-0.0021441954994986263 -20 20 2.4741186962746727e-6 S-NTD_6
-0.0020924782933203438 -20 20 2.5033734582093735e-6 S-NTD_7
+0.025636280922571503 -20.0 20.0 0.0003285573488282583 EW_disp.
+-0.015945415334263136 -20.0 20.0 0.0003275385835573224 NS_disp.
+-0.0341679281482854 -20.0 20.0 0.0012002522323013415 UD_disp.
+0.0 -20.0 20.0 1.e-6 S-Gradient_EW
+0.0 -20.0 20.0 1.e-6 S-Gradient_NS
+0.65 0 2.7056096662950706 0.01  Gradient_depth
+0.0019017563284706718 -20.0 20.0 1.6611016486294932e-6 L-NTD_1
+-0.0007901676224344456 -20.0 20.0 1.5449119464738023e-5 L-NTD_2
+0.0015766489100226266 -20.0 20.0 4.222747834588211e-5 L-NTD_3
+-0.0012713154100225665 -20.0 20.0 4.290762653134229e-5 L-NTD_4
+0.0005980067084534468 -20.0 20.0 1.4451169310092645e-5 L-NTD_5
+-4.0 -20.0 20.0 0.005 Scale_1
+-3.5 -20.0 20.0 0.005 Scale_2
+0.0013391985795993162 -20.0 20.0 5.925901087601794e-5 S-NTD_1
+0.0019548158709784824 -20.0 20.0 1.2467626341387438e-5 S-NTD_2
+0.0019695006501768662 -20.0 20.0 4.302502267822001e-6 S-NTD_3
+0.001779083361610449 -20.0 20.0 2.830791012520501e-6 S-NTD_4
+0.002088654982500453 -20.0 20.0 2.596471958417347e-6 S-NTD_5
+0.0020800544363949007 -20.0 20.0 2.475559611199917e-6 S-NTD_6
+0.002210865507757804 -20.0 20.0 2.4503884543907966e-6 S-NTD_7
 ```
 
 If you provide same values for the columns 1-3 at a certain line, the corresponding parameter is handled as a constant parameter.
 For example, when you provide "0.65" for the columns 1-3 at the 6th line, you can estimate an array displacement with the gradient depth is fixed to 650 m.
 
+
 ## Run MCMC processing
 
-Before you run `pos_array_mcmcpvg()`, you have to set number of threads for the thread parallelization in your terminal as:
+Before you run `static_array_mcmcgrad()`, you have to set number of threads for the thread parallelization in your terminal as:
 
 @@important
 \$ export JULIA\_NUM\_THREADS=4
@@ -82,75 +89,42 @@ or you have to run Julia as:
 
 This value is determined depending on your machine ability.
 
-Then, after setting the above thread number and preparing the above input files, you can perform `pos_array_mcmcpvg(lat,XDUCER_DEPTH,NPB; NSB, nloop,nburn,NA,scalentd,delta_scale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7)` function as following:
+Then, after setting the above thread number and preparing the above input files, you can perform `static_array_mcmcgrad(lat,TR_DEPTH,NPB; NSB,nloop,nburn,ndelay,NA,lscale,daave,daind,tscale,fn1,fn2,fn3,fn4,fn5,fno0,fno1,fno2,fno3,fno4,fno5,fno6,fno7)` function as following:
 
 ```julia
-lat=36.15753; XDUCER_DEPTH=5.0; NPB=77
-SeaGap.pos_array_mcmcpvg(lat,XDUCER_DEPTH,NPB) 
+lat=36.15753; TR_DEPTH=4.0; NPB=73
+SeaGap.static_array_mcmcgrad(lat,TR_DEPTH,NPB,NSB=50,aventd=true,daave=2.5e-6,daind=3.5,lscale=10.0)
 ```
 
-Meanings of the arguments of `pos_array_mcmcpvg()` are following:
+Meanings of the arguments of `static_array_mcmcgrad()` are following:
 * `lat`: Latitude of the site
-* `XDUCER_DEPTH`: Depth of the sea-surface transducer from the sea-surface [m]
+* `TR_DEPTH`: Depth of the sea-surface transducer from the sea-surface [m]
 * `NPB`: Number of the 3d B-spline bases (this should be optimized in the conventional static array positioning `pos_array_all_AICBIC()`)
 * `NSB`: Number of the perturbated B-spilne bases for each iteration (`NSB=100` by default)
 * `nloop`: Total number of the MCMC iterations (1200000 by default)
 * `nburn`: Burn-in period of the MCMC iterations (samples less than `nburn` is excluded from the final results; 200000 by default)
+* `ndelay`: Number of the MCMC iterations for starting to perturb the scaling parameters (`ndelay=1` by default)
 * `NA`: Number of the sampling interval (5 by default; if you set (`nloop=1200000`, `nburn=200000`, and `NA=5`), you can obtain (1200000-200000)/5 samples)
-* `scalentd`: "true" or "false", which turn on/off the scaling procedure for the parameters for the long-term NTD polynomial functions (true by default)
-* `delta_scale`: the step width for the scaled long-term NTD parameters if `scalentd=true` (0.001 by default)
-* `fn1-5`: the input file names ("tr-ant.inp", "pxp-ini.xyh", "ss\_prof.zv", "obsdata.inp", and "initial.inp")
+* `lscale`: Scaling factor for the step width of the long-term NTD parameters (`lscale=1.0` by default)
+* `aventd`: Provide common perturbation to all S-NTD parameters when `aventd=true` (`aventd=false` by default)
+* `daave`: Step width for average NTD when (`aventd=true`)
+* `daind`: Scaling dactor for step width of individual NTD when (`aventd=true`)
+* `tscale`: Temporal scaling for time in the polynomial functions (time [sec] is converted into [hour]/`tscale`, `tscale=10` by default)
+* `fn1-5`: the input file names ("tr-ant.inp", "pxp-ini.inp", "ss\_prof.inp", "obsdata.inp", and "initial.inp")
 * `fno0`: the log file ("log.txt" by default)
 * `fno1-7`: the output file names ("sample.out", "mcmc.out", "position.out", "statistics.out", "acceptance.out", "residual\_grad.out", and "bspline.out")
 
-### Scaling for long-term NTD modeling
-Note that `pos_array_mcmcpvg()` has a function to perform a variable transformation for the 4th polynomial functions.
-Since these parameters tends to have very small values, it is better to do the variable transformation.
-The log-scaling or exponential-scaling are often performed for a variable transformation, but they cannot express negative values.
-Then, SeaGap introduces an original transformation function.
+### Delay to start updating for the scaling factors 
+The function has some options to enhance the acceptance ratio.
+Although the function optimizes the scaling factors for the two observation equations shown in [Methodology](/methodmcmcpvg/), these values sometimes fix before convergence of the other unknown parameters.
+In such case, `ndelay` should be set to certain value (such as half of the burn-in period).
+By this option, optimization of the scaling factors starts after `ndelay` iterations.
 
-$$ x_{\rm org}=x\times10^{|x|+s} $$
-
-Here, $x_{\rm org}$ is the original value, and $x$ is the transformed value.
-$s$ is a scaling factor, which almost corresponds to an exponent.
-This transformation is calculated by `scale(x,s)`.
-
-For examples,
-```julia
-SeaGap.scale(0.0,-7.0)
- 0.0
-
-SeaGap.scale(0.1,-7.0)
- 1.2589254117941663e-8
-
-SeaGap.scale(-1.0,-7.0)
- -1.0e-6
-```
-
-Dependency of the scaling factor of the variable transformation is shown below.
-
-~~~
-<div class="row">
-  <div class="container">
-    <img src="/assets/scale.png" width="350" height="350">
-    <div style="clear: both"></div>
-  </div>
-</div>
-~~~
-
-You can obtain the transformed value form the original value by `scale_est(x0,s)`.
-`x0` is  the original value.
-Note that `x0` and `s` must be given as a vector type.
-
-```julia
-SeaGap.scale_est([1.e-7],[-6.0])
-1-element Vector{Float64}:
- 0.08266713144257666
-```
-
-In `pos_array_mcmcpvg()` with `scale=true`, the initial values at the lines 7-11 in "initial.inp" (corresponding to the 4th polynomial functions) are transformed into the scaled values,the scaled values are optimized.
-Then, the scaled values are retransformed before they are written in the output files. 
-The scaling factor is determined as $log10()$ of the step width written in "initial.inp".
+### Scaling for the step widths for L-NTD parameters
+Due to the strong covariance among the L-NTD parameters, they tends to decrease the acceptace ratio.
+In this case, `lscale` reduces the step widths of the L-NTD parameters.
+If `lscale=10`, the step width for each L-NTD parameter is a tenth of the original value.
+Moreover, `tscale` is also important to increase the acceptance ratio; `tscale` used in `make_initial()` must be given in `tscale` here.
 
 ### Partial update for coefficients of 3d B-spline functions
 At each MCMC iteration, not all parameters on the 3d B-spline bases are changed to increase the acceptance ratio.
@@ -177,7 +151,7 @@ $\sigma_{\rm com}$ is a step width for whole 3d B-spline functions.
 Thus, $u_{\rm com}\sigma_{\rm com}$ give a perturbation to the average level of the 3d B-spline functions.
 While, $u\sigma_{c_j}$ give a pertubation to the individual coefficient for the  3d B-spline basis, and $\Delta_{c}$ is a scaling factor to encourage acceptance by providing $\Delta_{c}>1$.
 
-$\sigma_{com}$ and $\Delta_{c}$ can be given as `daave` and `daind`, respectively. 
+$\sigma_{\rm com}$ and $\Delta_{c}$ can be given as `daave` and `daind`, respectively. 
 
 ## Output text files
 
@@ -190,11 +164,11 @@ fno0: the log file, which shows the analytical conditions, and so on
 @@
 ```plaintext
 2023-01-17T19:00:41.919
-pos_array_mcmcpvg.jl at /Users/test_PC/SeaGap_test/mcmc
+static_array_mcmcgrad.jl at /Users/test_PC/SeaGap_test/mcmc
 Number of threads: 4
 Number_of_B-spline_knots: 77
 Default_latitude: 36.15753
-XDUCER_DEPTH: 5.0
+TR_DEPTH: 4.0
 Number_of_MCMC_loop: 1200000
 Burn_in_period: 200000
 Sampling_interval: 5
@@ -213,15 +187,15 @@ Then, the sampled parameters for each MCMC iteration at each line.
 @@
 ```plaintext
 EW_disp. NS_disp. UD_disp. S-Gradient_EW S-Gradient_NS Gradient_depth
-0.08260468443394334 -0.08662247961124432 0.025670510288264305 -8.771624335364252e-5 0.00010961686642287733 1.2503597971928924
-0.08267622275159063 -0.08659985681012972 0.025576618792931577 -8.771624335364252e-5 0.00010961686642287733 1.2514668834253768
-0.08267622275159063 -0.08659985681012972 0.025576618792931577 -8.771624335364252e-5 0.00010961686642287733 1.2514668834253768
-0.08257816202610356 -0.08676586359181068 0.026364029769176674 -8.662376786583694e-5 0.00011008075308089754 1.2545419670486935
-0.08273477250197107 -0.08691447522787146 0.026473029376261083 -8.601645266995016e-5 0.00011039835525118065 1.256823862187269
-0.08273477250197107 -0.08691447522787146 0.026473029376261083 -8.586850303156531e-5 0.00011032251120277963 1.256823862187269
-0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.601882619337507e-5 0.00011100358125704938 1.2539045990938986
-0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.575844791557426e-5 0.00011146701700201295 1.2539045990938986
-0.08296086785894285 -0.08690636056269939 0.026105616785332967 -8.575844791557426e-5 0.00011146701700201295 1.2539045990938986
+0.0792280816606764 -0.07808502829846697 -0.038635864431547984 -8.68250555312698e-5 0.0001083565550747744 1.2313132109702847
+0.0792280816606764 -0.07808502829846697 -0.038635864431547984 -8.68250555312698e-5 0.0001083565550747744 1.2313132109702847
+0.0792280816606764 -0.07808502829846697 -0.038635864431547984 -8.718446946801919e-5 0.00010799325700068288 1.2313132109702847
+0.0792280816606764 -0.07808502829846697 -0.038635864431547984 -8.649523108069255e-5 0.00010798884128099522 1.2313132109702847
+0.0792280816606764 -0.07808502829846697 -0.038635864431547984 -8.649523108069255e-5 0.00010798884128099522 1.2313132109702847
+0.07951942860412713 -0.07842957364617842 -0.03781991489286092 -8.733991904332083e-5 0.00010881386462605156 1.2344368074146146
+0.0797973876496036 -0.07865097632952621 -0.038638614141646405 -8.643812294091133e-5 0.00010794655607095396 1.230610894350092
+0.0797973876496036 -0.07865097632952621 -0.038638614141646405 -8.738808866230476e-5 0.00010699597479892664 1.230610894350092
+0.0797973876496036 -0.07865097632952621 -0.038638614141646405 -8.755999059925743e-5 0.00010683959008568226 1.230610894350092
 ```
 
 @@importantv
@@ -242,16 +216,16 @@ In this file, the PDF and RMS values for each MCMC iteration are recorded.
 \$ head mcmc.out
 @@
 ```plaintext
-5 1 0 -172.07488459892824 -1409.6579839265735 -1581.7328685255018 3.338234991326818e-5 9.182030714056993e-5
-10 0 0 -155.61914177499887 -1401.3967311431156 -1557.0158729181144 3.339232619776381e-5 9.16151939518422e-5
-15 1 0 -155.61914177499887 -1401.3967311431156 -1557.0158729181144 3.339232619776381e-5 9.16151939518422e-5
-20 0 1 -137.41091421376203 -1401.376226403875 -1538.787140617637 3.3410538738499884e-5 9.161452963850095e-5
-25 1 0 -133.01831863694736 -1391.9801617581804 -1524.998480395128 3.344301817743939e-5 9.134824556321319e-5
-30 0 1 -109.29886449002367 -1391.0621556429485 -1500.361020132972 3.347260711004965e-5 9.127132832978736e-5
-35 1 0 -109.30483475777382 -1387.2011111207792 -1496.505945878553 3.347311308670593e-5 9.121323544230633e-5
-40 0 0 -85.27475239673925 -1379.5576836995147 -1464.8324360962538 3.351642492052818e-5 9.102471441061438e-5
-45 1 0 -85.25849887560958 -1376.4199976400157 -1461.6784965156253 3.3515071947666e-5 9.096666320486617e-5
-50 0 1 -75.34502498422776 -1376.6926493095564 -1452.0376742937842 3.3526530022277746e-5 9.097539166287877e-5
+5 1 1 30640.5316249358 26757.182836699594 57397.71446163539 3.419040965749844e-5 0.00012051927477698287
+10 0 0 30644.022168433235 26813.7289314623 57457.75109989554 3.429663404938296e-5 0.0001175853809320721
+15 1 1 30644.02943515391 26821.252387755638 57465.28182290954 3.429600320700134e-5 0.00011634444275541483
+20 0 1 30687.95350102651 26823.489752791196 57511.443253817706 3.449121949976427e-5 0.00011579450769642835
+25 1 0 30687.992457113745 26871.354381771493 57559.346838885234 3.44879605037534e-5 0.00011191537288709573
+30 0 1 30704.209918043824 26886.500131302717 57590.71004934654 3.466740851167605e-5 0.00011215778277425875
+35 1 1 30733.804150874275 26917.628966105163 57651.43311697944 3.430833898450772e-5 0.00011717803812660892
+40 0 0 30733.799521863253 26943.733104792474 57677.532626655724 3.430871686462821e-5 0.00011672459488211255
+45 1 0 30751.288984391485 26975.74207282055 57727.031057212036 3.435878909575146e-5 0.00011265293645483022
+50 0 0 30772.365768478183 26975.302681107092 57747.668449585275 3.4477732396622186e-5 0.00011275388395079637
 ```
 
 @@importantv
@@ -265,7 +239,7 @@ This is same format with the "position.out" of `pos_array_all()`.
 \$ cat position.out
 @@
 ```plaintext
-5.006911621555024e8 0.08911960760365124 -0.09216111977421959 0.03457162712162569 0.003936408533764213 0.0043953798040076006 0.005210189660303897
+5.006911464354839e8 0.078367613458201 -0.08514945576712399 -0.0340102206482122 0.005144727208048865 0.0062974579205844075 0.005704865959222425
 ```
 
 @@importantv
@@ -277,15 +251,15 @@ fno4: Statistical values for each unknown parameter ("statistics.out" by default
 @@
 ```plaintext
 #Parameter mean std median min max
- "EW_disp."         0.08911960760365124     0.003936408533764213     0.0892521976843861       0.07400853233593642      0.10005015563126467
- "NS_disp."        -0.09216111977421959     0.0043953798040076006   -0.09213407404825562     -0.10569075622407245     -0.07838777092762594
- "UD_disp."         0.03457162712162569     0.005210189660303897     0.03449415426052328      0.020518200098452177     0.05212435704281135
- "S-Gradient_EW"   -8.623784806334861e-5    3.126868794994436e-6    -8.626830270790426e-5    -9.798370547851873e-5    -7.330783126090201e-5
- "S-Gradient_NS"    0.00010966667913789561  3.423305146728919e-6     0.00010964007421263047   9.748940165070173e-5     0.00012217847159287033
- "Gradient_depth"   1.4207329666466362      0.07705694064531148      1.423071425054456        1.1953002262535226       1.652638238698269
- "L-NTD_1"          0.001876150125418078    8.450064033018187e-6     0.0018754533333023632    0.0018500354406289293    0.0019026360766405816
- "L-NTD_2"         -2.5573041517503042e-5   6.615899997973998e-6    -2.6145326032410628e-5   -3.98440505121662e-5     -1.3381927457000322e-5
- "L-NTD_3"          4.366073210014821e-6    1.5633246953860986e-6    4.618228804187182e-6     1.6644226647942257e-6    7.839589859898406e-6
+ "EW_disp."         0.078367613458201       0.005144727208048865     0.07784887468370676     0.06576224682341979      0.09457305348507103
+ "NS_disp."        -0.08514945576712399     0.0062974579205844075   -0.08511206694720905    -0.10587183701850005     -0.06705651655040301
+ "UD_disp."        -0.0340102206482122      0.005704865959222425    -0.03399846412638977    -0.05436245652909059     -0.011735357475848841
+ "S-Gradient_EW"   -8.62246678447068e-5     3.0006948844345516e-6   -8.618574116032473e-5   -9.955275906691991e-5    -7.521556344838198e-5
+ "S-Gradient_NS"    0.00011325398201524354  3.86941849574838e-6      0.0001134357635898253   9.664595891720896e-5     0.0001267846621482411
+ "Gradient_depth"   1.2761646163708869      0.11917931187797215      1.2623998589766008      0.966240303135601        1.7100642291626729
+ "L-NTD_1"          0.0018826733230646996   1.631740677798977e-5     0.0018779421385805451   0.0018583776140325026    0.0019242964772991215
+ "L-NTD_2"          1.5164726762837501e-5   0.0001486215962420044    6.485270965536119e-5   -0.0003530570926899982    0.0002029738274772864
+ "L-NTD_3"         -0.00027510582677679063  0.0004028444295857216   -0.0004212020126622335  -0.0007469938247558138    0.0006869512725884606
 ```
 
 @@importantv
@@ -298,8 +272,8 @@ The first and second lines show the acceptance ratios for the observation equati
 \$ cat acceptance.out 
 @@
 ```plaintext
-Acceptance_ratio_MCMC-1: 0.2578666666666667
-Acceptance_ratio_MCMC-2: 0.29825833333333335
+Acceptance_ratio_MCMC-1: 0.2813833333333333
+Acceptance_ratio_MCMC-2: 0.28363333333333335
 ```
 
 Note that it is plausible to adjust the pertubation widths as the acceptance ratio is ~23 % when sampling multiple parameters ([Gelman et al., 1996](https://global.oup.com/academic/product/bayesian-statistics-5-9780198523567?cc=jp&lang=en&#))
@@ -327,16 +301,16 @@ The effects of the modeled NTD and gradients on the data residuals are shown.
 \$ head residual\_grad.out
 @@
 ```plaintext
- 5.00664920015051e8    1.0    317.26245264634497       266.19938356095884      16.199673254258155  0.0019212227711233381  0.001892028778148772    5.711709219681263e-6    0.0018977404873684533  0.0018746452897521106   2.0683804412705322e-6   0.0018767136701933812   2.3482283754884864e-5                                                  
- 5.0066492022755253e8  3.0    317.4207663638199        266.23937739269013      16.35391331567538   0.0018695167060979961  0.0018921278087429905  -6.9439073915697634e-6   0.0018851839013514207  0.001874643966433996    2.0591604132395985e-6   0.0018767031268472356  -1.566719525342459e-5
- 5.0066492010527e8     4.0    317.33085587257335       266.2167718441425       16.266436850893314  0.001910238971072497   0.001892070840004891   -5.291482671798069e-5    0.0018391560132869102  0.0018746447279249909   2.064408633186119e-6    0.001876709136558177    7.108295778558672e-5
- 5.0066498000643504e8  1.0    359.36021854162504       277.1719433446349       15.488230263006805  0.0019366615406645382  0.0019144686268185939   6.375498463855449e-6    0.0019208441252824492  0.001874272705278389   -3.4606306062375273e-7   0.0018739266422177652   1.5817415382088868e-5
- 5.00664980241396e8    3.0    359.62778017355595       277.1931975835786       15.588033546421837  0.0018727123843230136  0.0019145357011519687  -6.268209740870233e-6    0.0019082674914110984  0.001874271249971249   -3.6676264921652784e-7   0.0018739044873220326  -3.555510708808484e-5
- 5.00664980102315e8    4.0    359.470891440242         277.1805537635656       15.530260681451683  0.0018980540805833112  0.0019144960163931142  -5.225869689302257e-5    0.0018622373195000916  0.0018742721114109082  -3.5464513489993904e-7   0.0018739174662760084   3.581676108321959e-5
- 5.00665039994504e8    1.0    418.96775535133213       300.2572711136876       15.772906859928952  0.0019080879768812004  0.001926806731015301    7.083893295900419e-6    0.0019338906243112012  0.0018739021478545597  -2.931128587130523e-6    0.0018709710192674292  -2.5802647430000888e-5
- 5.006650402641685e8   3.0    419.2429851616972        300.4599899327145       15.785030565510766  0.0018769432135190322  0.0019268415958954247  -5.551085539969325e-6    0.0019212905103554554  0.0018739004866068342  -2.9324497679321385e-6   0.0018709680368389021  -4.43472968364232e-5
- 5.006650401017465e8   4.0    419.0773398733799        300.33635900589996      15.778232162741766  0.0018708333451003824  0.0019268206172822213  -5.1539753890195993e-5   0.0018752808633920254  0.0018739014871903337  -2.931834171213654e-6    0.00187096965301912    -4.447518291642887e-6
- 5.0066509998064e8     1.0    485.0554895986015        337.2990947633136       16.195343692732713  0.0019027879344541735  0.0019305064012347809   7.522151899566477e-6    0.0019380285531343474  0.0018735336021151463  -4.533172999986541e-6    0.0018690004291151599  -3.5240618680173845e-5
+ 5.00664410095011e8    4.0     96.89902643051431        88.03270369967535      15.953261659441749  0.0017979333422704167  0.0018584604480744815  -4.5251727191123945e-5   0.0018132087208833575  0.0018826746247814269   1.6149678731097327e-6   0.0018842895926545367  -1.527537861294089e-5
+ 5.00664440093926e8    4.0    113.06319366902844        96.4390767559066       15.728498650814862  0.0018355095168310143  0.0018711757256623697  -4.5152091136073423e-5   0.0018260236345262963  0.00188268703141493     1.1732731449064043e-6   0.0018838603045598363   9.48588230471805e-6
+ 5.00664920015051e8    1.0    317.258830646345         266.20104706095884      16.12337475425815   0.0019492644996791438  0.0019535287641539263   5.280610901181443e-6    0.001958809375055108   0.00188283456345753     2.7927913029996435e-6   0.0018856273547605297  -9.54487537596393e-6
+ 5.0066492022755253e8  3.0    317.4171843638199        266.24101689269014      16.27763781567538   0.001896763873769342   0.00195352481786977    -6.6592942217753765e-6   0.0019468655236479946  0.0018828346079298765   2.783664048912453e-6    0.001885618271978789   -5.0101649878652764e-5
+ 5.0066492010527e8     4.0    317.3272458725733        266.2184268441425       16.190149350893314  0.0019459624690290592  0.0019535270920768163  -4.5522462116032325e-5   0.0019080046299607839  0.001882834582340793    2.788860552494706e-6    0.001885623442893288    3.7957839068275224e-5
+ 5.0066498000643504e8  1.0    359.35661904162504       277.1735513446349       15.411855263006803  0.001964701328794626   0.001951368659445891    5.834976455921046e-6    0.0019572036359018124  0.0018828464000669632   4.056032844255083e-7    0.0018832520033513886   7.497692892814044e-6
+ 5.00664980241396e8    3.0    359.62420167355594       277.19483358357854      15.511658046421838  0.001899893275194323   0.001951356235912045   -6.095318608697708e-6    0.0019452609173033473  0.001882846443597678    3.8494135917281093e-7   0.0018832313849568509  -4.5367642109024196e-5
+ 5.00664980102315e8    4.0    359.467298440242         277.18216826356564      15.453882681451681  0.0019338113118865475  0.0019513635933835552  -4.497496940807374e-5    0.0019063886239754815  0.0018828464178330987   3.970358904241129e-7    0.0018832434537235229   2.7422687911066072e-5
+ 5.00665039994504e8    1.0    418.9642018513322        300.25882611368763      15.696507359928955  0.0019360458657012283  0.0019472760245312756   6.419280227790985e-6    0.0019536953047590666  0.0018828568007591216  -2.119541450856093e-6    0.0018807372593082656  -1.7649439057838284e-5
+ 5.006650402641685e8   3.0    419.2394061616972        300.4615189327145       15.708606565510767  0.0019039860680888346  0.0019472536413713678  -5.503913368437491e-6    0.0019417497280029303  0.001882856844287782   -2.120315082226064e-6    0.001880736529205556   -3.7763659914095765e-5
 ```
 
 @@importantv
@@ -349,16 +323,16 @@ Format of this file is same  with that of `pos_array_all()`.
 \$ head bspline.out
 @@
 ```plaintext
-1 1 5.0066421474273527e8 0.0010247469234456984
-2 2 5.00664917e8 0.002156372454933342
-3 3 5.0066561925726473e8 0.0016934114443747184
-4 4 5.006663215145295e8 0.001981011662486047
-5 5 5.0066702377179426e8 0.0020508606778729477
-6 6 5.0066772602905905e8 0.0021638528570003014
-7 7 5.006684282863238e8 0.0021005633614545435
-8 8 5.006691305435885e8 0.0017761347727778315
-9 9 5.006698328008533e8 0.0017539447798233336
-10 10 5.0067053505811805e8 0.0016140641744398039
+1 1 5.006636573280344e8 0.001298067358242476
+2 2 5.00664407e8 0.0019696571745976103
+3 3 5.006651566719656e8 0.0019658305782191935
+4 4 5.006659063439312e8 0.0017753643399709875
+5 5 5.006666560158968e8 0.0020988732080715793
+6 6 5.006674056878624e8 0.0020949154531169916
+7 7 5.00668155359828e8 0.002228873405588681
+8 8 5.006689050317936e8 0.0018684765371399623
+9 9 5.006696547037592e8 0.0017853297206791739
+10 10 5.006704043757248e8 0.0016702469705376871
 ```
                                                                                     
 ## Visualization
@@ -624,13 +598,13 @@ The lower panel shows the travel-time residuals in the observation equation 1.
 ## Run MCMC processing with additional constraints
 
 As a developing function, you can perform the MCMC processing with additional constraints.
-If you have acoustic data obtained from only a fixed-point survey, it is difficult to obtain stable positioning results by `pos_array_mcmcpvg()` as indicated by [Tomita & Kido (2022)](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0).
-Here, `pos_array_mcmcpvgc(lat,XDUCER_DEPTH,NPB,ss,gd0,sdg)` provides two additional constraints as prior distributions.
+If you have acoustic data obtained from only a fixed-point survey, it is difficult to obtain stable positioning results by `static_array_mcmcgrad()` as indicated by [Tomita & Kido (2022)](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0).
+Here, `static_array_mcmcgradc(lat,TR_DEPTH,NPB,ss,gd0,sdg)` provides two additional constraints as prior distributions.
 
 One prior distribution is a Cauchy distribution for shallow gradients with the location parameter of zero and the scale parameter of `ss`.
 Shallow gradients can be determined by acoustic data obtained by spatially distributed sea-surface platform.
 Thus, it is plausible to constrain the shallow gradients to be zero for stability when you do not have sufficient spatial distribution of a sea-surface platform.
-Thus, `pos_array_mcmcpvgc()` provides the Cauchy distribution: if data is insufficient, the shallow gradients are constrained to be zero; if data is sufficient, the shallow gradients are followed with the data apart from zero because a Cauchy distribution allows outliers.
+Thus, `static_array_mcmcgradc()` provides the Cauchy distribution: if data is insufficient, the shallow gradients are constrained to be zero; if data is sufficient, the shallow gradients are followed with the data apart from zero because a Cauchy distribution allows outliers.
 `ss` is set to be 3.e-4 as the default value, considering the results of [Tomita & Kido (2022)](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0).
 
 The other prior distribution is a Normal distribution for the gradient depth with the mean of `gd0` and the standard deviation of `sdg`.
@@ -641,8 +615,9 @@ Refering the results of [Tomita & Kido (2022)](https://earth-planets-space.sprin
 The parameters for the prior distributions can be optionally changed as following:
 ```julia
 ss=5,e-4; gd0=0.5; sdg=0.2
-SeaGap.pos_array_mcmcpvgc(lat,XDUCER_DEPTH,NPB,ss,gd0,sdg)
+SeaGap.static_array_mcmcgradc(lat,TR_DEPTH,NPB,ss,gd0,sdg,tscale=10.0)
 ```
 
-Formats of the input and output files of `pos_array_mcmcpvgc()` are same with those of `pos_array_mcmcpvg()`.
+Formats of the input and output files of `static_array_mcmcgradc()` are same with those of `static_array_mcmcgrad()`.
+The options to improve the acceptance ratio in `static_array_mcmcgrad()` (e.g., `lscale`, `aventd`, and `NSB`) are also used.
 

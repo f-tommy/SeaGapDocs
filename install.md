@@ -11,7 +11,7 @@ tags = ["syntax", "code"]
 # How to install SeaGap
 
 First, you have to install Julia in your PC: [https://julialang.org/](https://julialang.org/).
-The SeaGap can be used by Julia v > 1.7.
+The SeaGap can be used by Julia v >= 1.7.
 
 The package of SeaGap is stored on Github: [https://github.com/f-tommy/SeaGap](https://github.com/f-tommy/SeaGap).
 You can install the following procedure after running Julia (`$ julia`):

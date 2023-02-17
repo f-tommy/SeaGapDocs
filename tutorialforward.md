@@ -12,10 +12,10 @@ tags = ["syntax", "code", "image"]
 
 Here, synthetic calculation of travel-times is performed to practice handling SeaGap.
 
-You first prepare an underwater sound profile ("ss\_prof.zv": See [Dataformat](/dataformat/)).
+You first prepare an underwater sound profile ("ss\_prof.inp": See [Dataformat](/dataformat/)).
 
 @@important
-\$ head ss\_prof.zv
+\$ head ss\_prof.inp
 @@
 ```plaintext
 0.00 1526.998
@@ -30,18 +30,18 @@ You first prepare an underwater sound profile ("ss\_prof.zv": See [Dataformat](/
 45.00 1525.194
 ```
 
-SeaGap prepares the read function for "ss\_prof.zv" `read_prof(fn,XDUCER_DEPTH)`.
-`fn` is the file name (such as `fn="ss_prof.zv"`).
-`XDUCER_DEPTH` is the depth of the sea-surface transponder from the sea-surface.
-Although `XDUCER_DEPTH` changes depending on attitudes of the sea-surface platform, it is enough to roughly provide its average value.
-This value is used for identifying which sound speed layer of "ss\_prof.zv" the transducer exists.
+SeaGap prepares the read function for "ss\_prof.inp" `read_prof(fn,TR_DEPTH)`.
+`fn` is the file name (such as `fn="ss_prof.inp"`).
+`TR_DEPTH` is the depth of the sea-surface transponder from the sea-surface.
+Although `TR_DEPTH` changes depending on attitudes of the sea-surface platform, it is enough to roughly provide its average value.
+This value is used for identifying which sound speed layer of "ss\_prof.inp" the transducer exists.
 
 ```julia
-XDUCER_DEPTH = 3.0
-z, v, nz_st, numz = SeaGap.read_prof("ss_prof.zv",XDUCER_DEPTH)
+TR_DEPTH = 3.0
+z, v, nz_st, numz = SeaGap.read_prof("ss_prof.inp",TR_DEPTH)
 ```
 
-Performing the above (`XDUCER_DEPTH` is set as 3.0), you obtain `z` (depth value vector), `v` (velocity value vector), `nz_st` (number of layer that the transducer exists), and `numz` (total number of layers). 
+Performing the above (`TR_DEPTH` is set as 3.0), you obtain `z` (depth value vector), `v` (velocity value vector), `nz_st` (number of layer that the transducer exists), and `numz` (total number of layers). 
 
 Next, you should obtain a local Earth radius. Using `localradius(lat)`, you can obtain a Gaussian mean radius and a local mean radius ([Chadwell & Sweeney, 2010](https://www.tandfonline.com/doi/abs/10.1080/01490419.2010.492283)).
 They do not show significant difference for calculating a travel-time; therefore, SeaGap generally uses the Gaussian mean radius. 
@@ -53,34 +53,34 @@ Rg, Rl = SeaGap.localradius(38.0)
 ```
 `Rg` is the Gaussian mean radius, and `Rl` is the local mean radius.
 
-Then, you can calculate one-way exact travel-times (see [Methodology](/methodtt/)) by `xyz2tt(px,py,pz,xd,yd,zd,z,v,nz_st,numz,Rg,XDUCER_DEPTH)` where `px`, `py`, and `pz` are position of a seafloor transponder, and `xd`, `yd`, and `zd` are position of a sea-surface transducer.
+Then, you can calculate one-way exact travel-times (see [Methodology](/methodtt/)) by `xyz2tt(px,py,pz,xd,yd,zd,z,v,nz_st,numz,Rg,TR_DEPTH)` where `px`, `py`, and `pz` are position of a seafloor transponder, and `xd`, `yd`, and `zd` are position of a sea-surface transducer.
 Unit of these positions is meter.
 
 ```julia
 px = 1500.0; py = 0.0; pz = -3000.0
 xd = 100.0; yd = -100.0; zd = -1.5 
-tc, Nint, vert = SeaGap.xyz2tt(px,py,pz,xd,yd,zd,z,v,nz_st,numz,Rg,XDUCER_DEPTH)
+tc, Nint, vert = SeaGap.xyz2tt(px,py,pz,xd,yd,zd,z,v,nz_st,numz,Rg,TR_DEPTH)
 (2.220777604567047, 4, 0.9057269733438277)
 ```
 
 `tc` is the one-way travel-time, `Nint` is the total number of iterations in the shooting method, and vert is the normalizing factor corresponding to $\frac{1}{M}$ shown in [Methodlogy](/methodkinematic/).
 
-If you'd like to calculate the approximate travel-time (see [Methodology](/methodtt/)), you have to run `ttcorrection(px,py,pz,xducer_height,z,v,nz_st,numz,XDUCER_DEPTH,lat)` in advance.
+If you'd like to calculate the approximate travel-time (see [Methodology](/methodtt/)), you have to run `ttcorrection(px,py,pz,tr_height,z,v,nz_st,numz,TR_DEPTH,lat)` in advance.
 Then, you can calculate the approximate travel-time by `xyz2tt_rapid()`
 
 ```julia
-xducer_height = -1.0
-Tv0, Vd, Vr, cc, rms = SeaGap.ttcorrection(px,py,pz,xducer_height,z,v,nz_st,numz,XDUCER_DEPTH,lat)
+tr_height = -1.0
+Tv0, Vd, Vr, cc, rms = SeaGap.ttcorrection(px,py,pz,tr_height,z,v,nz_st,numz,TR_DEPTH,lat)
 ```
 
-You have to provide `xducer_height` which is the mean height of the sea-surface transponder; if you have time-series of the sea-surface transponder height as `zd`, `xducer_height=Statistics.mean(zd)`.
-But, note that rough value is acceptable for `xducer_height` within a few meters. 
+You have to provide `tr_height` which is the mean height of the sea-surface transponder; if you have time-series of the sea-surface transponder height as `zd`, `tr_height=Statistics.mean(zd)`.
+But, note that rough value is acceptable for `tr_height` within a few meters. 
 
 `Tv0`, `Vd`, `Vr`, and `cc` is correction paramters for performing `xyz2tt_rapid()`.`rms` is RMS between the exact and the approximate travel-times when optimizing. 
 
 Then, `xyz2tt_rapid()` can be performed as following:
 ```julia
-tc_r, to_r, vert_r = SeaGap.xyz2tt_rapid(px,py,pz,xd,yd,zd,Rg,Tv0,Vd,Vr,xducer_height,cc)
+tc_r, to_r, vert_r = SeaGap.xyz2tt_rapid(px,py,pz,xd,yd,zd,Rg,Tv0,Vd,Vr,tr_height,cc)
 (2.2207776042517358, 2.2207913746628574, 0.9057269733438277)
 ```
 
@@ -89,7 +89,7 @@ tc_r, to_r, vert_r = SeaGap.xyz2tt_rapid(px,py,pz,xd,yd,zd,Rg,Tv0,Vd,Vr,xducer_h
 Moreover, SeaGap equips another function to calculate the approximate travel-time: `xyz2ttg_rapid()`.
 
 ```julia
-tc_g, vert_g, hh_x, hh_y = SeaGap.xyz2ttg_rapid(px,py,pz,xd,yd,zd,Rg,Tv0,Vd,Vr,xducer_height,cc)
+tc_g, vert_g, hh_x, hh_y = SeaGap.xyz2ttg_rapid(px,py,pz,xd,yd,zd,Rg,Tv0,Vd,Vr,tr_height,cc)
 (2.2207776042517358, 0.9057269733438277, 0.4669001167250292, 0.03335000833750208)
 ```
 
@@ -103,7 +103,7 @@ If you'd like to obtain travel-times from various sea-surface points, you can do
     # --- Set z-value randomly from -5 to 0
     zd = rand()*-5.0
     # --- Calculate TT
-    tc, Nint, vert = xyz2tt(px,py,pz,xd,yd,zd,z,v,nz_st,numz,Rg,XDUCER_DEPTH)
+    tc, Nint, vert = xyz2tt(px,py,pz,xd,yd,zd,z,v,nz_st,numz,Rg,TR_DEPTH)
     push!(xdv,xd); push!(ydv,yd); push!(zdv,zd); push!(tcv,tc)
   end 
 ```
@@ -135,9 +135,23 @@ Then, you can obtain as:
  2000.0  0.0  -1.55564   2.03915
 ```
 
-You can test the above calculation by `forward_test(lat,XDUCER_DEPTH,pos,fn="ss_prof.zv")` with `pos` is a position vector of a seafloor trannsponder `pos = [px,py,pz]`.
+You can test the above calculation by `forward_test(lat,TR_DEPTH,pos,fn="ss_prof.inp")` with `pos` is a position vector of a seafloor trannsponder `pos = [px,py,pz]`.
 
 ```julia
-xdv, ydv, zdv, tcv = SeaGap.foward_test(lat,XDUCER_DEPTH,[px,py,pz],fn="ss_prof.zv")
+xdv, ydv, zdv, tcv = SeaGap.forward_test(lat,TR_DEPTH,[px,py,pz],fn="ss_prof.inp")
+
+using Plots # Drawing figure
+plot(xdv,tcv)
 ```
 
+You can check how the travel-times vary depending on the horizontal distance by the plotted figure.
+The horizontal axis indicates the horizontal distance in meter, and the vertical axis indicates the calculated travel-times in sec.
+
+~~~
+<div class="row">
+  <div class="container">
+    <img src="/assets/forwardTT-1.png" width="300" height="300">
+    <div style="clear: both"></div>
+  </div>
+</div>
+~~~

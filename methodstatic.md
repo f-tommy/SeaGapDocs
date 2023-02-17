@@ -18,12 +18,12 @@ Static array positioning estimates an array displacement using a whole campaign 
 This technique has been developed by Japan Coast Guard (e.g., [Fujita et al., 2006](https://earth-planets-space.springeropen.com/articles/10.1186/BF03351923); [Sato et al., 2013](https://link.springer.com/article/10.1007/s00190-013-0649-9); [Watanabe et al., 2020](https://www.frontiersin.org/articles/10.3389/feart.2020.597532/full)), Nagoya Univ. (e.g., [Ikuta et al., 2008](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2006JB004875); [Kinugasa et al., 2020](https://progearthplanetsci.springeropen.com/articles/10.1186/s40645-020-00331-5)), and recently Tohoku Univ. ([Honsho & Kido, 2017](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2017JB014733); [Tomita & Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0)).
 
 In the static arrat positioning approach, a temporal sound speed fluctuation is generally modeled by a kind of flexible functions, such as 3d B-spline functions (e.g., [Honsho & Kido, 2017](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2017JB014733)).
-The static array positioning in SeaGap `pos_array_all` modeled a temporal sound speed fluctuation as the NTD (Nadir Total Delay; see [the kinematic array positioning](/methodkinematic/) page for detail) temporal variation and expresses it by 3d B-spline functions.
-Then, `pos_array_all` estimates coefficients for the fixed number of the 3d B-spline functions as well as the array position averagely during each campaign through the Gauss-Newton method.
+The static array positioning in SeaGap `static_array` modeled a temporal sound speed fluctuation as the NTD (Nadir Total Delay; see [the kinematic array positioning](/methodkinematic/) page for detail) temporal variation and expresses it by 3d B-spline functions.
+Then, `static_array` estimates coefficients for the fixed number of the 3d B-spline functions as well as the array position averagely during each campaign through the Gauss-Newton method.
 
 ## Basic static array positioning method
 
-The observation equation for $n$th acoustic ping transmitted to $k$th seafloor transponder in `pos_array_all` is shown as:
+The observation equation for $n$th acoustic ping transmitted to $k$th seafloor transponder in `static_array` is shown as:
 
 $$ \frac{1}{M\left(\xi_{n,k}\right)}T^{\rm obs}_{n,k}=\frac{1}{M\left(\xi_{n,k}\right)}T^{\rm cal}\left({\bf u}(t_n, {\bf b}_0),{\bf p}_k+\color{red}\delta{\bf p}\color{black},v_0\right)+\sum_{j=1}^{J}\color{red}c_j\color{black}\Phi_j(t_n) $$
 
@@ -39,7 +39,7 @@ ${\bf u}(t_n, {\bf b}_0)$ is position of the transducer attached to the sea-surf
 The transducer position is transformed from the GNSS antenna position considering the offset between the transducer and the GNSS antenna (${\bf b}_0$ denoted in "tr-ant.inp") and attitudes of the sea-surface platform.
 ${\bf p}_k$is the position of $k$th transponder.
 $\delta{\bf p}$ is the unknown parameter corresponding to the array displamcent, and the 3 components (EW, NS, UD) of the array position are estimated.
-$v_0$ is a sound speed profile ("ss\_prof.zv") for calculating travel-times.
+$v_0$ is a sound speed profile ("ss\_prof.inp") for calculating travel-times.
 $\Phi$ is the 3d B-spline functions using $J$ bases. NTD was expressed by the 3d B-spline functions with their coefficients of $c_j$.
 We estimate the NTD fluctuation by optimizing $c_j$.
 
@@ -58,15 +58,15 @@ The BIC is a model for situations where the error range of the maximum likelihoo
 As for the case that we optimize the number of the bases of the 3d B-spline function, AIC tends to support large number because AIC is sensitive to a local temporal trend which is almost buried in error effects.  
 Thus, we genrally employ BIC for this optimization ([Tomita & Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0)).
 
-In SeaGap, `pos_array_all()` function automatically returns the AIC and BIC values for a given number of the bases, and `pos_array_all_AICBIC()` function returns the AIC and BIC values for various number of the bases.
+In SeaGap, `static_array()` function automatically returns the AIC and BIC values for a given number of the bases, and `static_array_AICBIC()` function returns the AIC and BIC values for various number of the bases.
 
 ## Optimization of an offset between a transducer and a GNSS antenna
 
-In SeaGap, `pos_array_TR()` function optimizing an offset between a transducer and a GNSS antenna is prepared as a kind of the static array positioning approach.
+In SeaGap, `static_array_TR()` function optimizing an offset between a transducer and a GNSS antenna is prepared as a kind of the static array positioning approach.
 The optimization of the offset is essential when it cannot be accurately measured by the other technique (such as optical ranging).
 Importance of this procedure is documented in [Honsho et al. (2019)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JB017135).
 
-The observation equation for $n$th acoustic ping transmitted to $k$th seafloor transponder in `pos_array_TR` is shown as:
+The observation equation for $n$th acoustic ping transmitted to $k$th seafloor transponder in `static_array_TR` is shown as:
 
 $$ \frac{1}{M\left(\xi_{n,k}\right)}T^{\rm obs}_{n,k}=\frac{1}{M\left(\xi_{n,k}\right)}T^{\rm cal}\left({\bf u}(t_n, {\bf b}_0+\color{red}\delta {\bf b}\color{black}),{\bf p}_k+\color{red}\delta{\bf p}\color{black},v_0\right)+\sum_{j=1}^{J}\color{red}c_j\color{black}\Phi_j(t_n) $$
 

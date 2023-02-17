@@ -53,19 +53,21 @@ If you'd like to know a detailed usage of each function, you can confirm it by "
 ```julia-repl
 julia> import SeaGap
 julia> ?
-help?> SeaGap.plot_map_array_each
-  plot_map_array_each(xrange,yrange; autoscale,fn,fno,plot_size,lmargin,tmargin,bmargin,rmargin,show,ms,gfs,col_num)
+help?> SeaGap.plot_map_kinematic_array
+  plot_map_kinematic_array(xrange,yrange; autoscale,fn,fno,plot_size,lmargin,tmargin,bmargin,rmargin,show,ms,gfs,col_num)
 
-  Make a figure plotting the estimated array displacements obtained by pos_array_each() in a horizontal map.
+  Make a figure plotting the estimated array displacements obtained by
+  kinematic_array() in a horizontal map.
 
     •  xrange and yrange: EW and NS ranges for plot [m]
 
-    •  autoscale: If autoscale=true (default), the plot range is automatically determined. If
-       autoscale=false, the plot range is fixed by xrange and yrange.
+    •  autoscale: If autoscale=true (default), the plot range is
+       automatically determined. If autoscale=false, the plot range is
+       fixed by xrange and yrange.
 
-    •  fn: Input file name (fn="array_each.out" by default)
+    •  fn: Input file name (fn="kinematic_array.out" by default)
 
-    •  fno: Output figure name (fno="map_array_each.pdf" by default)
+    •  fno: Output figure name (fno="map_kinematic_array.pdf" by default)
 
     •  plot_size: Figure size (plot_size=(600,500) by default)
 
@@ -77,18 +79,21 @@ help?> SeaGap.plot_map_array_each
 
     •  bmargin: Plot margin for the bottom edge (bmargin=1.0 by default)
 
-    •  show: if show=true, a figure is temporally shown; if false, the figure is save as fno (show=false by default)
+    •  show: if show=true, a figure is temporally shown; if false, the
+       figure is save as fno (show=false by default)
 
     •  ms: Plotted marker size (ms=5 by default)
 
     •  gfs: Fontsize for label (gudefontsize: gfs=12 by default)
 
-    •  col_num: If col_num=1 (default), the plot is colored by the observation time. If col_num=2, the
-       plot is colored by number of the used observational data. If col_num=0, the plot is colored by
-       blue.
+    •  col_num: If col_num=1 (default), the plot is colored by the
+       observation time. If col_num=2, the plot is colored by number of the
+       used observational data. If col_num=0, the plot is colored by blue.
 
   Example
   ≡≡≡≡≡≡≡≡≡
 
-  SeaGap.plot_map_array_each((-0.5,0.5),(-0.5,0.5),autoscale=false)
+  SeaGap.plot_map_kinematic_array((-0.5,0.5),(-0.5,0.5),autoscale=false)
+
+
 ```

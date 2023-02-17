@@ -16,21 +16,21 @@ This function firstly calculate travel-time residuals and then apply a filter (r
 After removing the filtered time-series from the original travel-time residual time-series, `denoise()` eliminates outliers that beyond the range of muliplied standard deviation.
 The results of the noise removal are automatically visualized, and you can select to accept the removal or not.
 
-First, you have to prepare the basic input files denoted in [Dataformat](/dataformat): "tr-ant.inp", "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp".
+First, you have to prepare the basic input files denoted in [Dataformat](/dataformat): "tr-ant.inp", "pxp-ini.inp", "ss\_prof.inp", and "obsdata.inp".
 
-Before performing `denoise()`, we calculate travel-time residuals by `ttres(lat,XDUCER_DEPTH; fn1,fn2,fn3,fn4,save)`.
-`lat` is the site latitude, `XDUCER_DEPTH` is the average depth of a sea-surface transducer (also see [Forward calculation](/tutorialforward/)).
-`fn1`, `fn2`, `fn3`, and `fn4` are the file names of "tr-ant.inp", "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp".
+Before performing `denoise()`, we calculate travel-time residuals by `ttres(lat,TR_DEPTH; fn1,fn2,fn3,fn4,save)`.
+`lat` is the site latitude, `TR_DEPTH` is the average depth of a sea-surface transducer (also see [Forward calculation](/tutorialforward/)).
+`fn1`, `fn2`, `fn3`, and `fn4` are the file names of "tr-ant.inp", "pxp-ini.inp", "ss\_prof.inp", and "obsdata.inp".
 Note that the file names can be optionally changed. If you use the default file names, you do not have to use these arguments.
 
 ```julia
 using Plots
-lat = 36.15753; XDUCER_DEPTH = 3.0
-nv,kv,t1,t2,tp,tc,tr,vert = SeaGap.ttres(lat,XDUCER_DEPTH)
+lat = 36.15753; TR_DEPTH = 3.0
+nv,kv,t1,t2,tp,tc,tr,vert = SeaGap.ttres(lat,TR_DEPTH)
 scatter(t1,tr,markershape=:cross,zcolor=kv,label=:none,c=:rainbow)
 ```
 
-`nv` is the shot number, `kv` is the seafloor transponder number, `t1` is the transmitted time, `t2` is the receieved time, `tp` is the observed travel-times, `tc` is the calculated travel-times assuming the seafloor positions wriiten in "pxp-ini.xyh", `tr` is the reavel-time residuals, and `vert` is the mapping functions (see [Forward calculation](/tutorialforward/)).
+`nv` is the shot number, `kv` is the seafloor transponder number, `t1` is the transmitted time, `t2` is the receieved time, `tp` is the observed travel-times, `tc` is the calculated travel-times assuming the seafloor positions wriiten in "pxp-ini.inp", `tr` is the reavel-time residuals, and `vert` is the mapping functions (see [Forward calculation](/tutorialforward/)).
 
 The plots of the travel-time residuals are obtained by `Plots.scatter()` (X: the transmitted time, Y: the travel-time residuals, Color: the seafloor transponder number).
 
@@ -43,7 +43,7 @@ The plots of the travel-time residuals are obtained by `Plots.scatter()` (X: the
 </div>
 ~~~
 
-The travel-time residuals of the all transponders show a similar trend after the time of 3 hours when the sea-surface platform had been at a fixed point (refer the figures in Dataformat).
+The travel-time residuals of the all transponders show a similar trend after the time of 3 hours when the sea-surface platform had been at a fixed point (refer the figures in [Dataformat](/dataformat/)).
 This trend is considered to be temporal fluctuation of the sound speed structure, and the offset of the residuals could be caused due to non-optimization of the transponder array position in this calculation.
 Meanwhile, the travel-time residuals show different trends before the time of 3 hours depending on the sea-surface positions; this generally due to non-optimization of the transponder array position in this calculation and spatial heterogenity of a sound speed structure.
 From the above figure, you can see several outliers, mostly for the 4th transponder.
@@ -52,11 +52,11 @@ Then, let's perform `denoise()`.
 The following is an example to run the function:
                                                                                    
 ```julia
-lat = 36.15753; XDUCER_DEPTH = 3.0
-SeaGap.denoise(lat,XDUCER_DEPTH,k=0,n=7,sigma=4.0,method="median")
+lat = 36.15753; TR_DEPTH = 3.0
+SeaGap.denoise(lat,TR_DEPTH,k=0,n=7,sigma=4.0,method="median")
 ```
 
-As well as `ttres()`, you can assign the file names by `fn1`, `fn2`, `fn3`, and `fn4`; they correspond to "tr-ant.inp", "pxp-ini.xyh", "ss\_prof.zv", and "obsdata.inp".
+As well as `ttres()`, you can assign the file names by `fn1`, `fn2`, `fn3`, and `fn4`; they correspond to "tr-ant.inp", "pxp-ini.inp", "ss\_prof.inp", and "obsdata.inp".
 
 After running this in REPL, a figure is shown such as following:
 
@@ -86,7 +86,7 @@ If you type "no", "obsdata.inp" (`fn4`) is unchanged.
 If you'ld like to the orginal "obsdata.inp" when selecting "yes", you can save the original "obsdata.inp" as `fn0` (an optional file name) with setting `save=true`:
 
 ```julia
-SeaGap.denoise(lat,XDUCER_DEPTH,k=0,n=7,sigma=4.0,method="median",save=true,fn0="original_obsdata.inp")
+SeaGap.denoise(lat,TR_DEPTH,k=0,n=7,sigma=4.0,method="median",save=true,fn0="original_obsdata.inp")
 ```
 
 
@@ -95,7 +95,7 @@ In this case, "obsdata.inp" (`fn4`) is replaced with new "obsdata.inp" (`fn4`) w
 Thus, `save=true` and `show=false` options are recommended; the original "obsdata.inp" is saved as `fn0` and the figure is saved as `fno2`.
 
 ```julia
-SeaGap.denoise(lat,XDUCER_DEPTH,k=0,n=7,sigma=4.0,method="median",prompt=false,save=true,fn0="original_obsdata.inp",show=false,fno2=`denoise.png`)
+SeaGap.denoise(lat,TR_DEPTH,k=0,n=7,sigma=4.0,method="median",prompt=false,save=true,fn0="original_obsdata.inp",show=false,fno2=`denoise.png`)
 ```
 
 If you set `k=0`, the outlier removal processing is performed for all transponders.

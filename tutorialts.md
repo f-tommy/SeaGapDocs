@@ -11,7 +11,7 @@ tags = ["syntax", "code", "image"]
 # Line fitting for time-series
 
 After positioning multiple campaign, you would perform time-series analysis for assessing crustal deformation.
-The general positioning results are shown in "position.out" by `pos_array_all()` or `pos_array_mcmcpvg()`.                                                              
+The general positioning results are shown in "position.out" by `static_array()`, `static_array_mcmcgrad()`, `static_array_mcmcgradc()`.                                                              
 You can obtain time-series of the array displacements by merging the "position.out" for multiple campaigns.
 
 But, you should correct a stable plate motion to consider long-term crustal deformation (e.g., inter-/post-seismic deformation).
