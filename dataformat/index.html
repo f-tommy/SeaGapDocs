@@ -52,13 +52,15 @@
 
 <li><p>4-6: Sea-surface platform positions &#40;EW, NS, UD&#41; when transmitting &#91;m&#93;</p>
 
-<li><p>7-9: Sea-surface platform attitude &#40;heading, pitch, roll&#41; when transmitting &#91;deg&#93;, 10: Recieved time &#91;sec&#93;</p>
+<li><p>7-9: Sea-surface platform attitude &#40;heading, pitch, roll&#41; when transmitting &#91;deg&#93;</p>
+
+<li><p>10: Recieved time &#91;sec&#93;</p>
 
 <li><p>11-13: Sea-surface platform positions &#40;EW, NS, UD&#41; when recieving &#91;m&#93;</p>
 
 <li><p>14-16: Sea-surface platform attitude &#40;heading, pitch, roll&#41; when recieving &#91;deg&#93;</p>
 
-<li><p>17: Flag&#41;.</p>
+<li><p>17: Flag for the kinematic positioning</p>
 
 </ul>
 <p>The seafloor transponder number is linked to the line number of &quot;pxp-ini.inp&quot;. The two-ways travel-time is &quot;pure&quot; travel-time&quot; without any mechanical delays of a transponder.  The transmitted and recieved times are cumulative seconds from the reference time. The reference time can be optionally defined by User. The sea-surface platform positions indicate positions of the GNSS anttena attached to the sea-surface platform. The positions are given in a projected coordinate frame. The attitude of the sea-surface platform is expressed in the right-handed system.</p>
@@ -171,7 +173,7 @@ SeaGap.ll2xy_txt(<span class=hljs-string >&quot;gps.jllhhpr&quot;</span>,<span c
 500665337 5.865007 3.767856 0.564</code></pre>
 <p>You have to individually prepare this type of files for all seafloor transponders &#40;&quot;pxp-1.jttq&quot;, &quot;pxp-2.jttq&quot;, ...&#41;.</p>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: February 17, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: March 24, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
