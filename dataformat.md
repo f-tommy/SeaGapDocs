@@ -107,10 +107,11 @@ The rows of "obsdata.inp" indicate as following:
 * 2: Two-way travel time [sec]
 * 3: Transmitted time [sec]
 * 4-6: Sea-surface platform positions (EW, NS, UD) when transmitting [m]
-* 7-9: Sea-surface platform attitude (heading, pitch, roll) when transmitting [deg], 10: Recieved time [sec]
+* 7-9: Sea-surface platform attitude (heading, pitch, roll) when transmitting [deg]
+* 10: Recieved time [sec]
 * 11-13: Sea-surface platform positions (EW, NS, UD) when recieving [m]
 * 14-16: Sea-surface platform attitude (heading, pitch, roll) when recieving [deg]
-* 17: Flag).
+* 17: Flag for the kinematic positioning
 
 The seafloor transponder number is linked to the line number of "pxp-ini.inp".
 The two-ways travel-time is "pure" travel-time" without any mechanical delays of a transponder. 
