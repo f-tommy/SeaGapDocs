@@ -26,7 +26,7 @@ GNSS-Acoustic (GNSS-A) technique is a combination technique of GNSS positioninig
 
 SeaGap provides various functions to easily perform GNSS-A positioning, post-processing for the positioning results, and visualization of the results. Moreover, SeaGap covers various types of positioning: classic kinematic array positioning (e.g., [Kido et al. 2006](https://earth-planets-space.springeropen.com/articles/10.1186/BF03351996)), static array positioning (e.g., [Tomita and Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0)), MCMC-base static array positioning (e.g., [Tomita and Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0)), static positioning for an individual transponder, and static array positioning with estimation of an offset between a sea-surface GNSS antenna and a sea-surfacetransducer.
 
-You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-022-01740-0) for the citation of this software (note that an article  for this software is preparing). 
+You should refer  [Tomita and Kido, 2024](https://earth-planets-space.springeropen.com/articles/10.1186/s40623-024-01987-9) for the citation of this software.
 
 ## Contents
 
@@ -34,10 +34,7 @@ You should refer  [Tomita and Kido, 2022](https://earth-planets-space.springerop
 * [Dataformat](/dataformat/)
 * [Methodology: Overview](/methodoverview/)
 * [Methodology: Travel-time calculation](/methodtt/)
-* [Methodology: Kinematic array positioning](/methodkinematic/)
-* [Methodology: Static array positioning](/methodstatic/)
-* [Methodology: Individual transponder positioning](/methodsingle/)
-* [Methodology: Static arry positioning with gradients](/methodmcmcpvg/)
+* [Methodology: Positioning methods](/methodstatic/)
 * [Tutorials: Forward calculation](/tutorialforward/)
 * [Tutorials: Outlier removal](/tutorialdenoise/)
 * [Tutorials: Kinematic array positioning](/tutorialkinematic/)

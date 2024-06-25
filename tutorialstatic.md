@@ -24,7 +24,7 @@ To perform `static_array`, you have to prepare four input files denoted in [Data
 The basic static array positioning `static_array()` can be performed as following:
 
 ```julia
-lat=36.15753; TR_DEPTH=4.0; NPB=100
+lat=36.15753; TR_DEPTH=[4.0]; NPB=100
 SeaGap.static_array(lat,TR_DEPTH,NPB)
 ```
 
@@ -241,11 +241,12 @@ SeaGap.plot_AICBIC(type="BIC",fno="BIC_search.png")
 The initial values of the offset are shown in `fn1="tr-ant.inp"`.
 
 ```julia
-lat=36.15753; TR_DEPTH=4.0; NPB=73
-SeaGap.static_array_TR(lat,TR_DEPTH,NPB)
+lat=36.15753; TR_DEPTH=[4.0]; NPB=73; key=1
+SeaGap.static_array_TR(key,lat,TR_DEPTH,NPB)
 ```
 
-The arguments and the input/output files of `static_array_TR()` are same with those of `static_array()` except `fno1`, `fno5`, and `delta_offset`.
+This function optimizes the offset for the `key` identifying number of the sea surface platforms.
+The other arguments and the input/output files of `static_array_TR()` are same with those of `static_array()` except `fno1`, `fno5`, and `delta_offset`.
 `fno1` shows the estimated values for the all unknown paramters (Column 1) and their estimated errors (Column 2) as same with `static_array()`, and its file name is "solve.out" by default.
 However, the lines 4-6 in `fno1` shows the solutions and the errors for the modification values of the offset from the initial file (`fn1="tr-ant.inp"`).
 
@@ -270,7 +271,7 @@ You can make a figure on NTD fluctuation using `plot_ntd()`.
 `static_array_grad()` is a function to estimate the array position, NTD, and the deep gradient following the observation equation (0) shown in Methodolgy.
 
 ```julia
-lat=36.15753; TR_DEPTH=4.0; NPB=73
+lat=36.15753; TR_DEPTH=[4.0]; NPB=73
 SeaGap.static_array_grad(lat,TR_DEPTH,NPB)
 ```
 

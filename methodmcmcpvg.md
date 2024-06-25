@@ -73,4 +73,5 @@ The details of this MCMC optimization are shown in [Tomita & Kido (2022)](https:
 
 Optionally, SeaGap includes a developing function `static_array_mcmcgradc()` which add some constraints to `static_array_mcmcgrad()` to obtain solutions more stably.
 See Tutorials in detail for this developing function. 
+
                                                      
