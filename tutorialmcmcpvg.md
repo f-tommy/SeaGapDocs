@@ -75,7 +75,7 @@ SeaGap.plot_ABIC(show=true)
 ~~~
 <div class="row">
   <div class="container">
-    <img src="/assets/ABIC_rsearch.png" width="350" height="350">
+    <img src="/assets/ABIC_search.png" width="350" height="350">
     <div style="clear: both"></div>
   </div>
 </div>
