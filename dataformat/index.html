@@ -1,16 +1,8 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">Installation</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Dataformat</h1> <hr> <div class=franklin-content > <h1 id=overview ><a href="#overview" class=header-anchor >Overview</a></h1> <p>Documentation for the input dataformat in <a href="https://github.com/f-tommy/SeaGap">SeaGap</a>.</p> <p>In SeaGap, the following input data files are basically required:</p> <div class=franklin-toc ><ol><li><a href="#tr-antinp">tr-ant.inp</a><li><a href="#pxp-iniinp">pxp-ini.inp</a><li><a href="#ssprofinp">ss&#95;prof.inp</a><li><a href="#obsdatainp">obsdata.inp</a><ol><li><a href="#make_obsdatainp_using_seagap_module">Make obsdata.inp using SeaGap module</a><ol><li><a href="#gpsjxyhhpr">gps.jxyhhpr</a><li><a href="#pxp-kjttq">pxp-<em>k</em>.jttq</a></ol></ol></ol></div> <p>The above file names are given as default values, and they can be optionally changed. These files are text data format with delimitation of space.</p> <h2 id=tr-antinp ><a href="#tr-antinp" class=header-anchor >tr-ant.inp</a></h2> <p>Three components of position of a transducer attached to a sea-surface platform relative to the GNSS antenna position are shown in this file. Using these values, the GNSS antenna positions &#40;written in &quot;obsdata.inp&quot;&#41; are converted into the transducer positions with the right-handed system. Note that this definision is different from <a href="https://github.com/s-watanabe-jhod/garpos">GARPOS</a>.</p> <p>The file is an one-lined file with three columns, and each column is given as &#40;1: X, 2: Y, 3: Z&#41;.</p> <div class=important >&#36; cat tr-ant.inp</div> <pre><code class="plaintext hljs">0.188984299 -6.990937724 -15.300000000</code></pre>
-<h2 id=pxp-iniinp ><a href="#pxp-iniinp" class=header-anchor >pxp-ini.inp</a></h2>
-<p>Positions of individual seafloor transponders at each site are given in the file. The positions must be given in meter. In order to provide these positions, you have to convert geographic coordinates into the projection coordinates. The projection center should be defined as a center of the transponder array for each site, and must be fixed among GNSS-A campaign cruises. You can convert the geographic coordinates into the projection coordinates by <code>ll2xy</code> function shown in <a href="/SeaGapDocs/others/">Others</a> via <a href="https://github.com/GenericMappingTools/GMT.jl">GMT</a> mapprojection module</p>
-<p>The file has three rows, which indicate the transponder positions in meter &#40;1: EW position, 2: NS position, 3: UD position&#41;. Each line shows one seafloor transponder position; thus, the total number of lines indicate the total number of transponders at each site. The line number of this file corresponds to the transponder number written in &quot;obsdata.inp&quot;.</p>
-<div class=important >&#36; cat pxp-ini.inp</div>
-<pre><code class="plaintext hljs">997.5346  985.5925 -2738.9998
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/SeaGapDocs/libs/highlight/styles/github.min.css"> <link href="/SeaGapDocs/css/franklin.css" rel=stylesheet > <link href="/SeaGapDocs/css/vela.css" rel=stylesheet > <script src="/SeaGapDocs/libs/vela/jquery.min.js"></script> <link rel=icon  href="/SeaGapDocs/assets/favicon.png"> <title>SeaGapDocs</title> <div class="main-nav slideout-menu slideout-menu-left" id=menu > <div class=flex-container > <span class=sidebar-brand > <h3 style='font-size: 25px'>SeaGap Docs</h3> </span> </div> <nav class=sidebar-nav > <ul class=metismenu  id=metismenu  > <li><a href="/SeaGapDocs/index.html">Home</a> <li><a href="/SeaGapDocs/install/">Installation</a> <li><a href="/SeaGapDocs/dataformat/">Dataformat</a> <li><a href="" class=has-arrow >Methodology</a> <ul> <li><a href="/SeaGapDocs/methodoverview/">Overview</a> </ul> <ul> <li><a href="/SeaGapDocs/methodtt/">Travel-time calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/methodkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodsingle/">Individual transponder positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/methodmcmcpvg/">Static array positioning with gradients</a> </ul> <li><a href="" class=has-arrow >Tutorials</a> <ul> <li><a href="/SeaGapDocs/tutorialforward/">Forward calculation</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialdenoise/">Outlier removal</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialkinematic/">Kinematic array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialstatic/">Static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialmcmcpvg/">MCMC static array positioning</a> </ul> <ul> <li><a href="/SeaGapDocs/tutorialts/">Line fitting for time-series</a> </ul> <li><a href="/SeaGapDocs/others/">Others</a> </ul> </nav> </div> <main id=panel  class="slidout-panel slideout-panel-left"> <div class="toggle-button hamburger hamburger--spin"> <div class=hamburger-box > <div class=hamburger-inner ></div> </div> </div> <h1 class="page title">Dataformat</h1> <hr> <div class=franklin-content > <h1 id=overview ><a href="#overview" class=header-anchor >Overview</a></h1> <p>Documentation for the input dataformat in <a href="https://github.com/f-tommy/SeaGap">SeaGap</a>.</p> <p>In SeaGap, the following input data files are basically required:</p> <div class=franklin-toc ><ol><li><a href="#tr-antinp">tr-ant.inp</a><li><a href="#pxp-iniinp">pxp-ini.inp</a><li><a href="#ssprofinp">ss&#95;prof.inp</a><li><a href="#obsdatainp">obsdata.inp</a><ol><li><a href="#make_obsdatainp_using_seagap_module">Make obsdata.inp using SeaGap module</a><ol><li><a href="#gpsjxyhhpr">gps.jxyhhpr</a></ol><li><a href="#pxp-kjttq">pxp-<em>k</em>.jttq</a></ol></ol></div> <p>The above file names are given as default values, and they can be optionally changed. These files are text data format with delimitation of space.</p> <h2 id=tr-antinp ><a href="#tr-antinp" class=header-anchor >tr-ant.inp</a></h2> <p>Three components of position of a transducer attached to a sea-surface platform relative to the GNSS antenna position are shown in this file. Using these values, the GNSS antenna positions &#40;written in &quot;obsdata.inp&quot;&#41; are converted into the transducer positions with the right-handed system. Note that this definision is different from <a href="https://github.com/s-watanabe-jhod/garpos">GARPOS</a>.</p> <p>The file is written three columns, and each column is given as &#40;1: X, 2: Y, 3: Z&#41;. If you employ multiple sea surface platforms, you should write all positions in this file. The line number corresponds to the identifying number of the sea surface platforms.</p> <div class=important >&#36; cat tr-ant.inp</div> <pre><code class="plaintext hljs">0.189 -6.991 -15.300
+0.123 -1.002 -3.200</code></pre> <h2 id=pxp-iniinp ><a href="#pxp-iniinp" class=header-anchor >pxp-ini.inp</a></h2> <p>Positions of individual seafloor transponders at each site are given in the file. The positions must be given in meter. In order to provide these positions, you have to convert geographic coordinates into the projection coordinates. The projection center should be defined as a center of the transponder array for each site, and must be fixed among GNSS-A campaign cruises. You can convert the geographic coordinates into the projection coordinates by <code>ll2xy</code> function shown in <a href="/SeaGapDocs/others/">Others</a> via <a href="https://github.com/GenericMappingTools/GMT.jl">GMT</a> mapprojection module</p> <p>The file has three rows, which indicate the transponder positions in meter &#40;1: EW position, 2: NS position, 3: UD position&#41;. Each line shows one seafloor transponder position; thus, the total number of lines indicate the total number of transponders at each site. The line number of this file corresponds to the transponder number written in &quot;obsdata.inp&quot;.</p> <div class=important >&#36; cat pxp-ini.inp</div> <pre><code class="plaintext hljs">997.5346  985.5925 -2738.9998
 -956.8931  941.9216 -2683.2858
 -977.3029 -968.6586 -2689.2996
- 935.8767 -980.5919 -2710.8535</code></pre>
-<h2 id=ssprofinp ><a href="#ssprofinp" class=header-anchor >ss&#95;prof.inp</a></h2>
-<p>Underwater sound speed profile is given in this file. In order to precise calculation of travel-times, you should prepare a profile with 5-m or less interval. The rows of this file indicate &#40;1: water depth &#91;m&#93;, 2: sound speed &#91;m/sec&#93;&#41;, respectively.</p>
-<div class=important >&#36; head ss&#95;prof.inp</div>
-<pre><code class="plaintext hljs">0.00 1526.998
+ 935.8767 -980.5919 -2710.8535</code></pre> <h2 id=ssprofinp ><a href="#ssprofinp" class=header-anchor >ss&#95;prof.inp</a></h2> <p>Underwater sound speed profile is given in this file. In order to precise calculation of travel-times, you should prepare a profile with 5-m or less interval. The rows of this file indicate &#40;1: water depth &#91;m&#93;, 2: sound speed &#91;m/sec&#93;&#41;, respectively.</p> <div class=important >&#36; head ss&#95;prof.inp</div> <pre><code class="plaintext hljs">0.00 1526.998
 5.00 1529.598
 10.00 1529.594
 15.00 1529.637
@@ -19,18 +11,7 @@
 30.00 1529.343
 35.00 1528.586
 40.00 1527.722
-45.00 1525.194</code></pre>
-<p>Maximum depth of ss&#95;prof.inp must be deeper than maximum depth of the seafloor transponders wriiten in &quot;pxp-ini.inp&quot;. Thus, you should prepare a long profile deeper than the water depth by extrapolation.</p>
-<p>You can optionally draw figure of the sound speed profile by <code>plot_prof&#40;;fno,fn&#41;</code> function.</p>
-<ul>
-<li><p><code>fn</code>: the file name of a sound speed profile &#40;the default is <code>fn&#61;&quot;ss_prof.inp&quot;</code>&#41;</p>
-
-<li><p><code>fno</code>: the output file name &#40;the default is <code>fno&#61;&quot;ss_prof.pdf&quot;</code>&#41;. If you change the filename extension, the output file format is automatically changed &#40;e.g., &quot;.png&quot;,&quot;.svg&quot;&#41;</p>
-
-<li><p><code>show</code>: If you use this function with <code>show&#61;true</code> keyword argument in REPL, you can display as GUI &#40;but not saved as a figure file&#41;. </p>
-
-</ul>
-<pre><code class="julia hljs">SeaGap.plot_prof(fno=<span class=hljs-string >&quot;ss_prof.png&quot;</span>,fn=<span class=hljs-string >&quot;ss_prof.inp&quot;</span>,show=<span class=hljs-literal >false</span>)</code></pre>
+45.00 1525.194</code></pre> <p>Maximum depth of ss&#95;prof.inp must be deeper than maximum depth of the seafloor transponders wriiten in &quot;pxp-ini.inp&quot;. Thus, you should prepare a long profile deeper than the water depth by extrapolation.</p> <p>You can optionally draw figure of the sound speed profile by <code>plot_prof&#40;;fno,fn&#41;</code> function.</p> <ul> <li><p><code>fn</code>: the file name of a sound speed profile &#40;the default is <code>fn&#61;&quot;ss_prof.inp&quot;</code>&#41;</p> <li><p><code>fno</code>: the output file name &#40;the default is <code>fno&#61;&quot;ss_prof.pdf&quot;</code>&#41;. If you change the filename extension, the output file format is automatically changed &#40;e.g., &quot;.png&quot;,&quot;.svg&quot;&#41;</p> <li><p><code>show</code>: If you use this function with <code>show&#61;true</code> keyword argument in REPL, you can display as GUI &#40;but not saved as a figure file&#41;. </p> </ul> <pre><code class="julia hljs">SeaGap.plot_prof(fno=<span class=hljs-string >&quot;ss_prof.png&quot;</span>,fn=<span class=hljs-string >&quot;ss_prof.inp&quot;</span>,show=<span class=hljs-literal >false</span>)</code></pre>
 
 <div class=row >
   <div class=container >
@@ -62,20 +43,22 @@
 
 <li><p>17: Flag for the kinematic positioning</p>
 
+<li><p>18: Identifying number of the sea surface platforms</p>
+
 </ul>
 <p>The seafloor transponder number is linked to the line number of &quot;pxp-ini.inp&quot;. The two-ways travel-time is &quot;pure&quot; travel-time&quot; without any mechanical delays of a transponder.  The transmitted and recieved times are cumulative seconds from the reference time. The reference time can be optionally defined by User. The sea-surface platform positions indicate positions of the GNSS anttena attached to the sea-surface platform. The positions are given in a projected coordinate frame. The attitude of the sea-surface platform is expressed in the right-handed system.</p>
 <p>The flag is only used for kinematic GNSS-Acoustic positioning, and it indicates a kind of group number for multiple acoustic pings shotted during a short period.</p>
 <div class=important >&#36; head obsdata.inp</div>
-<pre><code class="plaintext hljs">1 4.092873 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190025 110.958430 76.322974 28.357222 -44.93029 -2.03165 0.89020 1
-2 4.058711 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.155863 110.937832 76.317022 28.336117 -44.92675 -2.00787 0.88108 1
-3 4.160390 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.257542 110.998491 76.334356 28.398036 -44.93772 -2.07649 0.90733 1
-4 4.092871 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190022 110.958429 76.322973 28.357220 -44.93029 -2.03165 0.89020 1
-1 4.062968 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.160120 127.715931 85.928776 27.160121 -50.11292 -0.23815 -1.57863 2
-2 4.066063 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.163215 127.718777 85.930559 27.160110 -50.11357 -0.23972 -1.57478 2
-3 4.171606 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.268758 127.816621 85.991144 27.160509 -50.13403 -0.29212 -1.43669 2
-4 4.090700 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.187852 127.741480 85.944743 27.160067 -50.11868 -0.25212 -1.54370 2
-1 3.932951 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.030102 332.595337 256.316298 27.751791 -52.68875 -0.89626 1.21533 3
-2 4.113385 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.210538 332.613304 256.277211 27.956816 -52.70038 -1.13750 0.54747 3</code></pre>
+<pre><code class="plaintext hljs">1 4.092873 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190025 110.958430 76.322974 28.357222 -44.93029 -2.03165 0.89020 1 1
+2 4.058711 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.155863 110.937832 76.317022 28.336117 -44.92675 -2.00787 0.88108 1 1
+3 4.160390 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.257542 110.998491 76.334356 28.398036 -44.93772 -2.07649 0.90733 1 1
+4 4.092871 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190022 110.958429 76.322973 28.357220 -44.93029 -2.03165 0.89020 1 1
+1 4.062968 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.160120 127.715931 85.928776 27.160121 -50.11292 -0.23815 -1.57863 2 1
+2 4.066063 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.163215 127.718777 85.930559 27.160110 -50.11357 -0.23972 -1.57478 2 1
+3 4.171606 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.268758 127.816621 85.991144 27.160509 -50.13403 -0.29212 -1.43669 2 1
+4 4.090700 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.187852 127.741480 85.944743 27.160067 -50.11868 -0.25212 -1.54370 2 1
+1 3.932951 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.030102 332.595337 256.316298 27.751791 -52.68875 -0.89626 1.21533 3 1
+2 4.113385 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.210538 332.613304 256.277211 27.956816 -52.70038 -1.13750 0.54747 3 1</code></pre>
 <p>You can easily make figure showing a track of the sea-surface platform by <code>plot_track&#40;xrange,yrange;autoscale,fn1,fn2,fno&#41;</code></p>
 <ul>
 <li><p><code>fn1</code> and <code>fn2</code>: corresponding to the file names of &quot;pxp-ini.inp&quot; and &quot;obsdata.inp&quot; , respectively</p>
@@ -85,7 +68,7 @@
 <li><p><code>autoscale</code>: If you set <code>autoscale&#61;true</code>, the plot range is automatically defined depending on the data. If you set <code>autoscale&#61;false</code>, the plota range is defined as <code>xrange</code> and <code>yrange</code> as following</p>
 
 </ul>
-<pre><code class="julia hljs">SeaGap.plot_track((-<span class=hljs-number >3000</span>,<span class=hljs-number >3000</span>),(-<span class=hljs-number >3000</span>,<span class=hljs-number >3000</span>),autoscale=<span class=hljs-literal >false</span>,fn1=<span class=hljs-string >&quot;pxp-ini.inp&quot;</span>,fn2=<span class=hljs-string >&quot;obsdata.inp&quot;</span>,fno=<span class=hljs-string >&quot;track.pdf&quot;</span>)</code></pre>
+<pre><code class="julia hljs">SeaGap.plot_track((-<span class=hljs-number >3000</span>,<span class=hljs-number >3000</span>),(-<span class=hljs-number >3000</span>,<span class=hljs-number >3000</span>),autoscale=<span class=hljs-literal >false</span>,fn1=<span class=hljs-string >&quot;pxp-ini.inp&quot;</span>,fn2=<span class=hljs-string >&quot;obsdata.inp&quot;</span>,fno=<span class=hljs-string >&quot;track.pdf&quot;</span>,cm=<span class=hljs-number >1</span>)</code></pre>
 
 <div class=row >
   <div class=container >
@@ -94,7 +77,7 @@
   </div>
 </div>
 
-<p>This figure shows track of the sea-surface platform with the colors indicating the observational time &#91;hours&#93; from the begining of the observation.   Note that you can omit the file names if you use the default file names.</p>
+<p>This figure shows track of the sea-surface platform. If cm&#61;1, the color of track show the sea surface platform number; if not, the color indicates the observational time &#91;hours&#93; from the begining of the observation.   Note that you can omit the file names if you use the default file names.</p>
 <p>Moreover, you can also make figure on time-series of the sea-surface platform positions by <code>plot_timetrack&#40;xrange,yrange,zrange; autoscale,fn,fno&#41;</code>. <code>fn</code> corresponds to the file name of &quot;obsdata.inp&quot; , and <code>zrange</code> is used for the plot range in the uplift component when you set <code>autoscale&#61;false</code>.</p>
 <pre><code class="julia hljs">SeaGap.plot_timetrack(fno=<span class=hljs-string >&quot;timetrack.png&quot;</span>)</code></pre>
 
@@ -106,7 +89,7 @@
 </div>
 
 <h3 id=make_obsdatainp_using_seagap_module ><a href="#make_obsdatainp_using_seagap_module" class=header-anchor >Make obsdata.inp using SeaGap module</a></h3>
-<p>To prepare &quot;obsdata.inp&quot;, you need to obtain the GNSS antenna positions and the attitudes when transmitted and recieved. SeaGap prepares an interpolation module <code>interpolate_gps&#40;&#41;</code> to obtain these from GNSS antenna and attitude time-series by cubic Spline interpolation via <a href="https://github.com/kbarbary/Dierckx.jl">Dierckx</a>. Moreover, <code>obsdata_format&#40;numk; fno,fn1,fn21,fn22&#41;</code> provides &quot;obsdata.inp&quot; using following files:</p>
+<p>To prepare &quot;obsdata.inp&quot;, you need to obtain the GNSS antenna positions and the attitudes when transmitted and recieved. SeaGap prepares an interpolation module <code>interpolate_gps&#40;&#41;</code> to obtain these from GNSS antenna and attitude time-series by cubic Spline interpolation via <a href="https://github.com/kbarbary/Dierckx.jl">Dierckx</a>. Moreover, <code>obsdata_format&#40;numk,ids; fno,fn1,fn21,fn22&#41;</code> provides &quot;obsdata.inp&quot; using following files:</p>
 <ol>
 <li><p><code>gps.jxyhhpr</code>: Time-series of GNSS antenna positions and attitudes for a sea-surface platform</p>
 
@@ -116,6 +99,8 @@
 <ul>
 <li><p><code>numk</code>: the total number of seafloor transponders at the corresponding site.</p>
 
+<li><p><code>ids</code>: Identifying number for sea surface platform</p>
+
 <li><p><code>fno</code>: the output file name &#40;the default is <code>fno&#61;&quot;obsdata.inp&quot;</code>&#41;</p>
 
 <li><p><code>fn1</code>: the input file denoting time-series of GNSS antenna positions and attitudes &#40;the default is <code>fn1&#61;&quot;gps.jxyhhpr&quot;</code>&#41;</p>
@@ -123,7 +108,7 @@
 <li><p><code>fn21</code> and <code>fn22</code>: composing the input file denoting travel-time data &#40;the defaults are <code>fn21&#61;&quot;pxp-&quot;</code> and <code>fn22&#61;&quot;.jttq&quot;</code>&#41;</p>
 
 </ul>
-<pre><code class="julia hljs">obsdata_format(<span class=hljs-number >4</span>, fno=<span class=hljs-string >&quot;obsdata.inp&quot;</span>,fn1=<span class=hljs-string >&quot;gps.jxyhhpr&quot;</span>,fn21=<span class=hljs-string >&quot;pxp-&quot;</span>,fn22=<span class=hljs-string >&quot;.jttq&quot;</span>)</code></pre>
+<pre><code class="julia hljs">obsdata_format(<span class=hljs-number >4</span>, <span class=hljs-number >1</span>, fno=<span class=hljs-string >&quot;obsdata.inp&quot;</span>,fn1=<span class=hljs-string >&quot;gps.jxyhhpr&quot;</span>,fn21=<span class=hljs-string >&quot;pxp-&quot;</span>,fn22=<span class=hljs-string >&quot;.jttq&quot;</span>)</code></pre>
 <p>The flag of &quot;obsdata.inp&quot; is automatically given; the same group number is given when an acoustic signal is simultaneously transmitted to multiple transponders.</p>
 <h4 id=gpsjxyhhpr ><a href="#gpsjxyhhpr" class=header-anchor >gps.jxyhhpr</a></h4>
 <p>&quot;gps.jxyhhpr&quot; is composed of &#40;1: Cumulative time &#91;sec&#93;, 2-4: GNSS antenna position &#40;EW, NS, UD&#41; &#91;m&#93;, 5-7: Sea-surface platform attitudes &#40;heading, pitch, roll&#41; &#91;deg&#93;&#41;.</p>
@@ -173,7 +158,7 @@ SeaGap.ll2xy_txt(<span class=hljs-string >&quot;gps.jllhhpr&quot;</span>,<span c
 500665337 5.865007 3.767856 0.564</code></pre>
 <p>You have to individually prepare this type of files for all seafloor transponders &#40;&quot;pxp-1.jttq&quot;, &quot;pxp-2.jttq&quot;, ...&#41;.</p>
 <div class=page-foot >
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: March 24, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Fumiaki Tomita. Last modified: July 03, 2024.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
