@@ -25,13 +25,16 @@ These files are text data format with delimitation of space.
 Three components of position of a transducer attached to a sea-surface platform relative to the GNSS antenna position are shown in this file.
 Using these values, the GNSS antenna positions (written in "obsdata.inp") are converted into the transducer positions with the right-handed system. Note that this definision is different from [GARPOS](https://github.com/s-watanabe-jhod/garpos).
 
-The file is an one-lined file with three columns, and each column is given as (1: X, 2: Y, 3: Z).
+The file is written three columns, and each column is given as (1: X, 2: Y, 3: Z).
+If you employ multiple sea surface platforms, you should write all positions in this file.
+The line number corresponds to the identifying number of the sea surface platforms.
 
 @@important
 \$ cat tr-ant.inp
 @@
 ```plaintext
-0.188984299 -6.990937724 -15.300000000
+0.189 -6.991 -15.300
+0.123 -1.002 -3.200
 ```
 
 ## pxp-ini.inp
@@ -112,6 +115,7 @@ The rows of "obsdata.inp" indicate as following:
 * 11-13: Sea-surface platform positions (EW, NS, UD) when recieving [m]
 * 14-16: Sea-surface platform attitude (heading, pitch, roll) when recieving [deg]
 * 17: Flag for the kinematic positioning
+* 18: Identifying number of the sea surface platforms
 
 The seafloor transponder number is linked to the line number of "pxp-ini.inp".
 The two-ways travel-time is "pure" travel-time" without any mechanical delays of a transponder. 
@@ -126,16 +130,16 @@ The flag is only used for kinematic GNSS-Acoustic positioning, and it indicates 
 \$ head obsdata.inp
 @@
 ```plaintext
-1 4.092873 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190025 110.958430 76.322974 28.357222 -44.93029 -2.03165 0.89020 1
-2 4.058711 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.155863 110.937832 76.317022 28.336117 -44.92675 -2.00787 0.88108 1
-3 4.160390 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.257542 110.998491 76.334356 28.398036 -44.93772 -2.07649 0.90733 1
-4 4.092871 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190022 110.958429 76.322973 28.357220 -44.93029 -2.03165 0.89020 1
-1 4.062968 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.160120 127.715931 85.928776 27.160121 -50.11292 -0.23815 -1.57863 2
-2 4.066063 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.163215 127.718777 85.930559 27.160110 -50.11357 -0.23972 -1.57478 2
-3 4.171606 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.268758 127.816621 85.991144 27.160509 -50.13403 -0.29212 -1.43669 2
-4 4.090700 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.187852 127.741480 85.944743 27.160067 -50.11868 -0.25212 -1.54370 2
-1 3.932951 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.030102 332.595337 256.316298 27.751791 -52.68875 -0.89626 1.21533 3
-2 4.113385 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.210538 332.613304 256.277211 27.956816 -52.70038 -1.13750 0.54747 3
+1 4.092873 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190025 110.958430 76.322974 28.357222 -44.93029 -2.03165 0.89020 1 1
+2 4.058711 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.155863 110.937832 76.317022 28.336117 -44.92675 -2.00787 0.88108 1 1
+3 4.160390 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.257542 110.998491 76.334356 28.398036 -44.93772 -2.07649 0.90733 1 1
+4 4.092871 500664407.000000 107.052906 74.548265 27.509100 -44.27880 -0.45120 0.53640 500664413.190022 110.958429 76.322973 28.357220 -44.93029 -2.03165 0.89020 1 1
+1 4.062968 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.160120 127.715931 85.928776 27.160121 -50.11292 -0.23815 -1.57863 2 1
+2 4.066063 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.163215 127.718777 85.930559 27.160110 -50.11357 -0.23972 -1.57478 2 1
+3 4.171606 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.268758 127.816621 85.991144 27.160509 -50.13403 -0.29212 -1.43669 2 1
+4 4.090700 500664437.000000 124.731386 83.455137 27.747350 -49.09920 -0.61400 1.18480 500664443.187852 127.741480 85.944743 27.160067 -50.11868 -0.25212 -1.54370 2 1
+1 3.932951 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.030102 332.595337 256.316298 27.751791 -52.68875 -0.89626 1.21533 3 1
+2 4.113385 500664917.000000 328.924820 253.690718 28.230250 -52.76000 -1.08760 -4.84800 500664923.210538 332.613304 256.277211 27.956816 -52.70038 -1.13750 0.54747 3 1
 ```
 
 You can easily make figure showing a track of the sea-surface platform by `plot_track(xrange,yrange;autoscale,fn1,fn2,fno)`
@@ -144,7 +148,7 @@ You can easily make figure showing a track of the sea-surface platform by `plot_
 * `autoscale`: If you set `autoscale=true`, the plot range is automatically defined depending on the data. If you set `autoscale=false`, the plota range is defined as `xrange` and `yrange` as following
 
 ```julia
-SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.inp",fn2="obsdata.inp",fno="track.pdf")
+SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.inp",fn2="obsdata.inp",fno="track.pdf",cm=1)
 ```
 ~~~
 <div class="row">
@@ -155,7 +159,8 @@ SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.inp",fn
 </div>
 ~~~
 
-This figure shows track of the sea-surface platform with the colors indicating the observational time [hours] from the begining of the observation.  
+This figure shows track of the sea-surface platform.
+If cm=1, the color of track show the sea surface platform number; if not, the color indicates the observational time [hours] from the begining of the observation.  
 Note that you can omit the file names if you use the default file names.
 
 Moreover, you can also make figure on time-series of the sea-surface platform positions by `plot_timetrack(xrange,yrange,zrange; autoscale,fn,fno)`. `fn` corresponds to the file name of "obsdata.inp" , and `zrange` is used for the plot range in the uplift component when you set `autoscale=false`.
@@ -177,18 +182,19 @@ SeaGap.plot_timetrack(fno="timetrack.png")
 
 To prepare "obsdata.inp", you need to obtain the GNSS antenna positions and the attitudes when transmitted and recieved.
 SeaGap prepares an interpolation module `interpolate_gps()` to obtain these from GNSS antenna and attitude time-series by cubic Spline interpolation via [Dierckx](https://github.com/kbarbary/Dierckx.jl).
-Moreover, `obsdata_format(numk; fno,fn1,fn21,fn22)` provides "obsdata.inp" using following files:
+Moreover, `obsdata_format(numk,ids; fno,fn1,fn21,fn22)` provides "obsdata.inp" using following files:
 
 1. `gps.jxyhhpr`: Time-series of GNSS antenna positions and attitudes for a sea-surface platform
 1. `pxp-k.jttq`: Travel-time data for _k_ th seafloor transponder
 
 * `numk`: the total number of seafloor transponders at the corresponding site.
+* `ids`: Identifying number for sea surface platform
 * `fno`: the output file name (the default is `fno="obsdata.inp"`)
 * `fn1`: the input file denoting time-series of GNSS antenna positions and attitudes (the default is `fn1="gps.jxyhhpr"`)
 * `fn21` and `fn22`: composing the input file denoting travel-time data (the defaults are `fn21="pxp-"` and `fn22=".jttq"`)
 
 ```julia
-obsdata_format(4, fno="obsdata.inp",fn1="gps.jxyhhpr",fn21="pxp-",fn22=".jttq")
+obsdata_format(4, 1, fno="obsdata.inp",fn1="gps.jxyhhpr",fn21="pxp-",fn22=".jttq")
 ```
 
 The flag of "obsdata.inp" is automatically given; the same group number is given when an acoustic signal is simultaneously transmitted to multiple transponders.

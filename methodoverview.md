@@ -10,8 +10,6 @@ tags = ["syntax", "code", "image"]
 
 # Overview
 
-In this page, overview of the GNSS-Acoustic (GNSS-A) positioning methods is introduced.
-
 GNSS-A positioning was contrived by [Spiess (1985)](https://ieeexplore.ieee.org/document/4072330), and the geodetical results were firstly given by [Spiess et al. (1998)](https://www.sciencedirect.com/science/article/abs/pii/S0031920198000892).
 Then, it has been developed by various researchers, especially in Japan (Japan Coast Guard, Nagoya Univ., and Tohoku Univ.).
 
@@ -24,8 +22,9 @@ The most accurate technique to determin the initial positions of the seafloor tr
 The SeaGap do not have such an elaborated function, but has a function to determine positions of the individual seafloor transponders using single campaign data [Individual transponder positioning `static_individual()`].
 It is a simple but powerful way that we first estimate positions of the individual seafloor transponders from single campaign data and then average them from multiple campaigns as the initial positions.
 
-The array positioning is separated into two approaches: kinematic and static positioning.
-[The kinematic positioning approach](/methodkinematic/) estimates an array displacement using very short-term positioning data, and [the static positioning apprach](/methodstatic/) estimates an array displacement using a whole campiagn data.
-The charactaristics of each approach are shown in their individual pages.
+## Contents
+
+* [Methodology: Travel-time calculation](/methodtt/)
+* [Methodology: Positioning methods](/methodstatic/)  
 
 
