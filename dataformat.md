@@ -148,7 +148,7 @@ You can easily make figure showing a track of the sea-surface platform by `plot_
 * `autoscale`: If you set `autoscale=true`, the plot range is automatically defined depending on the data. If you set `autoscale=false`, the plota range is defined as `xrange` and `yrange` as following
 
 ```julia
-SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.inp",fn2="obsdata.inp",fno="track.pdf",cm=1)
+SeaGap.plot_track((-3000,3000),(-3000,3000),autoscale=false,fn1="pxp-ini.inp",fn2="obsdata.inp",fno="track.pdf",cm=0)
 ```
 ~~~
 <div class="row">

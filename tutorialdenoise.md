@@ -25,7 +25,7 @@ Note that the file names can be optionally changed. If you use the default file 
 
 ```julia
 using Plots
-lat = 36.15753; TR_DEPTH = 3.0
+lat = 36.15753; TR_DEPTH = [3.0]
 nv,kv,t1,t2,tp,tc,tr,vert = SeaGap.ttres(lat,TR_DEPTH)
 scatter(t1,tr,markershape=:cross,zcolor=kv,label=:none,c=:rainbow)
 ```
@@ -52,7 +52,7 @@ Then, let's perform `denoise()`.
 The following is an example to run the function:
                                                                                    
 ```julia
-lat = 36.15753; TR_DEPTH = 3.0
+lat = 36.15753; TR_DEPTH = [3.0]
 SeaGap.denoise(lat,TR_DEPTH,k=0,n=7,sigma=4.0,method="median")
 ```
 
